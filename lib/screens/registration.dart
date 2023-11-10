@@ -1,23 +1,40 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_doctor_ui/screens/registration.dart';
+import 'package:flutter_doctor_ui/screens/login.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter_doctor_ui/widgets/CustomTextField.dart';
+import 'package:flutter_doctor_ui/widgets/DatePickerField.dart';
 import 'package:flutter_doctor_ui/widgets/PasswordField.dart';
 import 'package:flutter_doctor_ui/widgets/PrimaryButton.dart';
 import 'package:flutter_doctor_ui/widgets/SignInFacebookButton.dart';
 import 'package:flutter_doctor_ui/widgets/SignInGoogleButton.dart';
 
-class Login extends StatefulWidget {
-  static String routeName = "/login";
-  const Login({super.key});
+class Registration extends StatefulWidget {
+  static String routeName = "/registration";
+  const Registration({super.key});
 
   @override
-  State<Login> createState() => _LoginState();
+  State<Registration> createState() => _RegistrationState();
 }
 
-class _LoginState extends State<Login> {
+class _RegistrationState extends State<Registration> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final TextEditingController birthdateController = TextEditingController();
   bool obscurePassword = true;
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+    );
+
+    if (picked != null) {
+      final formattedDate = DateFormat.yMMMMd().format(picked);
+      birthdateController.text = formattedDate;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +61,7 @@ class _LoginState extends State<Login> {
                       alignment: Alignment
                           .centerLeft, // Align the content to the left within the container
                       child: const Text(
-                        "Login to your Account",
+                        "Create your Account",
                         style: TextStyle(
                           color: Color(0xFF424E79),
                           fontSize: 17,
@@ -71,33 +88,22 @@ class _LoginState extends State<Login> {
                         hintText: "Enter your Password",
                         controller: passwordController),
                     const SizedBox(
-                      height: 5.0,
+                      height: 20.0,
                     ),
-                    Container(
-                      child: Row(
-                        children: [
-                          GestureDetector(
-                            onTap: () {},
-                            child: const Text(
-                              "Forgot your password?",
-                              style: TextStyle(
-                                color: Color(0xFF4454C3),
-                                fontSize: 15,
-                                fontWeight: FontWeight.normal,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                    DatePickerField(
+                      labelText: "Birth Date",
+                      hintText: "Select your Birthday",
+                      controller: birthdateController,
+                      function: () => _handleDateSelection(context),
                     ),
                     const SizedBox(
-                      height: 25.0,
+                      height: 20.0,
                     ),
                     PrimaryButton(
-                      text: "Login",
+                      text: "Sign up",
                       buttonColor: Color(0xFF4454C3),
                       onPress: () {
-                        // Navigator.pushNamed(context, Dashboard.routeName);
+                        Navigator.pushNamed(context, Login.routeName);
                       },
                     ),
                     const SizedBox(
@@ -147,7 +153,7 @@ class _LoginState extends State<Login> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             const Text(
-                              "Don't have an account?",
+                              "Already have an account?",
                               style: TextStyle(
                                 color: Color(0xFF424E79),
                                 fontSize: 15,
@@ -155,11 +161,10 @@ class _LoginState extends State<Login> {
                             ),
                             GestureDetector(
                               onTap: () {
-                                Navigator.pushNamed(
-                                    context, Registration.routeName);
+                                Navigator.pushNamed(context, Login.routeName);
                               },
                               child: const Text(
-                                " Sign up",
+                                " Login",
                                 style: TextStyle(
                                   color: Color(0xFF4454C3),
                                   fontSize: 15,
@@ -185,5 +190,9 @@ class _LoginState extends State<Login> {
     setState(() {
       obscurePassword = !obscurePassword;
     });
+  }
+
+  Future<void> _handleDateSelection(BuildContext context) async {
+    await _selectDate(context);
   }
 }
