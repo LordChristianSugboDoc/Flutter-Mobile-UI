@@ -34,7 +34,7 @@ class CustomTextField extends StatelessWidget {
           borderRadius: BorderRadius.all(Radius.circular(5.0)),
           borderSide: BorderSide(
               color: Color.fromARGB(
-                  255, 66, 78, 121)), // Change border color when enabled
+                  41, 66, 78, 121)), // Change border color when enabled
         ),
       ),
       controller: controller,

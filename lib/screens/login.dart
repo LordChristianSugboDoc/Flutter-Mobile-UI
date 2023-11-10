@@ -23,6 +23,7 @@ class _LoginState extends State<Login> {
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
       body: Container(
+        color: Colors.white,
         child: Center(
           child: SingleChildScrollView(
             child: Center(
@@ -32,103 +33,33 @@ class _LoginState extends State<Login> {
                   children: [
                     Image.asset(
                       'assets/images/sugbodoc_logo.png',
-                      height: 100, // Set the desired height
-                      width: 200, // Set the desired width
-                    ),
-                    const Text(
-                      "Login",
-                      style: TextStyle(
-                        color: Color(0xFF424E79),
-                        fontSize: 40,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      height: 110, // Set the desired height
+                      width: 220, // Set the desired width
                     ),
                     const SizedBox(
-                      height: 20.0,
-                    ),
-                    const Text(
-                      "Please loin with your email or mobile number and password below",
-                      style: TextStyle(
-                        color: Color(0xFF424E79),
-                        fontSize: 15,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 20.0,
-                    ),
-                    GoogleButton(
-                      text: "Sign in with Google",
-                      buttonColor: Color.fromARGB(255, 255, 255, 255),
-                      onPress: () {
-                        // Navigator.pushNamed(context, Dashboard.routeName);
-                      },
-                    ),
-                    const SizedBox(
-                      height: 10.0,
-                    ),
-                    FacebookButton(
-                      text: "Sign in with Facebook",
-                      buttonColor: Color.fromARGB(255, 255, 255, 255),
-                      onPress: () {
-                        // Navigator.pushNamed(context, Dashboard.routeName);
-                      },
-                    ),
-                    const SizedBox(
-                      height: 20.0,
+                      height: 45.0,
                     ),
                     Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 1),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Container(
-                              height: 1,
-                              color: const Color.fromARGB(48, 66, 78,
-                                  121), // Adjust the color as needed
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 4),
-                            child: Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                Container(
-                                  width: 30,
-                                  height: 30,
-                                  decoration: const BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Color.fromARGB(48, 66, 78, 121),
-                                    // Adjust the color of the circle
-                                  ),
-                                ),
-                                const Text(
-                                  "OR",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xFF424E79),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Expanded(
-                            child: Container(
-                              height: 1,
-                              color: const Color.fromARGB(48, 66, 78,
-                                  121), // Adjust the color as needed
-                            ),
-                          ),
-                        ],
+                      alignment: Alignment
+                          .centerLeft, // Align the content to the left within the container
+                      child: const Text(
+                        "Login to your Account",
+                        style: TextStyle(
+                          color: Color(0xFF424E79),
+                          fontSize: 17,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
                     const SizedBox(
-                      height: 20.0,
+                      height: 15.0,
                     ),
                     CustomTextField(
-                        labelText: "Email Address",
-                        hintText: "Enter your Email Address",
-                        controller: emailController,
-                        textInputType: TextInputType.emailAddress),
+                      labelText: "Email Address",
+                      hintText: "Enter your Email Address",
+                      controller: emailController,
+                      textInputType: TextInputType.emailAddress,
+                    ),
                     const SizedBox(
                       height: 20.0,
                     ),
@@ -159,7 +90,7 @@ class _LoginState extends State<Login> {
                       ),
                     ),
                     const SizedBox(
-                      height: 20.0,
+                      height: 25.0,
                     ),
                     PrimaryButton(
                       text: "Login",
@@ -169,7 +100,45 @@ class _LoginState extends State<Login> {
                       },
                     ),
                     const SizedBox(
+                      height: 70.0,
+                    ),
+                    const Text(
+                      "Or sign in with",
+                      style: TextStyle(
+                        color: Color(0xFF424E79),
+                        fontSize: 15,
+                      ),
+                    ),
+                    const SizedBox(
                       height: 20.0,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: GoogleButton(
+                            borderWidth: 3.0,
+                            buttonColor: Color.fromARGB(255, 255, 255, 255),
+                            onPress: () {
+                              // Your action when Google button is pressed
+                            },
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10.0,
+                        ),
+                        Expanded(
+                          child: FacebookButton(
+                            borderWidth: 3.0,
+                            buttonColor: Color.fromARGB(255, 255, 255, 255),
+                            onPress: () {
+                              // Your action when Facebook button is pressed
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 70.0,
                     ),
                     Container(
                       child: Center(

@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
 class GoogleButton extends StatelessWidget {
-  final String text;
   final VoidCallback onPress;
   final Color buttonColor;
+  final double borderWidth;
 
   GoogleButton(
-      {required this.text, required this.onPress, required this.buttonColor});
+      {required this.onPress,
+      required this.buttonColor,
+      required this.borderWidth});
 
   @override
   Widget build(BuildContext context) {
@@ -24,8 +26,8 @@ class GoogleButton extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const SizedBox(
-            width: 10.0,
+          SizedBox(
+            width: borderWidth,
           ),
           Padding(
             padding: EdgeInsets.only(right: 10.0),
@@ -34,14 +36,6 @@ class GoogleButton extends StatelessWidget {
               height: 25, // Set the desired height
               width: 25,
               // Set the desired width
-            ),
-          ),
-          Text(
-            text,
-            style: const TextStyle(
-              fontSize: 17,
-              color: Color(0xFF424E79),
-              fontWeight: FontWeight.normal,
             ),
           ),
         ],
