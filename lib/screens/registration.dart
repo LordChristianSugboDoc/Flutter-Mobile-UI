@@ -28,6 +28,16 @@ class _RegistrationState extends State<Registration> {
       initialDate: DateTime.now(),
       firstDate: DateTime(1900),
       lastDate: DateTime.now(),
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: ThemeData.light().copyWith(
+            colorScheme: ColorScheme.light(primary: Color(0xFF4454C3)),
+            textButtonTheme: TextButtonThemeData(
+                style: TextButton.styleFrom(primary: Color(0xFF4454C3))),
+          ),
+          child: child!,
+        );
+      },
     );
 
     if (picked != null) {
