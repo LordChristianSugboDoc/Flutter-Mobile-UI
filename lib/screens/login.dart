@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_doctor_ui/screens/dashboard.dart';
 import 'package:flutter_doctor_ui/screens/registration.dart';
 import 'package:flutter_doctor_ui/widgets/CustomTextField.dart';
 import 'package:flutter_doctor_ui/widgets/PasswordField.dart';
@@ -97,7 +98,7 @@ class _LoginState extends State<Login> {
                       text: "Login",
                       buttonColor: Color(0xFF4454C3),
                       onPress: () {
-                        // Navigator.pushNamed(context, Dashboard.routeName);
+                        Navigator.pushNamed(context, Dashboard.routeName);
                       },
                     ),
                     const SizedBox(
