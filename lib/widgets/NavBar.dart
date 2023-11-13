@@ -18,7 +18,7 @@ class NavBar extends StatelessWidget {
             child: Align(
               alignment: Alignment.centerLeft,
               child: Image.asset(
-                'assets/images/sugbodoc_white_logo.png',
+                'assets/images/PNG/sugbodoc_white_logo.png',
                 height: 80, // Set the desired height
                 width: 160, // Set the desired width
               ),

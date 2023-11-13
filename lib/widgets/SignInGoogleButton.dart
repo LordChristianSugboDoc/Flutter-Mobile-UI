@@ -32,7 +32,7 @@ class GoogleButton extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(right: 10.0),
             child: Image.asset(
-              'assets/images/google_logo.png',
+              'assets/images/PNG/google_logo.png',
               height: 25, // Set the desired height
               width: 25,
               // Set the desired width
