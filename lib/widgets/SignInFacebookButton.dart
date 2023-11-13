@@ -32,7 +32,7 @@ class FacebookButton extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(right: 10.0),
             child: Image.asset(
-              'assets/images/facebook_logo.png',
+              'assets/images/PNG/facebook_logo.png',
               height: 25,
               width: 25,
             ),

@@ -34,7 +34,7 @@ class _LoginState extends State<Login> {
                 child: Column(
                   children: [
                     Image.asset(
-                      'assets/images/sugbodoc_logo.png',
+                      'assets/images/PNG/sugbodoc_logo.png',
                       height: 110, // Set the desired height
                       width: 220, // Set the desired width
                     ),
