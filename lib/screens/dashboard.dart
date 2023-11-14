@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_doctor_ui/screens/patient_profile.dart';
+import 'package:flutter_doctor_ui/widgets/CustomAppBar.dart';
+import 'package:flutter_doctor_ui/widgets/CustomBottomNav.dart';
 import 'package:flutter_doctor_ui/widgets/CustomButton.dart';
 import 'package:flutter_doctor_ui/widgets/NavBar.dart';
 
@@ -12,20 +13,26 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
+  /* Patient Variables */
+  String patient_one_image = "assets/images/JPG/patient_one.jpg";
   String patient_firstname = "Luke";
+
+  /* Prescription Variables */
   String patient_medication_one = "Ibuprofen (Fevral) Tablet";
   String medication_sig_one = "2 tablets every 6 hours as needed for...";
   String patient_medication_two = "Bioflu Biogesic Paracetaol";
   String medication_sig_two = "1 Tablet every 4 hours";
 
-  String doctor_title = "Dr. Abraham Smith M.D,";
+  /* Doctor and Facility Variables */
+  String doctor_one_image = "assets/images/JPG/doctor_one.jpg";
+  String doctor_title = "Abraham Smith M.D,";
   String doctor_profession = "Family Doctor";
   String Health_facility = "Jehovah Rapha Hospital";
 
+  /* Past Visit Variables */
   String consultation_reason_one = "My head hurts when I wake up";
-  String consultation_reason_two = "I can't sleep properly";
-
   String time_ago_one = "3 days, 5 hours ago";
+  String consultation_reason_two = "I can't sleep properly";
   String time_ago_two = "2 weeks, 5 days ago";
 
   @override
@@ -33,39 +40,8 @@ class _DashboardState extends State<Dashboard> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       drawer: const NavBar(),
-      appBar: AppBar(
-        elevation: 0.0,
-        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-        iconTheme: const IconThemeData(
-          color: Color(0xFF4454C3),
-        ),
-        title: Image.asset(
-          'assets/images/PNG/sugbodoc_logo.png',
-          height: 84.38, // Aspect Ratio 16:9
-          width: 150,
-        ),
-        centerTitle: true,
-        actions: <Widget>[
-          GestureDetector(
-            onTap: () {
-              Navigator.pushNamed(context, PatientProfile.routeName);
-            },
-            child: Container(
-              margin: const EdgeInsets.only(
-                  right: 17), // Adjust the margin value as needed
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Image.asset(
-                  'assets/images/JPG/patient_one.jpg',
-                  height: 90, // Aspect Ratio 5:3
-                  width: 54,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
+      appBar: CustomAppBar(context),
+      bottomNavigationBar: CustomBottomNav(),
       body: ListView(
         padding: const EdgeInsets.only(top: 20.0, left: 15.0),
         children: [
@@ -255,7 +231,7 @@ class _DashboardState extends State<Dashboard> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(100),
                     child: Image.asset(
-                      'assets/images/JPG/doctor_one.jpg',
+                      doctor_one_image, // Dynamic Variable
                       height: 100,
                       width: 100,
                     ),
@@ -603,7 +579,7 @@ class _DashboardState extends State<Dashboard> {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(100),
                         child: Image.asset(
-                          'assets/images/JPG/doctor_one.jpg',
+                          doctor_one_image, // Dynamic Variable
                           height: 70,
                           width: 70,
                         ),
@@ -686,7 +662,7 @@ class _DashboardState extends State<Dashboard> {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(100),
                         child: Image.asset(
-                          'assets/images/JPG/doctor_one.jpg',
+                          doctor_one_image, // Dynamic Variable
                           height: 70,
                           width: 70,
                         ),
