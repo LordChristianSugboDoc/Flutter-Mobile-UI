@@ -116,7 +116,23 @@ class NavBar extends StatelessWidget {
             //onTap: () {},
           ),
           const Padding(
-            padding: EdgeInsets.only(top: 300.0),
+            padding: EdgeInsets.only(top: 240.0),
+          ),
+          ListTile(
+            leading: const Icon(
+              Icons.settings,
+              color: Colors.white,
+            ),
+            title: const Text(
+              'Settings',
+              style: TextStyle(
+                color: Colors.white, // Set your desired color
+              ),
+            ),
+            onTap: () {
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                  Login.routeName, (Route<dynamic> route) => false);
+            },
           ),
           ListTile(
             leading: const Icon(

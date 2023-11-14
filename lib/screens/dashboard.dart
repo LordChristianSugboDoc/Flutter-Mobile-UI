@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_doctor_ui/screens/login.dart';
+import 'package:flutter_doctor_ui/screens/patient_profile.dart';
 import 'package:flutter_doctor_ui/widgets/CustomButton.dart';
 import 'package:flutter_doctor_ui/widgets/NavBar.dart';
 
@@ -48,8 +48,7 @@ class _DashboardState extends State<Dashboard> {
         actions: <Widget>[
           GestureDetector(
             onTap: () {
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                  Login.routeName, (Route<dynamic> route) => false);
+              Navigator.pushNamed(context, PatientProfile.routeName);
             },
             child: Container(
               margin: const EdgeInsets.only(
