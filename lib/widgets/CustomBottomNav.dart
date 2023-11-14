@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
 class CustomBottomNav extends StatelessWidget {
-  String patient_one_image = "assets/images/JPG/patient_one.jpg";
   @override
   Widget build(BuildContext context) {
     return Container(
