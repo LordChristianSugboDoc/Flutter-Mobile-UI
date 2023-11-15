@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_doctor_ui/main.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_doctor_ui/screens/dashboard.dart';
 import 'package:flutter_doctor_ui/screens/registration.dart';
@@ -140,8 +141,10 @@ class _LoginState extends State<Login> {
                       buttonColor: Color(0xFF4454C3),
                       onPress: () async {
                         int parsedData = await _LoginPatient();
-                        if (parsedData == 1) {
+                        if (parsedData != -1) {
                           Navigator.pushNamed(context, Dashboard.routeName);
+                          globalId = parsedData;
+                          print(globalId);
                         } else {
                           // Redirect to login page or handle the situation accordingly
                           Navigator.of(context).pushNamedAndRemoveUntil(

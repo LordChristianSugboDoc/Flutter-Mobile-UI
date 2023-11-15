@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_doctor_ui/main.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_doctor_ui/widgets/CustomAppBar.dart';
@@ -48,14 +49,18 @@ class _DashboardState extends State<Dashboard> {
   }
 
   Future<void> _fetchPatientProfile() async {
+    String url =
+        'http://10.0.2.2:8080/flutter-mobile-backend-ui/index.php/Patient/getPatientDetails/${globalId}';
+
     try {
-      final response = await http.get(Uri.parse(
-          'http://10.0.2.2:8080/flutter-mobile-backend-ui/index.php/Patient/getPatientProfile/1'));
+      final response = await http.get(Uri.parse(url));
+
+      // Handle the response
+      print('Response Status Code: ${response.statusCode}');
+      print('Response Body: ${response.body}');
       if (response.statusCode == 200) {
         setState(() {
           patientData = json.decode(response.body);
-          // Print first_name here
-          // print('First Name: ${patientData['first_name']}');
         });
       } else {
         throw Exception('Failed to load patient profile');
@@ -85,6 +90,8 @@ class _DashboardState extends State<Dashboard> {
               Container(
                 alignment: Alignment.centerLeft,
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       "Hello, " +
