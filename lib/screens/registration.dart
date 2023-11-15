@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_doctor_ui/screens/login.dart';
+import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:flutter_doctor_ui/screens/login.dart';
 import 'package:flutter_doctor_ui/widgets/CustomTextField.dart';
 import 'package:flutter_doctor_ui/widgets/DatePickerField.dart';
 import 'package:flutter_doctor_ui/widgets/PasswordField.dart';
@@ -18,9 +19,37 @@ class Registration extends StatefulWidget {
 
 class _RegistrationState extends State<Registration> {
   final TextEditingController emailController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController birthdateController = TextEditingController();
+
   bool obscurePassword = true;
+
+  _RegisterPatient() async {
+    String url =
+        'http://10.0.2.2:8080/flutter-mobile-backend-ui/index.php/patient/registerPatient';
+
+    Map<String, String> data = {
+      'email': emailController.text,
+      'phone': phoneController.text,
+      'password': passwordController.text,
+      'birthdate': birthdateController.text,
+    };
+
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        body: data,
+      );
+
+      // Handle the response as needed
+      print('Response Status Code: ${response.statusCode}');
+      print('Response Body: ${response.body}');
+    } catch (error) {
+      // Handle errors
+      print(error);
+    }
+  }
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -91,12 +120,22 @@ class _RegistrationState extends State<Registration> {
                     const SizedBox(
                       height: 20.0,
                     ),
+                    CustomTextField(
+                      labelText: "Phone Number",
+                      hintText: "0987 654 321",
+                      controller: phoneController,
+                      textInputType: TextInputType.phone,
+                    ),
+                    const SizedBox(
+                      height: 20.0,
+                    ),
                     PasswordField(
-                        obscureText: obscurePassword,
-                        onTap: handleObscurePassword,
-                        labelText: "Password",
-                        hintText: "Enter your Password",
-                        controller: passwordController),
+                      obscureText: obscurePassword,
+                      onTap: handleObscurePassword,
+                      labelText: "Password",
+                      hintText: "Enter your Password",
+                      controller: passwordController,
+                    ),
                     const SizedBox(
                       height: 20.0,
                     ),
@@ -113,6 +152,7 @@ class _RegistrationState extends State<Registration> {
                       text: "Sign up",
                       buttonColor: Color(0xFF4454C3),
                       onPress: () {
+                        _RegisterPatient();
                         Navigator.pushNamed(context, Login.routeName);
                       },
                     ),
