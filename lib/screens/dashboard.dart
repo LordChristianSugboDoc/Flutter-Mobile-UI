@@ -1,18 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'package:flutter_doctor_ui/widgets/CustomAppBar.dart';
 import 'package:flutter_doctor_ui/widgets/CustomBottomNav.dart';
 import 'package:flutter_doctor_ui/widgets/CustomButton.dart';
 import 'package:flutter_doctor_ui/widgets/NavBar.dart';
 
 class Dashboard extends StatefulWidget {
+  final String patientId;
   static String routeName = "/dashboard";
-  const Dashboard({super.key});
+
+  const Dashboard({Key? key, required this.patientId}) : super(key: key);
 
   @override
   State<Dashboard> createState() => _DashboardState();
 }
 
 class _DashboardState extends State<Dashboard> {
+  Map<String, dynamic> patientData = {};
+
   /* Patient Variables */
   String patient_one_image = "assets/images/JPG/patient_one.jpg";
   String patient_firstname = "Luke";
@@ -36,6 +42,30 @@ class _DashboardState extends State<Dashboard> {
   String time_ago_two = "2 weeks, 5 days ago";
 
   @override
+  void initState() {
+    super.initState();
+    _fetchPatientProfile();
+  }
+
+  Future<void> _fetchPatientProfile() async {
+    try {
+      final response = await http.get(Uri.parse(
+          'http://10.0.2.2:8080/flutter-mobile-backend-ui/index.php/Patient/getPatientProfile/1'));
+      if (response.statusCode == 200) {
+        setState(() {
+          patientData = json.decode(response.body);
+          // Print first_name here
+          // print('First Name: ${patientData['first_name']}');
+        });
+      } else {
+        throw Exception('Failed to load patient profile');
+      }
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
@@ -57,7 +87,8 @@ class _DashboardState extends State<Dashboard> {
                 child: Column(
                   children: [
                     Text(
-                      "Hello, " + patient_firstname, // Dynamic Variable
+                      "Hello, " +
+                          '${patientData['first_name']}', // Dynamic Variable
                       style: const TextStyle(
                         color: Color(0xFF424E79),
                         fontSize: 39,

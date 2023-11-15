@@ -7,6 +7,8 @@ import 'package:flutter_doctor_ui/screens/registration.dart';
 final Map<String, WidgetBuilder> routes = {
   Login.routeName: (BuildContext context) => Login(),
   Registration.routeName: (BuildContext context) => Registration(),
-  Dashboard.routeName: (BuildContext context) => Dashboard(),
+  Dashboard.routeName: (BuildContext context) => Dashboard(
+        patientId: "1",
+      ),
   PatientProfile.routeName: (BuildContext context) => PatientProfile(),
 };
