@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter_doctor_ui/screens/dashboard.dart';
 import 'package:flutter_doctor_ui/screens/registration.dart';
 import 'package:flutter_doctor_ui/widgets/CustomTextField.dart';
@@ -16,9 +17,49 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  final TextEditingController emailController = TextEditingController();
+  final TextEditingController inputController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   bool obscurePassword = true;
+
+  int? parsedData;
+
+  Future<int> _LoginPatient() async {
+    String url =
+        'http://10.0.2.2:8080/flutter-mobile-backend-ui/index.php/patient/loginPatient';
+
+    Map<String, String> data = {
+      'input': inputController.text,
+      'password': passwordController.text,
+    };
+
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        body: data,
+      );
+
+      // Handle the response
+      print('Response Status Code: ${response.statusCode}');
+      print('Response Body: ${response.body}');
+
+      // Check the status code and parse data accordingly
+      if (response.statusCode == 200) {
+        // Successful response, parse integer or other data
+        int parsedData = int.tryParse(response.body) ?? 0;
+        return parsedData;
+      } else {
+        // Handle other status codes or error responses
+        print('Error: ${response.statusCode}');
+        // Return a default value or throw an exception if needed
+        return 0;
+      }
+    } catch (error) {
+      // Handle errors
+      print('Error: $error');
+      // Return a default value or throw an exception if needed
+      return 0;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,10 +98,10 @@ class _LoginState extends State<Login> {
                       height: 15.0,
                     ),
                     CustomTextField(
-                      labelText: "Email Address",
-                      hintText: "Enter your Email Address",
-                      controller: emailController,
-                      textInputType: TextInputType.emailAddress,
+                      labelText: "Email or Mobile Number",
+                      hintText: "Enter your Email or Mobile Number",
+                      controller: inputController,
+                      textInputType: TextInputType.text,
                     ),
                     const SizedBox(
                       height: 20.0,
@@ -97,8 +138,15 @@ class _LoginState extends State<Login> {
                     PrimaryButton(
                       text: "Login",
                       buttonColor: Color(0xFF4454C3),
-                      onPress: () {
-                        Navigator.pushNamed(context, Dashboard.routeName);
+                      onPress: () async {
+                        int parsedData = await _LoginPatient();
+                        if (parsedData == 1) {
+                          Navigator.pushNamed(context, Dashboard.routeName);
+                        } else {
+                          // Redirect to login page or handle the situation accordingly
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                              Login.routeName, (Route<dynamic> route) => false);
+                        }
                       },
                     ),
                     const SizedBox(
