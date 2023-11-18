@@ -142,6 +142,8 @@ class _RegistrationState extends State<Registration> {
                     DatePickerField(
                       labelText: "Birth Date",
                       hintText: "Select your Birthday",
+                      inputWidth: width,
+                      inputHeight: 60,
                       controller: birthdateController,
                       function: () => _handleDateSelection(context),
                     ),
