@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
 
-class DatePickerField extends StatelessWidget {
+class CustomInputField extends StatelessWidget {
   final String labelText;
   final String hintText;
   final double inputWidth;
   final double inputHeight;
   final TextEditingController controller;
-  final VoidCallback function;
+  final TextInputType textInputType;
 
-  DatePickerField({
-    required this.labelText,
-    required this.hintText,
-    required this.inputWidth,
-    required this.inputHeight,
-    required this.controller,
-    required this.function,
-  });
+  CustomInputField(
+      {required this.labelText,
+      required this.hintText,
+      required this.inputWidth,
+      required this.inputHeight,
+      required this.controller,
+      required this.textInputType});
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +22,7 @@ class DatePickerField extends StatelessWidget {
       height: inputHeight,
       width: inputWidth,
       child: TextFormField(
-        readOnly: true,
-        controller: controller,
-        onTap: function,
+        keyboardType: textInputType,
         decoration: InputDecoration(
           labelText: labelText,
           hintText: hintText,
@@ -37,18 +34,17 @@ class DatePickerField extends StatelessWidget {
           ),
           focusedBorder: const OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(5.0)),
-            borderSide: BorderSide(
-              color: Color(0xFF424E79), // Change border color
-            ),
+            borderSide:
+                BorderSide(color: Color(0xFF424E79)), // Change border color
           ),
           enabledBorder: const OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(5.0)),
             borderSide: BorderSide(
-              color: Color.fromARGB(
-                  41, 66, 78, 121), // Change border color when enabled
-            ),
+                color: Color.fromARGB(
+                    41, 66, 78, 121)), // Change border color when enabled
           ),
         ),
+        controller: controller,
       ),
     );
   }
