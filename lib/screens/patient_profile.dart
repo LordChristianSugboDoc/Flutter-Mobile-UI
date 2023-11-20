@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_doctor_ui/main.dart';
+import 'package:flutter_doctor_ui/screens/dashboard.dart';
 import 'package:flutter_doctor_ui/screens/patient_profile_edit.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -108,14 +109,23 @@ class _PatientProfileState extends State<PatientProfile> {
                 iconTheme: const IconThemeData(
                   color: Color(0xFF4454C3),
                 ),
+                leading: IconButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, Dashboard.routeName);
+                  },
+                  icon: Icon(Icons.arrow_back_ios_new_rounded),
+                ),
                 actions: <Widget>[
-                  IconButton(
-                    onPressed: () {
-                      Navigator.pushNamed(
-                          context, PatientProfileEdit.routeName);
-                    },
-                    icon: const Icon(
-                      Icons.border_color_outlined,
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10, right: 10.0),
+                    child: IconButton(
+                      onPressed: () {
+                        Navigator.pushNamed(
+                            context, PatientProfileEdit.routeName);
+                      },
+                      icon: const Icon(
+                        Icons.border_color_outlined,
+                      ),
                     ),
                   )
                 ],
@@ -153,6 +163,7 @@ class _PatientProfileState extends State<PatientProfile> {
                             'http://10.0.2.2:8080/flutter-mobile-backend-ui/${patientData['image']}',
                             height: 150,
                             width: 150,
+                            fit: BoxFit.cover,
                           ),
                         ),
                       ),
