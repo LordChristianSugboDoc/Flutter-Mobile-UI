@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:flutter_doctor_ui/main.dart';
+import 'package:flutter_doctor_ui/screens/patient_profile.dart';
 import 'package:flutter_doctor_ui/widgets/CustomDropDown.dart';
 import 'package:flutter_doctor_ui/widgets/CustomImageUpload.dart';
 import 'package:flutter_doctor_ui/widgets/CustomInputField.dart';
@@ -29,13 +30,12 @@ class _PatientProfileEditState extends State<PatientProfileEdit> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
+  final TextEditingController brgyController = TextEditingController();
+  final TextEditingController cityController = TextEditingController();
+  final TextEditingController stateController = TextEditingController();
+  final TextEditingController countryController = TextEditingController();
   final TextEditingController birthdateController = TextEditingController();
   final TextEditingController imageController = TextEditingController();
-
-  String selectedCountry = 'Country';
-  String selectedState = 'Province';
-  String selectedCity = 'City';
-  String selectedBrgy = 'Barangay';
 
   late Future<void> _fetchPatientProfileEditFuture;
   Map<String, dynamic> patientData = {};
@@ -46,7 +46,15 @@ class _PatientProfileEditState extends State<PatientProfileEdit> {
     checkStoragePermission();
     super.initState();
     _fetchPatientProfileEditFuture = _fetchPatientProfileEdit();
+    _fetchPatientProfileEditFuture.then((_) {
+      initializeControllers(patientData);
+    });
   }
+
+  String selectedCountry = 'Country';
+  String selectedState = 'Province';
+  String selectedCity = 'City';
+  String selectedBrgy = 'Barangay';
 
   Future<void> checkStoragePermission() async {
     PermissionStatus storageStatus = await Permission.storage.status;
@@ -102,6 +110,10 @@ class _PatientProfileEditState extends State<PatientProfileEdit> {
         'last_name': lastNameController.text,
         'phone': phoneController.text,
         'address': addressController.text,
+        'barangay': brgyController.text,
+        'city': cityController.text,
+        'state': stateController.text,
+        'country': countryController.text,
         'birthdate': birthdateController.text,
       });
 
@@ -157,7 +169,7 @@ class _PatientProfileEditState extends State<PatientProfileEdit> {
       Directory appDocumentsDirectory =
           await getApplicationDocumentsDirectory();
       String targetDirectoryPath =
-          path.join(appDocumentsDirectory.path, 'public', 'uploads', 'images');
+          path.join(appDocumentsDirectory.path, 'uploads', 'profile');
       Directory targetDirectory = Directory(targetDirectoryPath);
 
       if (!(await targetDirectory.exists())) {
@@ -176,7 +188,7 @@ class _PatientProfileEditState extends State<PatientProfileEdit> {
 
       await File(pickedFile.path).copy(newImage.path);
 
-      String relativePath = path.join('public', 'uploads', 'images', fileName);
+      String relativePath = path.join('uploads', 'profile', fileName);
 
       setState(() {
         _image = newImage;
@@ -190,6 +202,7 @@ class _PatientProfileEditState extends State<PatientProfileEdit> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
+
     return Container(
       color: Colors.white,
       child: FutureBuilder(
@@ -216,17 +229,12 @@ class _PatientProfileEditState extends State<PatientProfileEdit> {
                 iconTheme: const IconThemeData(
                   color: Color(0xFF4454C3),
                 ),
-                // actions: <Widget>[
-                //   IconButton(
-                //     onPressed: () {
-                //       Navigator.pushNamed(
-                //           context, PatientProfileEdit.routeName);
-                //     },
-                //     icon: const Icon(
-                //       Icons.border_color_outlined,
-                //     ),
-                //   )
-                // ],
+                leading: IconButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, PatientProfile.routeName);
+                  },
+                  icon: Icon(Icons.arrow_back_ios_new_rounded),
+                ),
               ),
               body: ListView(
                 padding: const EdgeInsets.only(top: 10.0),
@@ -350,9 +358,10 @@ class _PatientProfileEditState extends State<PatientProfileEdit> {
                                     'Thailand'
                                   ],
                                   onChanged: (String? value) {
+                                    print(
+                                        'onChanged executed. New value: $value');
                                     setState(() {
                                       selectedCountry = value ?? '';
-                                      updateAddress();
                                     });
                                   },
                                 ),
@@ -370,10 +379,16 @@ class _PatientProfileEditState extends State<PatientProfileEdit> {
                                     'Bohol'
                                   ],
                                   onChanged: (String? value) {
-                                    setState(() {
-                                      selectedState = value ?? '';
-                                      updateAddress();
-                                    });
+                                    if (patientData['province'] != null) {
+                                      setState(() {
+                                        selectedState =
+                                            patientData['province'] ?? '';
+                                      });
+                                    } else {
+                                      setState(() {
+                                        selectedState = value ?? '';
+                                      });
+                                    }
                                   },
                                 ),
                               ],
@@ -395,10 +410,16 @@ class _PatientProfileEditState extends State<PatientProfileEdit> {
                                     'Bogo City'
                                   ],
                                   onChanged: (String? value) {
-                                    setState(() {
-                                      selectedCity = value ?? '';
-                                      updateAddress();
-                                    });
+                                    if (patientData['city'] != null) {
+                                      setState(() {
+                                        selectedCity =
+                                            patientData['city'] ?? '';
+                                      });
+                                    } else {
+                                      setState(() {
+                                        selectedCity = value ?? '';
+                                      });
+                                    }
                                   },
                                 ),
                                 const SizedBox(width: 12),
@@ -415,10 +436,16 @@ class _PatientProfileEditState extends State<PatientProfileEdit> {
                                     'Casuntingan'
                                   ],
                                   onChanged: (String? value) {
-                                    setState(() {
-                                      selectedBrgy = value ?? '';
-                                      updateAddress();
-                                    });
+                                    if (patientData['barangay'] != null) {
+                                      setState(() {
+                                        selectedBrgy =
+                                            patientData['barangay'] ?? '';
+                                      });
+                                    } else {
+                                      setState(() {
+                                        selectedBrgy = value ?? '';
+                                      });
+                                    }
                                   },
                                 ),
                               ],
@@ -449,6 +476,7 @@ class _PatientProfileEditState extends State<PatientProfileEdit> {
                               text: "Submit",
                               buttonColor: Color(0xFF4454C3),
                               onPress: () {
+                                updateAddress();
                                 _updatePatientProfile();
                               },
                             ),
@@ -467,16 +495,43 @@ class _PatientProfileEditState extends State<PatientProfileEdit> {
   }
 
   void updateAddress() {
-    String concatenatedAddressFromDropdowns =
-        '$selectedBrgy, $selectedCity, $selectedState, $selectedCountry,';
-
-    String concatenatedAddress =
-        '${addressController.text}, $concatenatedAddressFromDropdowns,';
-
-    addressController.text = concatenatedAddress;
+    brgyController.text = '$selectedBrgy';
+    cityController.text = '$selectedCity';
+    stateController.text = '$selectedState';
+    countryController.text = '$selectedCountry';
   }
 
   Future<void> _handleDateSelection(BuildContext context) async {
     await _selectDate(context);
+  }
+
+  void initializeControllers(Map<String, dynamic> patientData) {
+    firstNameController.text = patientData['first_name'] ?? '';
+    lastNameController.text = patientData['last_name'] ?? '';
+    emailController.text = patientData['email'] ?? '';
+    phoneController.text = patientData['phone'] ?? '';
+    brgyController.text = patientData['barangay'] ?? '';
+    cityController.text = patientData['city'] ?? '';
+    stateController.text = patientData['province'] ?? '';
+    countryController.text = patientData['country'] ?? '';
+    addressController.text = patientData['address'] ?? '';
+    birthdateController.text = patientData['birthdate'] ?? '';
+    imageController.text = patientData['image'] ?? '';
+
+    if (patientData != null && patientData['country'] != null) {
+      selectedCountry = patientData['country'];
+    }
+
+    if (patientData != null && patientData['province'] != null) {
+      selectedState = patientData['province'];
+    }
+
+    if (patientData != null && patientData['city'] != null) {
+      selectedCity = patientData['city'];
+    }
+
+    if (patientData != null && patientData['barangay'] != null) {
+      selectedBrgy = patientData['barangay'];
+    }
   }
 }
