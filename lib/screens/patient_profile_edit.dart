@@ -163,7 +163,7 @@ class _PatientProfileEditState extends State<PatientProfileEdit> {
   Future<void> _getImage() async {
     final picker = ImagePicker();
     final PickedFile? pickedFile =
-        await picker.getImage(source: ImageSource.gallery);
+        await picker.getImage(source: ImageSource.camera);
 
     if (pickedFile != null) {
       Directory appDocumentsDirectory =
@@ -195,7 +195,7 @@ class _PatientProfileEditState extends State<PatientProfileEdit> {
         imageController.text = relativePath;
       });
 
-      print('Image Path: ${_image?.path}');
+      print('Image Path: $relativePath');
     }
   }
 

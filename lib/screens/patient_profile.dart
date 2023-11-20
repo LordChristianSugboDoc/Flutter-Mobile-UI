@@ -159,12 +159,19 @@ class _PatientProfileState extends State<PatientProfile> {
                         ),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
-                          child: Image.network(
-                            'http://10.0.2.2:8080/flutter-mobile-backend-ui/${patientData['image']}',
-                            height: 150,
-                            width: 150,
-                            fit: BoxFit.cover,
-                          ),
+                          child: (patientData['image'] != null)
+                              ? Image.network(
+                                  'http://10.0.2.2:8080/flutter-mobile-backend-ui/${patientData['image']}',
+                                  height: 150,
+                                  width: 150,
+                                  fit: BoxFit.cover,
+                                )
+                              : Image.asset(
+                                  'assets/images/JPG/default_profile.jpg',
+                                  height: 150,
+                                  width: 150,
+                                  fit: BoxFit.cover,
+                                ),
                         ),
                       ),
                       const SizedBox(height: 13.0),
@@ -274,7 +281,7 @@ class _PatientProfileState extends State<PatientProfile> {
                                 const SizedBox(width: 20.0),
                                 Flexible(
                                   child: Text(
-                                    '${patientData['address']}',
+                                    '${patientData['address']}, ${patientData['barangay']}, ${patientData['city']}, ${patientData['province']}, ${patientData['country']}',
                                     style: const TextStyle(
                                       color: Color(0xFF424E79),
                                       fontSize: 16,
