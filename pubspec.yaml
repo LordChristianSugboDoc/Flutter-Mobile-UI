@@ -73,6 +73,7 @@ flutter:
     - assets\images\PNG\facebook_logo.png
     - assets\images\PNG\google_logo.png
     - assets\images\PNG\stethoscope_transparent.png
+    - assets\images\PNG\info_doctor.png
     - assets\images\JPG\default_profile.jpg
     - assets\images\JPG\stethoscope.jpg
     - assets\images\JPG\patient_one.jpg

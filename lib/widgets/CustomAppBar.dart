@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_doctor_ui/screens/patient_profile.dart';
 
-AppBar CustomAppBar(BuildContext context) {
+AppBar CustomAppBar(BuildContext context, Map<String, dynamic> patientData,
+    Future<void> Function() _fetchDashboard) {
   String patient_one_image = "assets/images/JPG/patient_one.jpg";
   return AppBar(
     elevation: 0.0,
@@ -24,12 +25,19 @@ AppBar CustomAppBar(BuildContext context) {
           margin: const EdgeInsets.only(right: 17),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(50),
-            child: Image.asset(
-              patient_one_image,
-              height: 90, // Aspect Ratio 5:3
-              width: 54,
-              fit: BoxFit.cover,
-            ),
+            child: (patientData['image'] != null)
+                ? Image.network(
+                    'http://10.0.2.2:8080/flutter-mobile-backend-ui/${patientData['image']}',
+                    height: 90, // Aspect Ratio 5:3
+                    width: 54,
+                    fit: BoxFit.cover,
+                  )
+                : Image.asset(
+                    'assets/images/JPG/default_profile.jpg',
+                    height: 90, // Aspect Ratio 5:3
+                    width: 54,
+                    fit: BoxFit.cover,
+                  ),
           ),
         ),
       ),
