@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_doctor_ui/screens/login.dart';
+import 'package:flutter_doctor_ui/screens/Login/login.dart';
 
 class NavBar extends StatelessWidget {
   const NavBar({super.key});

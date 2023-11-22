@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:flutter_doctor_ui/main.dart';
-import 'package:flutter_doctor_ui/screens/patient_profile.dart';
-import 'package:flutter_doctor_ui/widgets/CustomDropDown.dart';
-import 'package:flutter_doctor_ui/widgets/CustomImageUpload.dart';
-import 'package:flutter_doctor_ui/widgets/CustomInputField.dart';
-import 'package:flutter_doctor_ui/widgets/DatePickerField.dart';
-import 'package:flutter_doctor_ui/widgets/PrimaryButton.dart';
+import 'package:flutter_doctor_ui/screens/Profile/patient_profile.dart';
+import 'package:flutter_doctor_ui/widgets/General/CustomDropDown.dart';
+import 'package:flutter_doctor_ui/widgets/General/CustomImageUpload.dart';
+import 'package:flutter_doctor_ui/widgets/General/CustomInputField.dart';
+import 'package:flutter_doctor_ui/widgets/General/DatePickerField.dart';
+import 'package:flutter_doctor_ui/widgets/General/PrimaryButton.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:image_picker/image_picker.dart';
@@ -173,12 +173,9 @@ class _PatientProfileEditState extends State<PatientProfileEdit> {
       Directory targetDirectory = Directory(targetDirectoryPath);
 
       if (!(await targetDirectory.exists())) {
-        Directory createdDirectory =
-            await targetDirectory.create(recursive: true);
-        if (createdDirectory == null) {
-          print('Failed to create the directory: $targetDirectoryPath');
-          return;
-        }
+        await targetDirectory.create(recursive: true);
+        print('Failed to create the directory: $targetDirectoryPath');
+        return;
       }
 
       String fileName = '${DateTime.now().millisecondsSinceEpoch}.jpg';
@@ -518,19 +515,19 @@ class _PatientProfileEditState extends State<PatientProfileEdit> {
     birthdateController.text = patientData['birthdate'] ?? '';
     imageController.text = patientData['image'] ?? '';
 
-    if (patientData != null && patientData['country'] != null) {
+    if (patientData['country'] != null) {
       selectedCountry = patientData['country'];
     }
 
-    if (patientData != null && patientData['province'] != null) {
+    if (patientData['province'] != null) {
       selectedState = patientData['province'];
     }
 
-    if (patientData != null && patientData['city'] != null) {
+    if (patientData['city'] != null) {
       selectedCity = patientData['city'];
     }
 
-    if (patientData != null && patientData['barangay'] != null) {
+    if (patientData['barangay'] != null) {
       selectedBrgy = patientData['barangay'];
     }
   }

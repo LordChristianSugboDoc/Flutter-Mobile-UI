@@ -1,9 +1,7 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_doctor_ui/main.dart';
-import 'package:flutter_doctor_ui/screens/dashboard.dart';
-import 'package:flutter_doctor_ui/screens/patient_profile_edit.dart';
+import 'package:flutter_doctor_ui/screens/Dashboard/dashboard.dart';
+import 'package:flutter_doctor_ui/screens/Profile/patient_profile_edit.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 

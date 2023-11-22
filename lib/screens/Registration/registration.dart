@@ -1,36 +1,39 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_doctor_ui/main.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_doctor_ui/screens/dashboard.dart';
-import 'package:flutter_doctor_ui/screens/registration.dart';
-import 'package:flutter_doctor_ui/widgets/CustomTextField.dart';
-import 'package:flutter_doctor_ui/widgets/PasswordField.dart';
-import 'package:flutter_doctor_ui/widgets/PrimaryButton.dart';
-import 'package:flutter_doctor_ui/widgets/SignInFacebookButton.dart';
-import 'package:flutter_doctor_ui/widgets/SignInGoogleButton.dart';
+import 'package:intl/intl.dart';
+import 'package:flutter_doctor_ui/screens/Login/login.dart';
+import 'package:flutter_doctor_ui/widgets/General/CustomTextField.dart';
+import 'package:flutter_doctor_ui/widgets/General/DatePickerField.dart';
+import 'package:flutter_doctor_ui/widgets/General/PasswordField.dart';
+import 'package:flutter_doctor_ui/widgets/General/PrimaryButton.dart';
+import 'package:flutter_doctor_ui/widgets/General/SignInFacebookButton.dart';
+import 'package:flutter_doctor_ui/widgets/General/SignInGoogleButton.dart';
 
-class Login extends StatefulWidget {
-  static String routeName = "/login";
-  const Login({super.key});
+class Registration extends StatefulWidget {
+  static String routeName = "/registration";
+  const Registration({super.key});
 
   @override
-  State<Login> createState() => _LoginState();
+  State<Registration> createState() => _RegistrationState();
 }
 
-class _LoginState extends State<Login> {
-  final TextEditingController inputController = TextEditingController();
+class _RegistrationState extends State<Registration> {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final TextEditingController birthdateController = TextEditingController();
+
   bool obscurePassword = true;
 
-  int? parsedData;
-
-  Future<int> _LoginPatient() async {
+  _RegisterPatient() async {
     String url =
-        'http://10.0.2.2:8080/flutter-mobile-backend-ui/index.php/patient/loginPatient';
+        'http://10.0.2.2:8080/flutter-mobile-backend-ui/index.php/patient/registerPatient';
 
     Map<String, String> data = {
-      'input': inputController.text,
+      'email': emailController.text,
+      'phone': phoneController.text,
       'password': passwordController.text,
+      'birthdate': birthdateController.text,
     };
 
     try {
@@ -39,26 +42,36 @@ class _LoginState extends State<Login> {
         body: data,
       );
 
-      // Handle the response
+      // Handle the response as needed
       print('Response Status Code: ${response.statusCode}');
       print('Response Body: ${response.body}');
-
-      // Check the status code and parse data accordingly
-      if (response.statusCode == 200) {
-        // Successful response, parse integer or other data
-        int parsedData = int.tryParse(response.body) ?? 0;
-        return parsedData;
-      } else {
-        // Handle other status codes or error responses
-        print('Error: ${response.statusCode}');
-        // Return a default value or throw an exception if needed
-        return 0;
-      }
     } catch (error) {
       // Handle errors
-      print('Error: $error');
-      // Return a default value or throw an exception if needed
-      return 0;
+      print(error);
+    }
+  }
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: ThemeData.light().copyWith(
+            colorScheme: ColorScheme.light(primary: Color(0xFF4454C3)),
+            textButtonTheme: TextButtonThemeData(
+                style: TextButton.styleFrom(primary: Color(0xFF4454C3))),
+          ),
+          child: child!,
+        );
+      },
+    );
+
+    if (picked != null) {
+      final formattedDate = DateFormat.yMMMMd().format(picked);
+      birthdateController.text = formattedDate;
     }
   }
 
@@ -87,7 +100,7 @@ class _LoginState extends State<Login> {
                       alignment: Alignment
                           .centerLeft, // Align the content to the left within the container
                       child: const Text(
-                        "Login to your Account",
+                        "Create your Account",
                         style: TextStyle(
                           color: Color(0xFF424E79),
                           fontSize: 17,
@@ -99,57 +112,50 @@ class _LoginState extends State<Login> {
                       height: 15.0,
                     ),
                     CustomTextField(
-                      labelText: "Email or Mobile Number",
-                      hintText: "Enter your Email or Mobile Number",
-                      controller: inputController,
-                      textInputType: TextInputType.text,
+                      labelText: "Email Address",
+                      hintText: "Enter your Email Address",
+                      controller: emailController,
+                      textInputType: TextInputType.emailAddress,
+                    ),
+                    const SizedBox(
+                      height: 20.0,
+                    ),
+                    CustomTextField(
+                      labelText: "Phone Number",
+                      hintText: "0987 654 321",
+                      controller: phoneController,
+                      textInputType: TextInputType.phone,
                     ),
                     const SizedBox(
                       height: 20.0,
                     ),
                     PasswordField(
-                        obscureText: obscurePassword,
-                        onTap: handleObscurePassword,
-                        labelText: "Password",
-                        hintText: "Enter your Password",
-                        controller: passwordController),
-                    const SizedBox(
-                      height: 5.0,
-                    ),
-                    Container(
-                      child: Row(
-                        children: [
-                          GestureDetector(
-                            onTap: () {},
-                            child: const Text(
-                              "Forgot your password?",
-                              style: TextStyle(
-                                color: Color(0xFF4454C3),
-                                fontSize: 15,
-                                fontWeight: FontWeight.normal,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                      obscureText: obscurePassword,
+                      onTap: handleObscurePassword,
+                      labelText: "Password",
+                      hintText: "Enter your Password",
+                      controller: passwordController,
                     ),
                     const SizedBox(
-                      height: 25.0,
+                      height: 20.0,
+                    ),
+                    DatePickerField(
+                      labelText: "Birth Date",
+                      hintText: "Select your Birthday",
+                      inputWidth: width,
+                      inputHeight: 60,
+                      controller: birthdateController,
+                      function: () => _handleDateSelection(context),
+                    ),
+                    const SizedBox(
+                      height: 20.0,
                     ),
                     PrimaryButton(
-                      text: "Login",
+                      text: "Sign up",
                       buttonColor: Color(0xFF4454C3),
-                      onPress: () async {
-                        int parsedData = await _LoginPatient();
-                        if (parsedData != -1) {
-                          Navigator.pushNamed(context, Dashboard.routeName);
-                          globalId = parsedData;
-                          print(globalId);
-                        } else {
-                          // Redirect to login page or handle the situation accordingly
-                          Navigator.of(context).pushNamedAndRemoveUntil(
-                              Login.routeName, (Route<dynamic> route) => false);
-                        }
+                      onPress: () {
+                        _RegisterPatient();
+                        Navigator.pushNamed(context, Login.routeName);
                       },
                     ),
                     const SizedBox(
@@ -199,7 +205,7 @@ class _LoginState extends State<Login> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             const Text(
-                              "Don't have an account?",
+                              "Already have an account?",
                               style: TextStyle(
                                 color: Color(0xFF424E79),
                                 fontSize: 15,
@@ -207,11 +213,10 @@ class _LoginState extends State<Login> {
                             ),
                             GestureDetector(
                               onTap: () {
-                                Navigator.pushNamed(
-                                    context, Registration.routeName);
+                                Navigator.pushNamed(context, Login.routeName);
                               },
                               child: const Text(
-                                " Sign up",
+                                " Login",
                                 style: TextStyle(
                                   color: Color(0xFF4454C3),
                                   fontSize: 15,
@@ -237,5 +242,9 @@ class _LoginState extends State<Login> {
     setState(() {
       obscurePassword = !obscurePassword;
     });
+  }
+
+  Future<void> _handleDateSelection(BuildContext context) async {
+    await _selectDate(context);
   }
 }

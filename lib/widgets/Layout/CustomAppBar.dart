@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_doctor_ui/screens/patient_profile.dart';
+import 'package:flutter_doctor_ui/screens/Profile/patient_profile.dart';
 
 AppBar CustomAppBar(BuildContext context, Map<String, dynamic> patientData,
     Future<void> Function() _fetchDashboard) {
-  String patient_one_image = "assets/images/JPG/patient_one.jpg";
   return AppBar(
     elevation: 0.0,
     backgroundColor: const Color.fromARGB(255, 255, 255, 255),
