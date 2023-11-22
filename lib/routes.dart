@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_doctor_ui/screens/dashboard.dart';
-import 'package:flutter_doctor_ui/screens/login.dart';
-import 'package:flutter_doctor_ui/screens/patient_profile.dart';
-import 'package:flutter_doctor_ui/screens/patient_profile_edit.dart';
-import 'package:flutter_doctor_ui/screens/registration.dart';
+import 'package:flutter_doctor_ui/screens/Dashboard/dashboard.dart';
+import 'package:flutter_doctor_ui/screens/Login/login.dart';
+import 'package:flutter_doctor_ui/screens/Profile/patient_profile.dart';
+import 'package:flutter_doctor_ui/screens/Profile/patient_profile_edit.dart';
+import 'package:flutter_doctor_ui/screens/Registration/registration.dart';
 
 final Map<String, WidgetBuilder> routes = {
   Login.routeName: (BuildContext context) => Login(),
