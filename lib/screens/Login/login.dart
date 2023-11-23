@@ -1,15 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_doctor_ui/main.dart';
 import 'package:flutter_doctor_ui/widgets/Login/LargeScreenLoginBody.dart';
 import 'package:flutter_doctor_ui/widgets/Login/SmallScreenLoginBody.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_doctor_ui/screens/Dashboard/dashboard.dart';
-import 'package:flutter_doctor_ui/screens/Registration/registration.dart';
-import 'package:flutter_doctor_ui/widgets/General/CustomTextField.dart';
-import 'package:flutter_doctor_ui/widgets/General/PasswordField.dart';
-import 'package:flutter_doctor_ui/widgets/General/PrimaryButton.dart';
-import 'package:flutter_doctor_ui/widgets/General/SignInFacebookButton.dart';
-import 'package:flutter_doctor_ui/widgets/General/SignInGoogleButton.dart';
 
 class Login extends StatefulWidget {
   static String routeName = "/login";
