@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_doctor_ui/widgets/Registration/MediumScreenRegistrationBody.dart';
+import 'package:flutter_doctor_ui/widgets/Registration/LargeScreenRegistrationBody.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:flutter_doctor_ui/widgets/Registration/SmallScreenRegistrationBody.dart';
@@ -89,7 +89,7 @@ class _RegistrationState extends State<Registration> {
           } else if (constraints.maxWidth < 1000) {
             return _buildMediumScreenLayout();
           } else {
-            return MediumScreenRegistrationBody(
+            return LargeScreenRegistrationBody(
               emailController,
               phoneController,
               passwordController,
