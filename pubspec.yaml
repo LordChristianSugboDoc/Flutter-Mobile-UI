@@ -74,6 +74,11 @@ flutter:
     - assets\images\PNG\google_logo.png
     - assets\images\PNG\stethoscope_transparent.png
     - assets\images\PNG\info_doctor.png
+    - assets\images\PNG\1.png
+    - assets\images\PNG\2.png
+    - assets\images\PNG\3.png
+    - assets\images\PNG\4.png
+    - assets\images\PNG\5.png
     - assets\images\JPG\default_profile.jpg
     - assets\images\JPG\stethoscope.jpg
     - assets\images\JPG\patient_one.jpg
@@ -81,6 +86,7 @@ flutter:
     - assets\images\JPG\doctor_two.jpg
     - assets\images\JPG\doctor_three.jpg
     - assets\images\JPG\RX.jpg
+    - assets\images\JPG\background_image_sugbodoc.jpg
 
 
 
