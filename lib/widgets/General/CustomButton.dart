@@ -10,7 +10,7 @@ class CustomButton extends StatelessWidget {
   final Color buttonColor;
   final Color buttonOutline;
 
-  CustomButton({
+  const CustomButton({super.key, 
     required this.text,
     required this.onPress,
     required this.height,
@@ -21,6 +21,7 @@ class CustomButton extends StatelessWidget {
     required this.buttonOutline,
   });
 
+  @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
@@ -35,7 +36,7 @@ class CustomButton extends StatelessWidget {
         child: ElevatedButton(
           onPressed: () {},
           style: ElevatedButton.styleFrom(
-            primary: buttonColor,
+            backgroundColor: buttonColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12.0),
             ),

@@ -9,7 +9,7 @@ class CustomSignInButton extends StatelessWidget {
   final String labelText;
   final String asset;
 
-  CustomSignInButton({
+  const CustomSignInButton({super.key, 
     required this.onPress,
     required this.buttonColor,
     required this.borderWidth,
@@ -26,15 +26,14 @@ class CustomSignInButton extends StatelessWidget {
       height: borderHeight,
       decoration: BoxDecoration(
         border: Border.all(
-          color: Color(0xFF4454C3).withOpacity(0.5), // Adjust the border color
+          color: const Color(0xFF4454C3).withOpacity(0.5), // Adjust the border color
           width: .8, // Adjust the border width
         ),
         borderRadius: BorderRadius.circular(5.0), // Apply border radius here
       ),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          minimumSize: const Size(1, 50), // Adjust the minimumSize directly
-          primary: buttonColor,
+          minimumSize: const Size(1, 50), backgroundColor: buttonColor,
           shadowColor: Colors.transparent,
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(
@@ -47,7 +46,7 @@ class CustomSignInButton extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Padding(
-              padding: EdgeInsets.only(right: 10.0),
+              padding: const EdgeInsets.only(right: 10.0),
               child: Image.asset(
                 asset,
                 height: 25,
@@ -57,7 +56,7 @@ class CustomSignInButton extends StatelessWidget {
             Text(
               labelText,
               style: TextStyle(
-                color: Color(0xFF424E79),
+                color: const Color(0xFF424E79),
                 fontSize: fontSize,
                 fontWeight: FontWeight.w700,
               ),

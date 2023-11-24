@@ -18,7 +18,7 @@ class SmallScreenLoginBody extends StatelessWidget {
   final bool obscurePassword;
   final Future<int> Function() _LoginPatient;
 
-  SmallScreenLoginBody(
+  const SmallScreenLoginBody(
     this.inputController,
     this.passwordController,
     this.handleObscurePassword,
@@ -34,7 +34,7 @@ class SmallScreenLoginBody extends StatelessWidget {
       child: Center(
         child: SingleChildScrollView(
           child: Center(
-            child: Container(
+            child: SizedBox(
               width: width * .87,
               child: Column(
                 children: [
@@ -101,7 +101,7 @@ class SmallScreenLoginBody extends StatelessWidget {
                   ),
                   PrimaryButton(
                     text: "Login",
-                    buttonColor: Color(0xFF4454C3),
+                    buttonColor: const Color(0xFF4454C3),
                     onPress: () async {
                       int parsedData = await _LoginPatient();
                       if (parsedData != -1) {
@@ -133,7 +133,7 @@ class SmallScreenLoginBody extends StatelessWidget {
                       Expanded(
                         child: GoogleButton(
                           borderWidth: 3.0,
-                          buttonColor: Color.fromARGB(255, 255, 255, 255),
+                          buttonColor: const Color.fromARGB(255, 255, 255, 255),
                           onPress: () {
                             // Your action when Google button is pressed
                           },
@@ -145,7 +145,7 @@ class SmallScreenLoginBody extends StatelessWidget {
                       Expanded(
                         child: FacebookButton(
                           borderWidth: 3.0,
-                          buttonColor: Color.fromARGB(255, 255, 255, 255),
+                          buttonColor: const Color.fromARGB(255, 255, 255, 255),
                           onPress: () {
                             // Your action when Facebook button is pressed
                           },

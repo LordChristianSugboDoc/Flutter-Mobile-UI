@@ -7,8 +7,8 @@ class SmallScreenDashboardBody extends StatelessWidget {
   final List<Map<String, dynamic>> patientPrescriptions;
   final List<Map<String, dynamic>> patientEncounters;
 
-  SmallScreenDashboardBody(this.patientData, this.patientCareTeam,
-      this.patientPrescriptions, this.patientEncounters);
+  const SmallScreenDashboardBody(this.patientData, this.patientCareTeam,
+      this.patientPrescriptions, this.patientEncounters, {super.key});
   @override
   Widget build(BuildContext context) {
     return ListView(
@@ -28,8 +28,7 @@ class SmallScreenDashboardBody extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Hello, " +
-                        '${patientData['first_name']}', // Dynamic Variable
+                    "Hello, " '${patientData['first_name']}', // Dynamic Variable
                     style: const TextStyle(
                       color: Color(0xFF424E79),
                       fontSize: 32,
@@ -47,7 +46,7 @@ class SmallScreenDashboardBody extends StatelessWidget {
               ),
             ),
             Container(
-              padding: EdgeInsets.symmetric(vertical: 10.0),
+              padding: const EdgeInsets.symmetric(vertical: 10.0),
               alignment: Alignment.centerRight,
               child: Image.asset(
                 'assets/images/JPG/stethoscope.jpg',
@@ -103,7 +102,7 @@ class SmallScreenDashboardBody extends StatelessWidget {
                               fontWeight: FontWeight.w500,
                             ),
                           ),
-                          SizedBox(height: 15.0),
+                          const SizedBox(height: 15.0),
                           Text(
                             '${patientCareTeam['doctor_title']}',
                             style: const TextStyle(
@@ -112,7 +111,7 @@ class SmallScreenDashboardBody extends StatelessWidget {
                               fontWeight: FontWeight.w800,
                             ),
                           ),
-                          SizedBox(height: 15.0),
+                          const SizedBox(height: 15.0),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -164,9 +163,9 @@ class SmallScreenDashboardBody extends StatelessWidget {
                                 height: 20.0,
                                 width: 50.0,
                                 fontSize: 12,
-                                fontColor: Color.fromARGB(255, 255, 255, 255),
-                                buttonColor: Color(0xFF4454C3),
-                                buttonOutline: Color(0xFF4454C3),
+                                fontColor: const Color.fromARGB(255, 255, 255, 255),
+                                buttonColor: const Color(0xFF4454C3),
+                                buttonOutline: const Color(0xFF4454C3),
                               ),
                               const SizedBox(width: 8),
                               CustomButton(
@@ -175,9 +174,9 @@ class SmallScreenDashboardBody extends StatelessWidget {
                                 height: 20.0,
                                 width: 50.0,
                                 fontSize: 12,
-                                fontColor: Color(0xFF4454C3),
-                                buttonColor: Color.fromARGB(255, 255, 255, 255),
-                                buttonOutline: Color(0xFF4454C3),
+                                fontColor: const Color(0xFF4454C3),
+                                buttonColor: const Color.fromARGB(255, 255, 255, 255),
+                                buttonOutline: const Color(0xFF4454C3),
                               ),
                             ],
                           ),
@@ -185,7 +184,7 @@ class SmallScreenDashboardBody extends StatelessWidget {
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.only(top: 20),
+                      margin: const EdgeInsets.only(top: 20),
                       alignment: Alignment.centerRight,
                       decoration: BoxDecoration(
                         color: Colors.white,
@@ -442,9 +441,9 @@ class SmallScreenDashboardBody extends StatelessWidget {
                                           height: 20.0,
                                           width: 50.0,
                                           fontSize: 12,
-                                          fontColor: Color(0xFF4454C3),
+                                          fontColor: const Color(0xFF4454C3),
                                           buttonColor: Colors.white,
-                                          buttonOutline: Color(0xFF4454C3),
+                                          buttonOutline: const Color(0xFF4454C3),
                                         ),
                                       ],
                                     ),
@@ -613,7 +612,7 @@ class SmallScreenDashboardBody extends StatelessWidget {
                                     ),
                                     const SizedBox(height: 5.0),
                                     Text(
-                                      '"' + '${encounter['reason']}' + '"',
+                                      '"${encounter['reason']}"',
                                       style: const TextStyle(
                                         color: Color(0xFF424E79),
                                         fontSize: 14,
@@ -639,9 +638,9 @@ class SmallScreenDashboardBody extends StatelessWidget {
                                           height: 20.0,
                                           width: 50.0,
                                           fontSize: 12,
-                                          fontColor: Color(0xFF4454C3),
+                                          fontColor: const Color(0xFF4454C3),
                                           buttonColor: Colors.white,
-                                          buttonOutline: Color(0xFF4454C3),
+                                          buttonOutline: const Color(0xFF4454C3),
                                         ),
                                       ],
                                     ),

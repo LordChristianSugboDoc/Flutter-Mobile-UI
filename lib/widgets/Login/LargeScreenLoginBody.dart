@@ -15,7 +15,7 @@ class LargeScreenLoginBody extends StatelessWidget {
   final bool obscurePassword;
   final Future<int> Function() _LoginPatient;
 
-  LargeScreenLoginBody(
+  const LargeScreenLoginBody(
     this.inputController,
     this.passwordController,
     this.handleObscurePassword,
@@ -31,7 +31,7 @@ class LargeScreenLoginBody extends StatelessWidget {
       child: Center(
         child: SingleChildScrollView(
           child: Center(
-            child: Container(
+            child: SizedBox(
               width: width,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -90,20 +90,20 @@ class LargeScreenLoginBody extends StatelessWidget {
                                     onPress: () {},
                                     buttonColor: const Color.fromARGB(
                                         255, 249, 251, 254),
-                                    borderWidth: 220,
+                                    borderWidth: 240,
                                     borderHeight: 50,
                                     fontSize: 17,
                                     labelText: 'Sign in to Google',
                                     asset: 'assets/images/PNG/google_logo.png',
                                   ),
                                   const SizedBox(
-                                    width: 20.0,
+                                    width: 15.0,
                                   ),
                                   CustomSignInButton(
                                     onPress: () {},
                                     buttonColor: const Color.fromARGB(
                                         255, 249, 251, 254),
-                                    borderWidth: 220,
+                                    borderWidth: 240,
                                     borderHeight: 50,
                                     fontSize: 17,
                                     labelText: 'Sign in to Facebook',
@@ -120,11 +120,11 @@ class LargeScreenLoginBody extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 SizedBox(
-                                  width: 155,
+                                  width: 170,
                                   child: Divider(
                                     height: .5,
                                     color: const Color(0xFF424E79).withOpacity(
-                                        0.5), // Adjust the color of the line
+                                        0.3), // Adjust the color of the line
                                   ),
                                 ),
                                 const SizedBox(
@@ -133,7 +133,8 @@ class LargeScreenLoginBody extends StatelessWidget {
                                 Text(
                                   "or Login here",
                                   style: TextStyle(
-                                    color: Color(0xFF424E79).withOpacity(0.5),
+                                    color: const Color(0xFF424E79)
+                                        .withOpacity(0.5),
                                     fontSize: 16.5,
                                     fontWeight: FontWeight.w500,
                                   ),
@@ -141,13 +142,13 @@ class LargeScreenLoginBody extends StatelessWidget {
                                 const SizedBox(
                                   width: 20.0,
                                 ),
-                                Container(
-                                  width: 155,
+                                SizedBox(
+                                  width: 170,
                                   child: Divider(
                                     height: .5,
 
                                     color: const Color(0xFF424E79).withOpacity(
-                                        0.5), // Adjust the color of the line
+                                        0.3), // Adjust the color of the line
                                   ),
                                 ),
                               ],
@@ -158,7 +159,7 @@ class LargeScreenLoginBody extends StatelessWidget {
                             CustomInputField(
                               labelText: 'Email or Mobile Number',
                               hintText: 'Enter your Email or Mobile Number',
-                              inputWidth: 460,
+                              inputWidth: 495,
                               inputHeight: 60,
                               controller: inputController,
                               textInputType: TextInputType.text,
@@ -169,7 +170,7 @@ class LargeScreenLoginBody extends StatelessWidget {
                             CustomPasswordField(
                               obscureText: obscurePassword,
                               onTap: handleObscurePassword,
-                              borderWidth: 460,
+                              borderWidth: 495,
                               borderHeight: 60,
                               labelText: 'Password',
                               hintText: 'Enter your Password',
@@ -228,7 +229,7 @@ class LargeScreenLoginBody extends StatelessWidget {
                                 }
                               },
                               inputHeight: 60,
-                              inputWidth: 460,
+                              inputWidth: 495,
                               fontSize: 20,
                               fontColor: Colors.white,
                               buttonColor: const Color(0xFF4454C3),

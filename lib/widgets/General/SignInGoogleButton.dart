@@ -5,8 +5,8 @@ class GoogleButton extends StatelessWidget {
   final Color buttonColor;
   final double borderWidth;
 
-  GoogleButton(
-      {required this.onPress,
+  const GoogleButton(
+      {super.key, required this.onPress,
       required this.buttonColor,
       required this.borderWidth});
 
@@ -14,8 +14,7 @@ class GoogleButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        fixedSize: const Size(double.maxFinite, 50),
-        primary: buttonColor,
+        fixedSize: const Size(double.maxFinite, 50), backgroundColor: buttonColor,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
             Radius.circular(5.0),
@@ -30,7 +29,7 @@ class GoogleButton extends StatelessWidget {
             width: borderWidth,
           ),
           Padding(
-            padding: EdgeInsets.only(right: 10.0),
+            padding: const EdgeInsets.only(right: 10.0),
             child: Image.asset(
               'assets/images/PNG/google_logo.png',
               height: 25, // Set the desired height

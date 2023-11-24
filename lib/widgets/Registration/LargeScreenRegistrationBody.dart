@@ -16,7 +16,7 @@ class LargeScreenRegistrationBody extends StatelessWidget {
   final VoidCallback _RegisterPatient;
   final VoidCallback _handleDateSelection;
 
-  LargeScreenRegistrationBody(
+  const LargeScreenRegistrationBody(
     this.emailController,
     this.phoneController,
     this.passwordController,
@@ -35,7 +35,7 @@ class LargeScreenRegistrationBody extends StatelessWidget {
       child: Center(
         child: SingleChildScrollView(
           child: Center(
-            child: Container(
+            child: SizedBox(
               width: width,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -94,20 +94,20 @@ class LargeScreenRegistrationBody extends StatelessWidget {
                                     onPress: () {},
                                     buttonColor: const Color.fromARGB(
                                         255, 249, 251, 254),
-                                    borderWidth: 220,
+                                    borderWidth: 240,
                                     borderHeight: 50,
                                     fontSize: 17,
                                     labelText: 'Sign in to Google',
                                     asset: 'assets/images/PNG/google_logo.png',
                                   ),
                                   const SizedBox(
-                                    width: 20.0,
+                                    width: 15.0,
                                   ),
                                   CustomSignInButton(
                                     onPress: () {},
                                     buttonColor: const Color.fromARGB(
                                         255, 249, 251, 254),
-                                    borderWidth: 220,
+                                    borderWidth: 240,
                                     borderHeight: 50,
                                     fontSize: 17,
                                     labelText: 'Sign in to Facebook',
@@ -124,11 +124,11 @@ class LargeScreenRegistrationBody extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 SizedBox(
-                                  width: 155,
+                                  width: 170,
                                   child: Divider(
                                     height: .5,
                                     color: const Color(0xFF424E79).withOpacity(
-                                        0.5), // Adjust the color of the line
+                                        0.3), // Adjust the color of the line
                                   ),
                                 ),
                                 const SizedBox(
@@ -137,7 +137,8 @@ class LargeScreenRegistrationBody extends StatelessWidget {
                                 Text(
                                   "or Sign up here",
                                   style: TextStyle(
-                                    color: Color(0xFF424E79).withOpacity(0.5),
+                                    color: const Color(0xFF424E79)
+                                        .withOpacity(0.5),
                                     fontSize: 16.5,
                                     fontWeight: FontWeight.w500,
                                   ),
@@ -145,13 +146,13 @@ class LargeScreenRegistrationBody extends StatelessWidget {
                                 const SizedBox(
                                   width: 20.0,
                                 ),
-                                Container(
-                                  width: 155,
+                                SizedBox(
+                                  width: 170,
                                   child: Divider(
                                     height: .5,
 
                                     color: const Color(0xFF424E79).withOpacity(
-                                        0.5), // Adjust the color of the line
+                                        0.3), // Adjust the color of the line
                                   ),
                                 ),
                               ],
@@ -162,7 +163,7 @@ class LargeScreenRegistrationBody extends StatelessWidget {
                             CustomInputField(
                               labelText: 'Email Address',
                               hintText: 'Enter your Email Address',
-                              inputWidth: 460,
+                              inputWidth: 495,
                               inputHeight: 60,
                               controller: emailController,
                               textInputType: TextInputType.emailAddress,
@@ -173,7 +174,7 @@ class LargeScreenRegistrationBody extends StatelessWidget {
                             CustomPasswordField(
                               obscureText: obscurePassword,
                               onTap: handleObscurePassword,
-                              borderWidth: 460,
+                              borderWidth: 495,
                               borderHeight: 60,
                               labelText: 'Password',
                               hintText: 'Enter your Password',
@@ -188,18 +189,18 @@ class LargeScreenRegistrationBody extends StatelessWidget {
                                 CustomInputField(
                                   labelText: 'Mobile Number',
                                   hintText: '0987 654 3210',
-                                  inputWidth: 220,
+                                  inputWidth: 240,
                                   inputHeight: 60,
                                   controller: phoneController,
                                   textInputType: TextInputType.phone,
                                 ),
                                 const SizedBox(
-                                  width: 20.0,
+                                  width: 15.0,
                                 ),
                                 DatePickerField(
                                   labelText: "Birth Date",
                                   hintText: "Select your Birthday",
-                                  inputWidth: 220,
+                                  inputWidth: 240,
                                   inputHeight: 60,
                                   controller: birthdateController,
                                   function: _handleDateSelection,
@@ -249,7 +250,7 @@ class LargeScreenRegistrationBody extends StatelessWidget {
                                 Navigator.pushNamed(context, Login.routeName);
                               },
                               inputHeight: 60,
-                              inputWidth: 460,
+                              inputWidth: 495,
                               fontSize: 20,
                               fontColor: Colors.white,
                               buttonColor: const Color(0xFF4454C3),

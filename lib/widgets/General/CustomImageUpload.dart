@@ -8,7 +8,7 @@ class CustomImageDisplay extends StatelessWidget {
   final VoidCallback onTap;
   final TextEditingController imagePathController;
 
-  const CustomImageDisplay({
+  const CustomImageDisplay({super.key, 
     required this.inputHeight,
     required this.inputWidth,
     required this.image,

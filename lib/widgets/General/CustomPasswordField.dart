@@ -9,8 +9,8 @@ class CustomPasswordField extends StatelessWidget {
   final String hintText;
   final TextEditingController controller;
 
-  CustomPasswordField(
-      {required this.obscureText,
+  const CustomPasswordField(
+      {super.key, required this.obscureText,
       required this.onTap,
       required this.borderWidth,
       required this.borderHeight,
@@ -20,7 +20,7 @@ class CustomPasswordField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: borderWidth,
       height: borderHeight,
       child: TextFormField(

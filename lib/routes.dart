@@ -6,12 +6,12 @@ import 'package:flutter_doctor_ui/screens/Profile/patient_profile_edit.dart';
 import 'package:flutter_doctor_ui/screens/Registration/registration.dart';
 
 final Map<String, WidgetBuilder> routes = {
-  Login.routeName: (BuildContext context) => Login(),
-  Registration.routeName: (BuildContext context) => Registration(),
+  Login.routeName: (BuildContext context) => const Login(),
+  Registration.routeName: (BuildContext context) => const Registration(),
   Dashboard.routeName: (BuildContext context) => const Dashboard(
         patientId: "",
       ),
   PatientProfile.routeName: (BuildContext context) =>
       const PatientProfile(patientId: ""),
-  PatientProfileEdit.routeName: (BuildContext context) => PatientProfileEdit(),
+  PatientProfileEdit.routeName: (BuildContext context) => const PatientProfileEdit(),
 };

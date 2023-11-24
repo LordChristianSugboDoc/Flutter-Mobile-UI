@@ -17,7 +17,7 @@ class SmallScreenRegistrationBody extends StatelessWidget {
   final VoidCallback _RegisterPatient;
   final VoidCallback _handleDateSelection;
 
-  SmallScreenRegistrationBody(
+  const SmallScreenRegistrationBody(
     this.emailController,
     this.phoneController,
     this.passwordController,
@@ -36,7 +36,7 @@ class SmallScreenRegistrationBody extends StatelessWidget {
       child: Center(
         child: SingleChildScrollView(
           child: Center(
-            child: Container(
+            child: SizedBox(
               width: width * .87,
               child: Column(
                 children: [
@@ -104,7 +104,7 @@ class SmallScreenRegistrationBody extends StatelessWidget {
                   ),
                   PrimaryButton(
                     text: "Sign up",
-                    buttonColor: Color(0xFF4454C3),
+                    buttonColor: const Color(0xFF4454C3),
                     onPress: () {
                       _RegisterPatient();
                       Navigator.pushNamed(context, Login.routeName);
