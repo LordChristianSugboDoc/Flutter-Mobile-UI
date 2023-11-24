@@ -87,14 +87,14 @@ class _LoginState extends State<Login> {
 
   Widget _buildMediumScreenLayout() {
     // Build UI for large screens
-    return Center(
+    return const Center(
       child: Text('Medium Login Screen Layout'),
     );
   }
 
   Widget _buildLargeScreenLayout() {
     // Build UI for large screens
-    return Center(
+    return const Center(
       child: Text('Large Login Screen Layout'),
     );
   }

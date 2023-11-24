@@ -55,9 +55,9 @@ class _RegistrationState extends State<Registration> {
       builder: (BuildContext context, Widget? child) {
         return Theme(
           data: ThemeData.light().copyWith(
-            colorScheme: ColorScheme.light(primary: Color(0xFF4454C3)),
+            colorScheme: const ColorScheme.light(primary: Color(0xFF4454C3)),
             textButtonTheme: TextButtonThemeData(
-                style: TextButton.styleFrom(primary: Color(0xFF4454C3))),
+                style: TextButton.styleFrom(foregroundColor: const Color(0xFF4454C3))),
           ),
           child: child!,
         );
@@ -107,7 +107,7 @@ class _RegistrationState extends State<Registration> {
 
   Widget _buildMediumScreenLayout() {
     // Build UI for large screens
-    return Center(
+    return const Center(
       child: Text('Medium Registration Screen Layout'),
     );
   }

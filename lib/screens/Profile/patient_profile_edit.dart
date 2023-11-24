@@ -74,7 +74,7 @@ class _PatientProfileEditState extends State<PatientProfileEdit> {
 
   Future<void> _fetchPatientProfileEdit() async {
     String patientDetailsURL =
-        'http://10.0.2.2:8080/flutter-mobile-backend-ui/index.php/Patient/getPatientDetails/${globalId}';
+        'http://10.0.2.2:8080/flutter-mobile-backend-ui/index.php/Patient/getPatientDetails/$globalId';
 
     try {
       final responsePatientDetails =
@@ -101,7 +101,7 @@ class _PatientProfileEditState extends State<PatientProfileEdit> {
 
   Future<void> _updatePatientProfile() async {
     String URL =
-        'http://10.0.2.2:8080/flutter-mobile-backend-ui/index.php/Patient/edit_patient_details/${globalId}';
+        'http://10.0.2.2:8080/flutter-mobile-backend-ui/index.php/Patient/edit_patient_details/$globalId';
 
     try {
       final request = http.MultipartRequest('POST', Uri.parse(URL));
@@ -145,9 +145,9 @@ class _PatientProfileEditState extends State<PatientProfileEdit> {
       builder: (BuildContext context, Widget? child) {
         return Theme(
           data: ThemeData.light().copyWith(
-            colorScheme: ColorScheme.light(primary: Color(0xFF4454C3)),
+            colorScheme: const ColorScheme.light(primary: Color(0xFF4454C3)),
             textButtonTheme: TextButtonThemeData(
-                style: TextButton.styleFrom(primary: Color(0xFF4454C3))),
+                style: TextButton.styleFrom(foregroundColor: const Color(0xFF4454C3))),
           ),
           child: child!,
         );
@@ -162,8 +162,8 @@ class _PatientProfileEditState extends State<PatientProfileEdit> {
 
   Future<void> _getImage() async {
     final picker = ImagePicker();
-    final PickedFile? pickedFile =
-        await picker.getImage(source: ImageSource.camera);
+    final XFile? pickedFile =
+        await picker.pickImage(source: ImageSource.camera);
 
     if (pickedFile != null) {
       Directory appDocumentsDirectory =
@@ -230,7 +230,7 @@ class _PatientProfileEditState extends State<PatientProfileEdit> {
                   onPressed: () {
                     Navigator.pushNamed(context, PatientProfile.routeName);
                   },
-                  icon: Icon(Icons.arrow_back_ios_new_rounded),
+                  icon: const Icon(Icons.arrow_back_ios_new_rounded),
                 ),
               ),
               body: ListView(
@@ -471,7 +471,7 @@ class _PatientProfileEditState extends State<PatientProfileEdit> {
                             const SizedBox(height: 30),
                             PrimaryButton(
                               text: "Submit",
-                              buttonColor: Color(0xFF4454C3),
+                              buttonColor: const Color(0xFF4454C3),
                               onPress: () {
                                 updateAddress();
                                 _updatePatientProfile();
@@ -492,10 +492,10 @@ class _PatientProfileEditState extends State<PatientProfileEdit> {
   }
 
   void updateAddress() {
-    brgyController.text = '$selectedBrgy';
-    cityController.text = '$selectedCity';
-    stateController.text = '$selectedState';
-    countryController.text = '$selectedCountry';
+    brgyController.text = selectedBrgy;
+    cityController.text = selectedCity;
+    stateController.text = selectedState;
+    countryController.text = selectedCountry;
   }
 
   Future<void> _handleDateSelection(BuildContext context) async {

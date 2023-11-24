@@ -8,7 +8,7 @@ class DatePickerField extends StatelessWidget {
   final TextEditingController controller;
   final VoidCallback function;
 
-  DatePickerField({
+  const DatePickerField({super.key, 
     required this.labelText,
     required this.hintText,
     required this.inputWidth,
@@ -19,7 +19,7 @@ class DatePickerField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: inputHeight,
       width: inputWidth,
       child: TextFormField(

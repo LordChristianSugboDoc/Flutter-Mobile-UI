@@ -28,7 +28,7 @@ class _PatientProfileState extends State<PatientProfile> {
 
   Future<void> _fetchPatientProfile() async {
     String patientDetailsURL =
-        'http://10.0.2.2:8080/flutter-mobile-backend-ui/index.php/Patient/getPatientDetails/${globalId}';
+        'http://10.0.2.2:8080/flutter-mobile-backend-ui/index.php/Patient/getPatientDetails/$globalId';
     String communityPostsURL =
         'http://10.0.2.2:8080/flutter-mobile-backend-ui/index.php/Patient/get_community_posts';
 
@@ -111,7 +111,7 @@ class _PatientProfileState extends State<PatientProfile> {
                   onPressed: () {
                     Navigator.pushNamed(context, Dashboard.routeName);
                   },
-                  icon: Icon(Icons.arrow_back_ios_new_rounded),
+                  icon: const Icon(Icons.arrow_back_ios_new_rounded),
                 ),
                 actions: <Widget>[
                   Padding(
@@ -174,9 +174,7 @@ class _PatientProfileState extends State<PatientProfile> {
                       ),
                       const SizedBox(height: 13.0),
                       Text(
-                        '${patientData['first_name']}' +
-                            " " +
-                            '${patientData['last_name']}',
+                        '${patientData['first_name']}' " " '${patientData['last_name']}',
                         style: const TextStyle(
                           color: Color(0xFF424E79),
                           fontSize: 28,
@@ -250,9 +248,7 @@ class _PatientProfileState extends State<PatientProfile> {
                                 const SizedBox(width: 36.0),
                                 Flexible(
                                   child: Text(
-                                    '${patientData['first_name']}' +
-                                        " " +
-                                        '${patientData['last_name']}',
+                                    '${patientData['first_name']}' " " '${patientData['last_name']}',
                                     style: const TextStyle(
                                       color: Color(0xFF424E79),
                                       fontSize: 16,

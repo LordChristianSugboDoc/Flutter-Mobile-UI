@@ -5,8 +5,8 @@ class FacebookButton extends StatelessWidget {
   final Color buttonColor;
   final double borderWidth;
 
-  FacebookButton(
-      {required this.onPress,
+  const FacebookButton(
+      {super.key, required this.onPress,
       required this.buttonColor,
       required this.borderWidth});
 
@@ -14,8 +14,7 @@ class FacebookButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        fixedSize: const Size(double.maxFinite, 50),
-        primary: buttonColor,
+        fixedSize: const Size(double.maxFinite, 50), backgroundColor: buttonColor,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
             Radius.circular(5.0),
@@ -30,7 +29,7 @@ class FacebookButton extends StatelessWidget {
             width: borderWidth,
           ),
           Padding(
-            padding: EdgeInsets.only(right: 10.0),
+            padding: const EdgeInsets.only(right: 10.0),
             child: Image.asset(
               'assets/images/PNG/facebook_logo.png',
               height: 25,

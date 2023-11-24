@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_doctor_ui/main.dart';
-import 'package:flutter_doctor_ui/widgets/Dashboard/Body/SmallScreenDashboardBody.dart';
+import 'package:flutter_doctor_ui/widgets/Dashboard/LargeScreenDashboardBody.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:flutter_doctor_ui/main.dart';
+import 'package:flutter_doctor_ui/widgets/Dashboard/SmallScreenDashboardBody.dart';
 import 'package:flutter_doctor_ui/widgets/Layout/CustomAppBar.dart';
 import 'package:flutter_doctor_ui/widgets/Layout/CustomBottomNav.dart';
 import 'package:flutter_doctor_ui/widgets/Layout/NavBar.dart';
@@ -25,6 +26,9 @@ class _DashboardState extends State<Dashboard> {
   List<Map<String, dynamic>> patientPrescriptions = [];
   List<Map<String, dynamic>> patientEncounters = [];
 
+  double smallWidth = 600;
+  double mediumWidth = 1000;
+
   @override
   void initState() {
     super.initState();
@@ -33,13 +37,13 @@ class _DashboardState extends State<Dashboard> {
 
   Future<void> _fetchDashboard() async {
     String patientDetailsURL =
-        'http://10.0.2.2:8080/flutter-mobile-backend-ui/index.php/Patient/getPatientDetails/${globalId}';
+        'http://10.0.2.2:8080/flutter-mobile-backend-ui/index.php/Patient/getPatientDetails/$globalId';
     String careTeamURL =
-        'http://10.0.2.2:8080/flutter-mobile-backend-ui/index.php/Patient/getPatientCareTeam/${globalId}';
+        'http://10.0.2.2:8080/flutter-mobile-backend-ui/index.php/Patient/getPatientCareTeam/$globalId';
     String prescriptionsURL =
-        'http://10.0.2.2:8080/flutter-mobile-backend-ui/index.php/Patient/getPatientPrescriptions/${globalId}';
+        'http://10.0.2.2:8080/flutter-mobile-backend-ui/index.php/Patient/getPatientPrescriptions/$globalId';
     String encountersURL =
-        'http://10.0.2.2:8080/flutter-mobile-backend-ui/index.php/Patient/getPatientEncounters/${globalId}';
+        'http://10.0.2.2:8080/flutter-mobile-backend-ui/index.php/Patient/getPatientEncounters/$globalId';
 
     try {
       final responsePatientDetails =
@@ -71,7 +75,7 @@ class _DashboardState extends State<Dashboard> {
           patientData = json.decode(responsePatientDetails.body);
           patientCareTeam = json.decode(responseCareTeam.body);
 
-          print('Patient Care Team: ${patientCareTeam}');
+          print('Patient Care Team: $patientCareTeam');
           // Ensure the correct type for patientPrescriptions
           if (responsePrescriptions.statusCode == 200) {
             final decodedData = json.decode(responsePrescriptions.body);
@@ -117,6 +121,8 @@ class _DashboardState extends State<Dashboard> {
     }
   }
 
+  int _selectedIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -140,13 +146,56 @@ class _DashboardState extends State<Dashboard> {
             // Display your UI based on the fetched data
             return Scaffold(
               backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-              drawer: const NavBar(),
-              appBar: CustomAppBar(context, patientData, _fetchDashboard),
-              bottomNavigationBar: CustomBottomNav(),
+              drawer: PreferredSize(
+                preferredSize: const Size.fromHeight(kToolbarHeight),
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    if (constraints.maxWidth < smallWidth) {
+                      // Small screen layout
+                      return const NavBar();
+                    } else if (constraints.maxWidth < mediumWidth) {
+                      return const SizedBox();
+                    } else {
+                      return const SizedBox();
+                    }
+                  },
+                ),
+              ),
+              appBar: PreferredSize(
+                preferredSize: const Size.fromHeight(kToolbarHeight),
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    if (constraints.maxWidth < smallWidth) {
+                      // Small screen layout
+                      return CustomAppBar(
+                          context, patientData, _fetchDashboard);
+                    } else if (constraints.maxWidth < mediumWidth) {
+                      return const SizedBox();
+                    } else {
+                      return const SizedBox();
+                    }
+                  },
+                ),
+              ),
+              bottomNavigationBar: PreferredSize(
+                preferredSize: const Size.fromHeight(kToolbarHeight),
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    if (constraints.maxWidth < smallWidth) {
+                      // Small screen layout
+                      return const CustomBottomNav();
+                    } else if (constraints.maxWidth < mediumWidth) {
+                      return const SizedBox();
+                    } else {
+                      return const SizedBox();
+                    }
+                  },
+                ),
+              ),
               body: LayoutBuilder(
                 builder: (context, constraints) {
                   // Check the screen width and adjust the layout accordingly
-                  if (constraints.maxWidth < 412) {
+                  if (constraints.maxWidth < smallWidth) {
                     // Small screen layout
                     return SmallScreenDashboardBody(
                       patientData,
@@ -154,9 +203,16 @@ class _DashboardState extends State<Dashboard> {
                       patientPrescriptions,
                       patientEncounters,
                     );
+                  } else if (constraints.maxWidth < mediumWidth) {
+                    return _buildMediumScreenLayout();
                   } else {
-                    // Large screen layout
-                    return _buildLargeScreenLayout();
+                    return LargeScreenDashboardBody(
+                      patientData,
+                      patientCareTeam,
+                      patientPrescriptions,
+                      patientEncounters,
+                      onDestinationSelected,
+                    );
                   }
                 },
               ),
@@ -167,10 +223,23 @@ class _DashboardState extends State<Dashboard> {
     );
   }
 
+  onDestinationSelected(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  Widget _buildMediumScreenLayout() {
+    // Build UI for large screens
+    return const Center(
+      child: Text('Medium Dashboard Screen Layout'),
+    );
+  }
+
   Widget _buildLargeScreenLayout() {
     // Build UI for large screens
-    return Center(
-      child: Text('Large Screen Layout'),
+    return const Center(
+      child: Text('Large Dashboard Screen Layout'),
     );
   }
 }

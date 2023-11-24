@@ -11,7 +11,7 @@ class CustomPrimaryButton extends StatelessWidget {
   final Color buttonOutline;
   final double outlineWidth;
 
-  CustomPrimaryButton({
+  const CustomPrimaryButton({super.key, 
     required this.text,
     required this.onPress,
     required this.inputHeight,
@@ -38,8 +38,7 @@ class CustomPrimaryButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onPress,
         style: ElevatedButton.styleFrom(
-          fixedSize: Size(double.maxFinite, 50),
-          primary: buttonColor,
+          fixedSize: const Size(double.maxFinite, 50), backgroundColor: buttonColor,
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(
               Radius.circular(12.0),

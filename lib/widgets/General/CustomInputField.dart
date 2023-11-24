@@ -8,8 +8,8 @@ class CustomInputField extends StatelessWidget {
   final TextEditingController controller;
   final TextInputType textInputType;
 
-  CustomInputField(
-      {required this.labelText,
+  const CustomInputField(
+      {super.key, required this.labelText,
       required this.hintText,
       required this.inputWidth,
       required this.inputHeight,
@@ -18,7 +18,7 @@ class CustomInputField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: inputHeight,
       width: inputWidth,
       child: TextFormField(

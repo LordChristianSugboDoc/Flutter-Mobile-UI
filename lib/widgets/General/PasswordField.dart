@@ -7,8 +7,8 @@ class PasswordField extends StatelessWidget {
   final String hintText;
   final TextEditingController controller;
 
-  PasswordField(
-      {required this.obscureText,
+  const PasswordField(
+      {super.key, required this.obscureText,
       required this.onTap,
       required this.labelText,
       required this.hintText,

@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_doctor_ui/screens/Profile/patient_profile.dart';
 
 AppBar CustomAppBar(BuildContext context, Map<String, dynamic> patientData,
-    Future<void> Function() _fetchDashboard) {
+    Future<void> Function() fetchDashboard) {
   return AppBar(
     elevation: 0.0,
-    backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+    backgroundColor: Color.fromARGB(255, 255, 255, 255),
     iconTheme: const IconThemeData(
       color: Color(0xFF4454C3),
     ),
