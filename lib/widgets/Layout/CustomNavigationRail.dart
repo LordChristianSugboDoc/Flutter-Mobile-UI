@@ -14,13 +14,18 @@ class CustomNavigationRail extends StatelessWidget {
   Widget build(BuildContext context) {
     ExtendNavigationRail extendNavigationRail =
         Provider.of<ExtendNavigationRail>(context);
+    bool isLeading = extendNavigationRail.isLeading;
+    bool isTrailing = extendNavigationRail.isTrailing;
     bool isImageVisible = extendNavigationRail.isImageVisible;
     bool isTextVisible = extendNavigationRail.isTextVisible;
     bool changeIcon = extendNavigationRail.isImageVisible;
     int index = extendNavigationRail.index;
-    return Container(
+    double height = MediaQuery.of(context).size.height;
+    EdgeInsetsGeometry padding = EdgeInsets.only(top: height * 0.51);
+    return AnimatedContainer(
+      duration: Duration(milliseconds: 100),
       color: const Color(0xFF4454C3),
-      padding: const EdgeInsets.only(top: 50),
+      padding: const EdgeInsets.only(top: 20),
       child: Theme(
         data: ThemeData(
           highlightColor: Colors.transparent,
@@ -48,7 +53,7 @@ class CustomNavigationRail extends StatelessWidget {
           onDestinationSelected: (index) {
             extendNavigationRail.setPage(index);
           },
-          leading: true
+          leading: isLeading
               ? Row(
                   children: [
                     Container(
@@ -65,6 +70,7 @@ class CustomNavigationRail extends StatelessWidget {
                       elevation: 0,
                       onPressed: () {
                         extendNavigationRail.isCondition();
+                        extendNavigationRail.changeWidth();
                       },
                       child: changeIcon
                           ? const Icon(
@@ -81,9 +87,9 @@ class CustomNavigationRail extends StatelessWidget {
                   ],
                 )
               : const SizedBox(),
-          trailing: true
+          trailing: isTrailing
               ? Padding(
-                  padding: const EdgeInsets.only(top: 370.0),
+                  padding: padding,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -96,18 +102,22 @@ class CustomNavigationRail extends StatelessWidget {
                           children: [
                             const Icon(Icons.logout_rounded,
                                 size: 30, color: Colors.white),
-                            const SizedBox(
-                              width: 10,
-                            ),
                             Container(
                               child: isTextVisible
-                                  ? const Text(
-                                      'Logout',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 19,
-                                        fontWeight: FontWeight.w500,
-                                      ),
+                                  ? const Row(
+                                      children: [
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text(
+                                          'Logout',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 19,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        )
+                                      ],
                                     )
                                   : const Text(''),
                             )

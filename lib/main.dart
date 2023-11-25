@@ -8,10 +8,16 @@ int globalId = -1;
 
 void main() {
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => ExtendNavigationRail(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider<ExtendNavigationRail>(
+          create: (context) => ExtendNavigationRail(),
+        ),
+        // Add more providers as needed
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
+        showPerformanceOverlay: false,
         initialRoute: Login.routeName,
         routes: routes,
       ),
