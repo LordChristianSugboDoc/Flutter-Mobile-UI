@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_doctor_ui/widgets/General/CustomButton.dart';
+import 'package:flutter_doctor_ui/Modals/PatientProfileModal.dart';
+
 import 'package:provider/provider.dart';
 import 'package:flutter_doctor_ui/ChangeNotifier/ExtendNavigationRail.dart';
 import 'package:flutter_doctor_ui/screens/Profile/patient_profile.dart';
@@ -80,6 +81,7 @@ class LargeScreenDashboardBody extends StatelessWidget {
                                 onTap: () {
                                   Navigator.pushNamed(
                                       context, PatientProfile.routeName);
+                                  // showModal(context);
                                 },
                                 child: Container(
                                   margin: const EdgeInsets.only(right: 17),
@@ -1062,6 +1064,17 @@ class LargeScreenDashboardBody extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  void showModal(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext builderContext) {
+        return Center(
+          child: PatientProfileModal(patientData),
+        );
+      },
     );
   }
 }
