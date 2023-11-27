@@ -21,7 +21,7 @@ class CustomNavigationRail extends StatelessWidget {
     bool changeIcon = extendNavigationRail.isImageVisible;
     int index = extendNavigationRail.index;
     double height = MediaQuery.of(context).size.height;
-    EdgeInsetsGeometry padding = EdgeInsets.only(top: height * 0.51);
+    EdgeInsetsGeometry padding = EdgeInsets.only(top: height * 0.20);
     return AnimatedContainer(
       duration: Duration(milliseconds: 100),
       color: const Color(0xFF4454C3),
@@ -136,10 +136,24 @@ class CustomNavigationRail extends StatelessWidget {
               ),
             ),
             NavigationRailDestination(
+              icon: Icon(Icons.co_present),
+              selectedIcon: Icon(Icons.co_present_outlined),
+              label: Text(
+                'My Procedures',
+              ),
+            ),
+            NavigationRailDestination(
               icon: Icon(Icons.person_search),
               selectedIcon: Icon(Icons.person_search_outlined),
               label: Text(
                 'Find Doctors',
+              ),
+            ),
+            NavigationRailDestination(
+              icon: Icon(Icons.event_available),
+              selectedIcon: Icon(Icons.event_available_outlined),
+              label: Text(
+                'Appointments',
               ),
             ),
             NavigationRailDestination(
@@ -154,6 +168,34 @@ class CustomNavigationRail extends StatelessWidget {
               selectedIcon: Icon(Icons.medical_services_outlined),
               label: Text(
                 'Health Services',
+              ),
+            ),
+            NavigationRailDestination(
+              icon: Icon(Icons.analytics),
+              selectedIcon: Icon(Icons.analytics_outlined),
+              label: Text(
+                'Lab Results',
+              ),
+            ),
+            NavigationRailDestination(
+              icon: Icon(Icons.insert_chart),
+              selectedIcon: Icon(Icons.insert_chart_outlined_outlined),
+              label: Text(
+                'Clinical Notes',
+              ),
+            ),
+            NavigationRailDestination(
+              icon: Icon(Icons.medication),
+              selectedIcon: Icon(Icons.medication_outlined),
+              label: Text(
+                'Prescriptions',
+              ),
+            ),
+            NavigationRailDestination(
+              icon: Icon(Icons.create_new_folder),
+              selectedIcon: Icon(Icons.create_new_folder_outlined),
+              label: Text(
+                'Files',
               ),
             ),
             NavigationRailDestination(
