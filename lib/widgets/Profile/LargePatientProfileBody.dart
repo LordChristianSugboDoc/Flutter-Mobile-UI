@@ -118,7 +118,7 @@ class LargeScreenPatientProfileBody extends StatelessWidget {
                     const SizedBox(width: 175),
                     Container(
                       height: 200,
-                      width: 1,
+                      width: .5,
                       color: Color(0xFF424E79).withOpacity(0.5),
                     ),
                     const SizedBox(
