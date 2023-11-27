@@ -365,82 +365,101 @@ class LargeScreenPatientProfileBody extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text(
-                                "Patient Care Team",
-                                style: TextStyle(
-                                  color: Color(0xFF424E79),
-                                  fontSize: 25,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    margin:
-                                        const EdgeInsets.only(top: 10, left: 0),
-                                    alignment: Alignment.centerRight,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(100),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: const Color(0xFF4454C3)
-                                              .withOpacity(0.25),
-                                          blurRadius: 4,
-                                          offset: const Offset(0, 3),
-                                        ),
-                                      ],
-                                      border: Border.all(
-                                        color: const Color(0xFF4454C3)
-                                            .withOpacity(0.50),
-                                        width: 0.5,
+                              (!patientCareTeam.containsKey('error'))
+                                  ? Container(
+                                      margin: EdgeInsets.only(bottom: 40),
+                                      child: Column(
+                                        children: [
+                                          const Text(
+                                            "Patient Care Team",
+                                            style: TextStyle(
+                                              color: Color(0xFF424E79),
+                                              fontSize: 25,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                margin: const EdgeInsets.only(
+                                                    top: 10, left: 0),
+                                                alignment:
+                                                    Alignment.centerRight,
+                                                decoration: BoxDecoration(
+                                                  color: Colors.white,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          100),
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      color: const Color(
+                                                              0xFF4454C3)
+                                                          .withOpacity(0.25),
+                                                      blurRadius: 4,
+                                                      offset:
+                                                          const Offset(0, 3),
+                                                    ),
+                                                  ],
+                                                  border: Border.all(
+                                                    color:
+                                                        const Color(0xFF4454C3)
+                                                            .withOpacity(0.50),
+                                                    width: 0.5,
+                                                  ),
+                                                ),
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          100),
+                                                  child: Image.asset(
+                                                    '${patientCareTeam['doctor_image']}', // Dynamic Variable
+                                                    height: 90,
+                                                    width: 90,
+                                                  ),
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                width: 25,
+                                              ),
+                                              Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  const SizedBox(
+                                                    height: 20,
+                                                  ),
+                                                  Text(
+                                                    '${patientCareTeam['doctor_title']}',
+                                                    style: const TextStyle(
+                                                      color: Color(0xFF424E79),
+                                                      fontSize: 20,
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    '${patientCareTeam['doctor_profession']}',
+                                                    style: const TextStyle(
+                                                      color: Color(0xFF424E79),
+                                                      fontSize: 20,
+                                                      fontWeight:
+                                                          FontWeight.normal,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ],
                                       ),
-                                    ),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(100),
-                                      child: Image.asset(
-                                        '${patientCareTeam['doctor_image']}', // Dynamic Variable
-                                        height: 90,
-                                        width: 90,
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 25,
-                                  ),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      const SizedBox(
-                                        height: 20,
-                                      ),
-                                      Text(
-                                        '${patientCareTeam['doctor_title']}',
-                                        style: const TextStyle(
-                                          color: Color(0xFF424E79),
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                      ),
-                                      Text(
-                                        '${patientCareTeam['doctor_profession']}',
-                                        style: const TextStyle(
-                                          color: Color(0xFF424E79),
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.normal,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 40,
-                              ),
+                                    )
+                                  : Container(),
                               const Text(
                                 "Community Posts",
                                 style: TextStyle(

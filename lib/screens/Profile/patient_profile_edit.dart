@@ -2,11 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:flutter_doctor_ui/main.dart';
 import 'package:flutter_doctor_ui/screens/Profile/patient_profile.dart';
-import 'package:flutter_doctor_ui/widgets/General/CustomDropDown.dart';
-import 'package:flutter_doctor_ui/widgets/General/CustomImageUpload.dart';
-import 'package:flutter_doctor_ui/widgets/General/CustomInputField.dart';
-import 'package:flutter_doctor_ui/widgets/General/DatePickerField.dart';
-import 'package:flutter_doctor_ui/widgets/General/PrimaryButton.dart';
+import 'package:flutter_doctor_ui/widgets/Profile/SmallEditPatientProfileBody.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:image_picker/image_picker.dart';
@@ -147,7 +143,8 @@ class _PatientProfileEditState extends State<PatientProfileEdit> {
           data: ThemeData.light().copyWith(
             colorScheme: const ColorScheme.light(primary: Color(0xFF4454C3)),
             textButtonTheme: TextButtonThemeData(
-                style: TextButton.styleFrom(foregroundColor: const Color(0xFF4454C3))),
+                style: TextButton.styleFrom(
+                    foregroundColor: const Color(0xFF4454C3))),
           ),
           child: child!,
         );
@@ -196,10 +193,10 @@ class _PatientProfileEditState extends State<PatientProfileEdit> {
     }
   }
 
+  double smallWidth = 600;
+  double mediumWidth = 1000;
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-
     return Container(
       color: Colors.white,
       child: FutureBuilder(
@@ -233,256 +230,34 @@ class _PatientProfileEditState extends State<PatientProfileEdit> {
                   icon: const Icon(Icons.arrow_back_ios_new_rounded),
                 ),
               ),
-              body: ListView(
-                padding: const EdgeInsets.only(top: 10.0),
-                children: [
-                  Container(
-                    padding: const EdgeInsets.only(
-                      top: 15.0,
-                      left: 18.0,
-                      bottom: 15.0,
-                      right: 18.0,
-                    ),
-                    margin: const EdgeInsets.only(
-                      top: 0.0,
-                      left: 20.0,
-                      bottom: 10.0,
-                      right: 20.0,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(8),
-                      boxShadow: [
-                        BoxShadow(
-                          color: const Color(0xFF4454C3).withOpacity(0.25),
-                          blurRadius: 4, // Spread radius
-                          offset: const Offset(2, 2),
-                        ),
-                      ],
-                      border: Border.all(
-                        color: const Color(0xFF4454C3).withOpacity(0.15),
-                        width: .5,
-                      ),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          "Edit Profile",
-                          style: TextStyle(
-                            color: Color(0xFF424E79),
-                            fontSize: 25,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        const SizedBox(
-                            height:
-                                8), // Add some space between text and divider
-                        Divider(
-                          color: const Color(0xFF4454C3).withOpacity(
-                              0.15), // You can set the color of the divider
-                          thickness:
-                              1, // You can set the thickness of the divider
-                        ),
-                        const SizedBox(height: 8),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                CustomInputField(
-                                  labelText: "First Name",
-                                  hintText: "",
-                                  inputWidth: width * .391,
-                                  inputHeight: 60.0,
-                                  controller: firstNameController,
-                                  textInputType: TextInputType.text,
-                                ),
-                                const SizedBox(width: 12),
-                                CustomInputField(
-                                  labelText: "Last Name",
-                                  hintText: "",
-                                  inputWidth: width * .391,
-                                  inputHeight: 60.0,
-                                  controller: lastNameController,
-                                  textInputType: TextInputType.text,
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 15),
-                            CustomInputField(
-                              labelText: "Email Address",
-                              hintText: "",
-                              inputWidth: width,
-                              inputHeight: 60.0,
-                              controller: emailController,
-                              textInputType: TextInputType.emailAddress,
-                            ),
-                            const SizedBox(height: 15),
-                            CustomInputField(
-                              labelText: "Mobile Number",
-                              hintText: "",
-                              inputWidth: width,
-                              inputHeight: 60.0,
-                              controller: phoneController,
-                              textInputType: TextInputType.phone,
-                            ),
-                            const SizedBox(height: 15),
-                            CustomInputField(
-                              labelText: "Address Line",
-                              hintText: "",
-                              inputWidth: width,
-                              inputHeight: 60.0,
-                              controller: addressController,
-                              textInputType: TextInputType.text,
-                            ),
-                            const SizedBox(height: 15),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                CustomDropDown(
-                                  labelText: 'Country',
-                                  hintText: '',
-                                  selectedValue: selectedCountry,
-                                  inputWidth: width * .391,
-                                  inputHeight: 60.0,
-                                  items: const [
-                                    'None',
-                                    'Philippines',
-                                    'Malaysia',
-                                    'Thailand'
-                                  ],
-                                  onChanged: (String? value) {
-                                    print(
-                                        'onChanged executed. New value: $value');
-                                    setState(() {
-                                      selectedCountry = value ?? '';
-                                    });
-                                  },
-                                ),
-                                const SizedBox(width: 12),
-                                CustomDropDown(
-                                  labelText: 'State/Province',
-                                  hintText: '',
-                                  selectedValue: selectedState,
-                                  inputWidth: width * .391,
-                                  inputHeight: 60.0,
-                                  items: const [
-                                    'None',
-                                    'Cebu',
-                                    'Leyte',
-                                    'Bohol'
-                                  ],
-                                  onChanged: (String? value) {
-                                    if (patientData['province'] != null) {
-                                      setState(() {
-                                        selectedState =
-                                            patientData['province'] ?? '';
-                                      });
-                                    } else {
-                                      setState(() {
-                                        selectedState = value ?? '';
-                                      });
-                                    }
-                                  },
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 15),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                CustomDropDown(
-                                  labelText: 'City',
-                                  hintText: '',
-                                  selectedValue: selectedCity,
-                                  inputWidth: width * .391,
-                                  inputHeight: 60.0,
-                                  items: const [
-                                    'None',
-                                    'Cebu City',
-                                    'Mandaue City',
-                                    'Bogo City'
-                                  ],
-                                  onChanged: (String? value) {
-                                    if (patientData['city'] != null) {
-                                      setState(() {
-                                        selectedCity =
-                                            patientData['city'] ?? '';
-                                      });
-                                    } else {
-                                      setState(() {
-                                        selectedCity = value ?? '';
-                                      });
-                                    }
-                                  },
-                                ),
-                                const SizedBox(width: 12),
-                                CustomDropDown(
-                                  labelText: 'Barangay',
-                                  hintText: '',
-                                  selectedValue: selectedBrgy,
-                                  inputWidth: width * .391,
-                                  inputHeight: 60.0,
-                                  items: const [
-                                    'None',
-                                    'Banilad',
-                                    'Talamban',
-                                    'Casuntingan'
-                                  ],
-                                  onChanged: (String? value) {
-                                    if (patientData['barangay'] != null) {
-                                      setState(() {
-                                        selectedBrgy =
-                                            patientData['barangay'] ?? '';
-                                      });
-                                    } else {
-                                      setState(() {
-                                        selectedBrgy = value ?? '';
-                                      });
-                                    }
-                                  },
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 15),
-                            Row(
-                              children: [
-                                DatePickerField(
-                                  labelText: "Birth Date",
-                                  hintText: "",
-                                  inputWidth: width * .421,
-                                  inputHeight: 60,
-                                  controller: birthdateController,
-                                  function: () => _handleDateSelection(context),
-                                ),
-                                const SizedBox(width: 12),
-                                CustomImageDisplay(
-                                  inputWidth: width * .361,
-                                  inputHeight: 60,
-                                  image: _image,
-                                  onTap: _getImage,
-                                  imagePathController: imageController,
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 30),
-                            PrimaryButton(
-                              text: "Submit",
-                              buttonColor: const Color(0xFF4454C3),
-                              onPress: () {
-                                updateAddress();
-                                _updatePatientProfile();
-                              },
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                  )
-                ],
+              body: LayoutBuilder(
+                builder: (context, constraints) {
+                  if (constraints.maxWidth < 1290) {
+                    return SmallEditPatientProfileBody(
+                      patientData,
+                      firstNameController,
+                      lastNameController,
+                      emailController,
+                      phoneController,
+                      addressController,
+                      brgyController,
+                      cityController,
+                      stateController,
+                      countryController,
+                      birthdateController,
+                      imageController,
+                      _image,
+                      updateAddress,
+                      _updatePatientProfile,
+                      () => _handleDateSelection(context),
+                      _getImage,
+                    );
+                  } else if (constraints.maxWidth < mediumWidth) {
+                    return _buildMediumScreenLayout();
+                  } else {
+                    return _buildLargeScreenLayout();
+                  }
+                },
               ),
             );
           }
@@ -530,5 +305,19 @@ class _PatientProfileEditState extends State<PatientProfileEdit> {
     if (patientData['barangay'] != null) {
       selectedBrgy = patientData['barangay'];
     }
+  }
+
+  Widget _buildMediumScreenLayout() {
+    // Build UI for large screens
+    return const Center(
+      child: Text('Medium Edit Patient Profile Screen Layout'),
+    );
+  }
+
+  Widget _buildLargeScreenLayout() {
+    // Build UI for large screens
+    return const Center(
+      child: Text('Large Edit Patient Profile Screen Layout'),
+    );
   }
 }
