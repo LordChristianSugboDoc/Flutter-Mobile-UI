@@ -270,73 +270,77 @@ class SmallScreenPatientProfileBody extends StatelessWidget {
                   ),
                   const SizedBox(height: 10.0),
                   for (var communityPost in communityPosts)
-                    ListTile(
-                      title: Padding(
-                        padding: const EdgeInsets.only(bottom: 10.0, left: 0.0),
-                        child: Column(
-                          // First Community Card
-                          mainAxisAlignment: MainAxisAlignment.start,
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      child: ListTile(
+                        title: Padding(
+                          padding:
+                              const EdgeInsets.only(bottom: 10.0, left: 0.0),
+                          child: Column(
+                            // First Community Card
+                            mainAxisAlignment: MainAxisAlignment.start,
 
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                color:
-                                    const Color(0xFF4454C3).withOpacity(0.10),
-                                borderRadius: BorderRadius.circular(5),
-                                border: Border.all(
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
                                   color:
-                                      const Color(0xFF4454C3).withOpacity(0.15),
-                                  width: .5,
+                                      const Color(0xFF4454C3).withOpacity(0.10),
+                                  borderRadius: BorderRadius.circular(5),
+                                  border: Border.all(
+                                    color: const Color(0xFF4454C3)
+                                        .withOpacity(0.15),
+                                    width: .5,
+                                  ),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      margin: const EdgeInsets.all(10),
+                                      alignment: Alignment.centerRight,
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(12),
+                                        child: Image.asset(
+                                          '${communityPost['doctor_image']}', // Dynamic Variable
+                                          height: 75,
+                                          width: 75,
+                                        ),
+                                      ),
+                                    ),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        const SizedBox(height: 25.0),
+                                        Text(
+                                          '${communityPost['doctor_title']}', // Dynamic Variable
+                                          style: const TextStyle(
+                                            color: Color(0xFF424E79),
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 7.0),
+                                        Text(
+                                          '${communityPost['message']}', // Dynamic Variable
+                                          style: const TextStyle(
+                                            color: Color(0xFF424E79),
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  ],
                                 ),
                               ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    margin: const EdgeInsets.all(10),
-                                    alignment: Alignment.centerRight,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(12),
-                                      child: Image.asset(
-                                        '${communityPost['doctor_image']}', // Dynamic Variable
-                                        height: 75,
-                                        width: 75,
-                                      ),
-                                    ),
-                                  ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      const SizedBox(height: 25.0),
-                                      Text(
-                                        '${communityPost['doctor_title']}', // Dynamic Variable
-                                        style: const TextStyle(
-                                          color: Color(0xFF424E79),
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 7.0),
-                                      Text(
-                                        '${communityPost['message']}', // Dynamic Variable
-                                        style: const TextStyle(
-                                          color: Color(0xFF424E79),
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),
