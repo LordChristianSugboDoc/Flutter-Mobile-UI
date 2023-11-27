@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_doctor_ui/ChangeNotifier/EditPatientProfile.dart';
 import 'package:flutter_doctor_ui/ChangeNotifier/ExtendNavigationRail.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_doctor_ui/routes.dart';
@@ -12,6 +13,9 @@ void main() {
       providers: [
         ChangeNotifierProvider<ExtendNavigationRail>(
           create: (context) => ExtendNavigationRail(),
+        ),
+        ChangeNotifierProvider<EditPatientProfile>(
+          create: (context) => EditPatientProfile(),
         ),
         // Add more providers as needed
       ],

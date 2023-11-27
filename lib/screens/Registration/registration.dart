@@ -57,7 +57,8 @@ class _RegistrationState extends State<Registration> {
           data: ThemeData.light().copyWith(
             colorScheme: const ColorScheme.light(primary: Color(0xFF4454C3)),
             textButtonTheme: TextButtonThemeData(
-                style: TextButton.styleFrom(foregroundColor: const Color(0xFF4454C3))),
+                style: TextButton.styleFrom(
+                    foregroundColor: const Color(0xFF4454C3))),
           ),
           child: child!,
         );
