@@ -13,7 +13,10 @@ AppBar PatientProfileAppBar(BuildContext context) {
       onPressed: () {
         Navigator.pushNamed(context, Dashboard.routeName);
       },
-      icon: const Icon(Icons.arrow_back_ios_new_rounded),
+      icon: const Icon(
+        Icons.arrow_back_ios_new_rounded,
+        size: 26,
+      ),
     ),
     actions: <Widget>[
       Padding(
@@ -24,6 +27,7 @@ AppBar PatientProfileAppBar(BuildContext context) {
           },
           icon: const Icon(
             Icons.border_color_outlined,
+            size: 26,
           ),
         ),
       )

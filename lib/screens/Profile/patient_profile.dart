@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_doctor_ui/main.dart';
+import 'package:flutter_doctor_ui/widgets/Profile/LargePatientProfileBody.dart';
 import 'package:flutter_doctor_ui/widgets/Profile/PatientProfileAppBar.dart';
 import 'package:flutter_doctor_ui/widgets/Profile/SmallPatientProfileBody.dart';
 import 'package:http/http.dart' as http;
@@ -18,6 +19,7 @@ class PatientProfile extends StatefulWidget {
 class _PatientProfileState extends State<PatientProfile> {
   late Future<void> _fetchPatientProfileFuture;
   Map<String, dynamic> patientData = {};
+  Map<String, dynamic> patientCareTeam = {};
   List<Map<String, dynamic>> communityPosts = [];
 
   double smallWidth = 600;
@@ -32,12 +34,15 @@ class _PatientProfileState extends State<PatientProfile> {
   Future<void> _fetchPatientProfile() async {
     String patientDetailsURL =
         'http://10.0.2.2:8080/flutter-mobile-backend-ui/index.php/Patient/getPatientDetails/$globalId';
+    String careTeamURL =
+        'http://10.0.2.2:8080/flutter-mobile-backend-ui/index.php/Patient/getPatientCareTeam/$globalId';
     String communityPostsURL =
         'http://10.0.2.2:8080/flutter-mobile-backend-ui/index.php/Patient/get_community_posts';
 
     try {
       final responsePatientDetails =
           await http.get(Uri.parse(patientDetailsURL));
+      final responseCareTeam = await http.get(Uri.parse(careTeamURL));
       final responseCommunityPosts =
           await http.get(Uri.parse(communityPostsURL));
 
@@ -47,12 +52,17 @@ class _PatientProfileState extends State<PatientProfile> {
       print('Response Patient Data Body: ${responsePatientDetails.body}');
 
       print(
+          'Response Status Patient Care Team Code: ${responseCareTeam.statusCode}');
+      print('Response Patient Care Team Body: ${responseCareTeam.body}');
+
+      print(
           'Response Status Community Posts Code: ${responseCommunityPosts.statusCode}');
       print('Response Community Posts Body: ${responseCommunityPosts.body}');
 
       if (responsePatientDetails.statusCode == 200) {
         setState(() {
           patientData = json.decode(responsePatientDetails.body);
+          patientCareTeam = json.decode(responseCareTeam.body);
 
           // Ensure the correct type for patientPrescriptions
           if (responseCommunityPosts.statusCode == 200) {
@@ -79,8 +89,6 @@ class _PatientProfileState extends State<PatientProfile> {
       print('Error: $e');
     }
   }
-
-  String facility_role = "Patient";
 
   @override
   Widget build(BuildContext context) {
@@ -113,16 +121,14 @@ class _PatientProfileState extends State<PatientProfile> {
                     } else if (constraints.maxWidth < mediumWidth) {
                       return const SizedBox();
                     } else {
-                      return const SizedBox();
+                      return PatientProfileAppBar(context);
                     }
                   },
                 ),
               ),
               body: LayoutBuilder(
                 builder: (context, constraints) {
-                  // Check the screen width and adjust the layout accordingly
                   if (constraints.maxWidth < smallWidth) {
-                    // Small screen layout
                     return SmallScreenPatientProfileBody(
                       patientData,
                       communityPosts,
@@ -130,7 +136,11 @@ class _PatientProfileState extends State<PatientProfile> {
                   } else if (constraints.maxWidth < mediumWidth) {
                     return _buildMediumScreenLayout();
                   } else {
-                    return _buildLargeScreenLayout();
+                    return LargeScreenPatientProfileBody(
+                      patientData,
+                      patientCareTeam,
+                      communityPosts,
+                    );
                   }
                 },
               ),
