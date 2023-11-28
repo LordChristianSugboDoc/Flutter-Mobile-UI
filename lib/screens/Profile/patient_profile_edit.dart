@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:flutter_doctor_ui/main.dart';
 import 'package:flutter_doctor_ui/screens/Profile/patient_profile.dart';
+import 'package:flutter_doctor_ui/widgets/Profile/LargeEditPatientProfileBody.dart';
 import 'package:flutter_doctor_ui/widgets/Profile/SmallEditPatientProfileBody.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -227,12 +228,15 @@ class _PatientProfileEditState extends State<PatientProfileEdit> {
                   onPressed: () {
                     Navigator.pushNamed(context, PatientProfile.routeName);
                   },
-                  icon: const Icon(Icons.arrow_back_ios_new_rounded),
+                  icon: const Icon(
+                    Icons.arrow_back_ios_new_rounded,
+                    size: 26,
+                  ),
                 ),
               ),
               body: LayoutBuilder(
                 builder: (context, constraints) {
-                  if (constraints.maxWidth < 1290) {
+                  if (constraints.maxWidth < smallWidth) {
                     return SmallEditPatientProfileBody(
                       patientData,
                       firstNameController,
@@ -255,7 +259,25 @@ class _PatientProfileEditState extends State<PatientProfileEdit> {
                   } else if (constraints.maxWidth < mediumWidth) {
                     return _buildMediumScreenLayout();
                   } else {
-                    return _buildLargeScreenLayout();
+                    return LargeEditPatientProfileBody(
+                      patientData,
+                      firstNameController,
+                      lastNameController,
+                      emailController,
+                      phoneController,
+                      addressController,
+                      brgyController,
+                      cityController,
+                      stateController,
+                      countryController,
+                      birthdateController,
+                      imageController,
+                      _image,
+                      updateAddress,
+                      _updatePatientProfile,
+                      () => _handleDateSelection(context),
+                      _getImage,
+                    );
                   }
                 },
               ),

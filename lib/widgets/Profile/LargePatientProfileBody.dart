@@ -369,6 +369,10 @@ class LargeScreenPatientProfileBody extends StatelessWidget {
                                   ? Container(
                                       margin: EdgeInsets.only(bottom: 40),
                                       child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           const Text(
                                             "Patient Care Team",
