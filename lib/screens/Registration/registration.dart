@@ -22,7 +22,7 @@ class _RegistrationState extends State<Registration> {
 
   _RegisterPatient() async {
     String url =
-        'http://10.0.2.2:8080/flutter-mobile-backend-ui/index.php/patient/registerPatient';
+        'http://10.0.2.2:8080/flutter-mobile-backend-ui/index.php/auth/create_user';
 
     Map<String, String> data = {
       'email': emailController.text,

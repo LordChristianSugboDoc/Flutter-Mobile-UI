@@ -13,6 +13,7 @@ class LargeScreenDashboardBody extends StatelessWidget {
   final List<Map<String, dynamic>> patientPrescriptions;
   final List<Map<String, dynamic>> patientEncounters;
   final ValueChanged<int> onDestinationSelected;
+  final Future<void> Function()  logout;
 
   const LargeScreenDashboardBody(
     this.patientData,
@@ -20,6 +21,7 @@ class LargeScreenDashboardBody extends StatelessWidget {
     this.patientPrescriptions,
     this.patientEncounters,
     this.onDestinationSelected,
+    this.logout,
   );
 
   @override
@@ -38,6 +40,7 @@ class LargeScreenDashboardBody extends StatelessWidget {
           children: <Widget>[
             CustomNavigationRail(
               onDestinationSelected: onDestinationSelected,
+              logout: logout,
             ),
             Container(
               margin: EdgeInsets.only(top: 30, left: 30),

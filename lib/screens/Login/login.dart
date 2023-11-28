@@ -20,10 +20,10 @@ class _LoginState extends State<Login> {
 
   Future<int> _LoginPatient() async {
     String url =
-        'http://10.0.2.2:8080/flutter-mobile-backend-ui/index.php/patient/loginPatient';
+        'http://10.0.2.2:8080/flutter-mobile-backend-ui/index.php/auth/login';
 
     Map<String, String> data = {
-      'input': inputController.text,
+      'identity': inputController.text,
       'password': passwordController.text,
     };
 
@@ -46,13 +46,13 @@ class _LoginState extends State<Login> {
         // Handle other status codes or error responses
         print('Error: ${response.statusCode}');
         // Return a default value or throw an exception if needed
-        return 0;
+        return -1;
       }
     } catch (error) {
       // Handle errors
       print('Error: $error');
       // Return a default value or throw an exception if needed
-      return 0;
+      return -1;
     }
   }
 

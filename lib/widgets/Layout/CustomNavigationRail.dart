@@ -5,9 +5,11 @@ import 'package:provider/provider.dart';
 
 class CustomNavigationRail extends StatelessWidget {
   final ValueChanged<int> onDestinationSelected;
+  final Future<void> Function() logout;
 
   CustomNavigationRail({
     required this.onDestinationSelected,
+    required this.logout,
   });
 
   @override
@@ -95,6 +97,7 @@ class CustomNavigationRail extends StatelessWidget {
                     children: [
                       IconButton(
                         onPressed: () {
+                          logout;
                           Navigator.of(context).pushNamedAndRemoveUntil(
                               Login.routeName, (Route<dynamic> route) => false);
                         },

@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_doctor_ui/screens/Login/login.dart';
 
 class NavBar extends StatelessWidget {
-  const NavBar({super.key});
+  final VoidCallback _logout;
+
+  NavBar(this._logout);
 
   @override
   Widget build(BuildContext context) {
@@ -146,6 +148,7 @@ class NavBar extends StatelessWidget {
               ),
             ),
             onTap: () {
+              _logout;
               Navigator.of(context).pushNamedAndRemoveUntil(
                   Login.routeName, (Route<dynamic> route) => false);
             },

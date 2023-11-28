@@ -8,7 +8,8 @@ class SmallScreenDashboardBody extends StatelessWidget {
   final List<Map<String, dynamic>> patientEncounters;
 
   const SmallScreenDashboardBody(this.patientData, this.patientCareTeam,
-      this.patientPrescriptions, this.patientEncounters, {super.key});
+      this.patientPrescriptions, this.patientEncounters,
+      {super.key});
   @override
   Widget build(BuildContext context) {
     return ListView(
@@ -28,7 +29,8 @@ class SmallScreenDashboardBody extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Hello, " '${patientData['first_name']}', // Dynamic Variable
+                    "Hello, "
+                    '${patientData['first_name']}', // Dynamic Variable
                     style: const TextStyle(
                       color: Color(0xFF424E79),
                       fontSize: 32,
@@ -163,7 +165,8 @@ class SmallScreenDashboardBody extends StatelessWidget {
                                 height: 20.0,
                                 width: 50.0,
                                 fontSize: 12,
-                                fontColor: const Color.fromARGB(255, 255, 255, 255),
+                                fontColor:
+                                    const Color.fromARGB(255, 255, 255, 255),
                                 buttonColor: const Color(0xFF4454C3),
                                 buttonOutline: const Color(0xFF4454C3),
                               ),
@@ -175,7 +178,8 @@ class SmallScreenDashboardBody extends StatelessWidget {
                                 width: 50.0,
                                 fontSize: 12,
                                 fontColor: const Color(0xFF4454C3),
-                                buttonColor: const Color.fromARGB(255, 255, 255, 255),
+                                buttonColor:
+                                    const Color.fromARGB(255, 255, 255, 255),
                                 buttonOutline: const Color(0xFF4454C3),
                               ),
                             ],
@@ -443,7 +447,8 @@ class SmallScreenDashboardBody extends StatelessWidget {
                                           fontSize: 12,
                                           fontColor: const Color(0xFF4454C3),
                                           buttonColor: Colors.white,
-                                          buttonOutline: const Color(0xFF4454C3),
+                                          buttonOutline:
+                                              const Color(0xFF4454C3),
                                         ),
                                       ],
                                     ),
@@ -640,7 +645,8 @@ class SmallScreenDashboardBody extends StatelessWidget {
                                           fontSize: 12,
                                           fontColor: const Color(0xFF4454C3),
                                           buttonColor: Colors.white,
-                                          buttonOutline: const Color(0xFF4454C3),
+                                          buttonOutline:
+                                              const Color(0xFF4454C3),
                                         ),
                                       ],
                                     ),

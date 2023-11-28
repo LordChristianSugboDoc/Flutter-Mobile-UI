@@ -121,6 +121,16 @@ class _DashboardState extends State<Dashboard> {
     }
   }
 
+  Future<void> _logout() async {
+    String logoutURL =
+        'http://10.0.2.2:8080/flutter-mobile-backend-ui/index.php/auth/logout';
+    try {
+      final responsePatientDetails = await http.get(Uri.parse(logoutURL));
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
+
   int _selectedIndex = 0;
 
   @override
@@ -152,7 +162,7 @@ class _DashboardState extends State<Dashboard> {
                   builder: (context, constraints) {
                     if (constraints.maxWidth < smallWidth) {
                       // Small screen layout
-                      return const NavBar();
+                      return NavBar(_logout);
                     } else if (constraints.maxWidth < mediumWidth) {
                       return const SizedBox();
                     } else {
@@ -212,6 +222,7 @@ class _DashboardState extends State<Dashboard> {
                       patientPrescriptions,
                       patientEncounters,
                       onDestinationSelected,
+                      _logout,
                     );
                   }
                 },
