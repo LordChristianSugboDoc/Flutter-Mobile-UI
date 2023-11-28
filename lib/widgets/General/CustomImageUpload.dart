@@ -8,7 +8,8 @@ class CustomImageDisplay extends StatelessWidget {
   final VoidCallback onTap;
   final TextEditingController imagePathController;
 
-  const CustomImageDisplay({super.key, 
+  const CustomImageDisplay({
+    super.key,
     required this.inputHeight,
     required this.inputWidth,
     required this.image,
@@ -27,7 +28,7 @@ class CustomImageDisplay extends StatelessWidget {
           border: Border.all(
             color: const Color.fromARGB(41, 66, 78, 121),
           ),
-          borderRadius: const BorderRadius.all(Radius.circular(5.0)),
+          borderRadius: const BorderRadius.all(Radius.circular(100.0)),
         ),
         child: image == null
             ? const Center(
@@ -36,11 +37,38 @@ class CustomImageDisplay extends StatelessWidget {
                   color: Color(0xFF424E79),
                 ),
               )
-            : Image.file(
-                image!,
-                width: inputWidth,
-                height: inputHeight,
-                // fit: BoxFit.cover,
+            : Container(
+                child: Stack(
+                  children: [
+                    ClipRRect(
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(100.0)),
+                      child: Image.file(
+                        image!,
+                        width: inputWidth,
+                        height: inputHeight,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: Container(
+                        width: 38,
+                        height: 38,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: const Color(0xFF4454C3),
+                        ),
+                        child: IconButton(
+                          icon: Icon(Icons.edit),
+                          onPressed: () {},
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
       ),
     );
