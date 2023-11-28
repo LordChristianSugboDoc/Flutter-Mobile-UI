@@ -107,9 +107,15 @@ class SmallEditPatientProfileBody extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  CustomImageDisplay(
+                    inputWidth: 75,
+                    inputHeight: 75,
+                    image: _image,
+                    onTap: _getImage,
+                    imagePathController: imageController,
+                  ),
+                  const SizedBox(height: 15),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -254,25 +260,13 @@ class SmallEditPatientProfileBody extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 15),
-                  Row(
-                    children: [
-                      DatePickerField(
-                        labelText: "Birth Date",
-                        hintText: "",
-                        inputWidth: width * .421,
-                        inputHeight: 60,
-                        controller: birthdateController,
-                        function: _handleDateSelection,
-                      ),
-                      const SizedBox(width: 12),
-                      CustomImageDisplay(
-                        inputWidth: width * .361,
-                        inputHeight: 60,
-                        image: _image,
-                        onTap: _getImage,
-                        imagePathController: imageController,
-                      ),
-                    ],
+                  DatePickerField(
+                    labelText: "Birth Date",
+                    hintText: "",
+                    inputWidth: width,
+                    inputHeight: 60,
+                    controller: birthdateController,
+                    function: _handleDateSelection,
                   ),
                   const SizedBox(height: 30),
                   PrimaryButton(

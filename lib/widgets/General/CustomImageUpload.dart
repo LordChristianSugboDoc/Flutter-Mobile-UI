@@ -54,14 +54,17 @@ class CustomImageDisplay extends StatelessWidget {
                       bottom: 0,
                       right: 0,
                       child: Container(
-                        width: 38,
-                        height: 38,
+                        width: inputWidth * .35,
+                        height: inputHeight * .35,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: const Color(0xFF4454C3),
                         ),
                         child: IconButton(
-                          icon: Icon(Icons.edit),
+                          icon: Icon(
+                            Icons.edit,
+                            size: inputWidth * .15,
+                          ),
                           onPressed: () {},
                           color: Colors.white,
                         ),
