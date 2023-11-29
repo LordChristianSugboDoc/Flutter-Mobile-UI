@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class EditPatientProfile extends ChangeNotifier {
   String selectedCountry = 'Country';
-  String selectedState = 'Province';
+  String selectedProvince = 'Province';
   String selectedCity = 'City';
   String selectedBrgy = 'Barangay';
 
@@ -11,8 +11,8 @@ class EditPatientProfile extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateSelectedState(String value) {
-    selectedState = value ?? '';
+  void updateSelectedProvince(String value) {
+    selectedProvince = value ?? '';
     notifyListeners();
   }
 

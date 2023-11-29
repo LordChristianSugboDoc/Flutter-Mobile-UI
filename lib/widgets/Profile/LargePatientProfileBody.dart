@@ -149,14 +149,18 @@ class LargeScreenPatientProfileBody extends StatelessWidget {
                                 width: 55,
                               ),
                               Flexible(
-                                child: Text(
-                                  '${patientData['address']}, ${patientData['barangay']}, ${patientData['city']}, ${patientData['province']}, ${patientData['country']}',
-                                  style: const TextStyle(
-                                    color: Color(0xFF424E79),
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
+                                child: (patientData['address'] != null)
+                                    ? Container(
+                                        child: Text(
+                                          '${patientData['address']}, ${patientData['barangay']}, ${patientData['city']}, ${patientData['province']}, ${patientData['country']}',
+                                          style: const TextStyle(
+                                            color: Color(0xFF424E79),
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                        ),
+                                      )
+                                    : Container(),
                               ),
                             ],
                           ),

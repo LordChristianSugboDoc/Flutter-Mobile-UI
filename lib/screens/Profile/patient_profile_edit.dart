@@ -29,7 +29,7 @@ class _PatientProfileEditState extends State<PatientProfileEdit> {
   final TextEditingController addressController = TextEditingController();
   final TextEditingController brgyController = TextEditingController();
   final TextEditingController cityController = TextEditingController();
-  final TextEditingController stateController = TextEditingController();
+  final TextEditingController provinceController = TextEditingController();
   final TextEditingController countryController = TextEditingController();
   final TextEditingController birthdateController = TextEditingController();
   final TextEditingController imageController = TextEditingController();
@@ -47,11 +47,6 @@ class _PatientProfileEditState extends State<PatientProfileEdit> {
       initializeControllers(patientData);
     });
   }
-
-  String selectedCountry = 'Country';
-  String selectedState = 'Province';
-  String selectedCity = 'City';
-  String selectedBrgy = 'Barangay';
 
   Future<void> checkStoragePermission() async {
     PermissionStatus storageStatus = await Permission.storage.status;
@@ -109,7 +104,7 @@ class _PatientProfileEditState extends State<PatientProfileEdit> {
         'address': addressController.text,
         'barangay': brgyController.text,
         'city': cityController.text,
-        'state': stateController.text,
+        'province': provinceController.text,
         'country': countryController.text,
         'birthdate': birthdateController.text,
       });
@@ -246,12 +241,11 @@ class _PatientProfileEditState extends State<PatientProfileEdit> {
                       addressController,
                       brgyController,
                       cityController,
-                      stateController,
+                      provinceController,
                       countryController,
                       birthdateController,
                       imageController,
                       _image,
-                      updateAddress,
                       _updatePatientProfile,
                       () => _handleDateSelection(context),
                       _getImage,
@@ -268,12 +262,11 @@ class _PatientProfileEditState extends State<PatientProfileEdit> {
                       addressController,
                       brgyController,
                       cityController,
-                      stateController,
+                      provinceController,
                       countryController,
                       birthdateController,
                       imageController,
                       _image,
-                      updateAddress,
                       _updatePatientProfile,
                       () => _handleDateSelection(context),
                       _getImage,
@@ -288,13 +281,6 @@ class _PatientProfileEditState extends State<PatientProfileEdit> {
     );
   }
 
-  void updateAddress() {
-    brgyController.text = selectedBrgy;
-    cityController.text = selectedCity;
-    stateController.text = selectedState;
-    countryController.text = selectedCountry;
-  }
-
   Future<void> _handleDateSelection(BuildContext context) async {
     await _selectDate(context);
   }
@@ -306,27 +292,11 @@ class _PatientProfileEditState extends State<PatientProfileEdit> {
     phoneController.text = patientData['phone'] ?? '';
     brgyController.text = patientData['barangay'] ?? '';
     cityController.text = patientData['city'] ?? '';
-    stateController.text = patientData['province'] ?? '';
+    provinceController.text = patientData['province'] ?? '';
     countryController.text = patientData['country'] ?? '';
     addressController.text = patientData['address'] ?? '';
     birthdateController.text = patientData['birthdate'] ?? '';
     imageController.text = patientData['image'] ?? '';
-
-    if (patientData['country'] != null) {
-      selectedCountry = patientData['country'];
-    }
-
-    if (patientData['province'] != null) {
-      selectedState = patientData['province'];
-    }
-
-    if (patientData['city'] != null) {
-      selectedCity = patientData['city'];
-    }
-
-    if (patientData['barangay'] != null) {
-      selectedBrgy = patientData['barangay'];
-    }
   }
 
   Widget _buildMediumScreenLayout() {

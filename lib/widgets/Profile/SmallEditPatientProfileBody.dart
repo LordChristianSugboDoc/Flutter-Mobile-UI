@@ -17,12 +17,11 @@ class SmallEditPatientProfileBody extends StatelessWidget {
   final TextEditingController addressController;
   final TextEditingController brgyController;
   final TextEditingController cityController;
-  final TextEditingController stateController;
+  final TextEditingController provinceController;
   final TextEditingController countryController;
   final TextEditingController birthdateController;
   final TextEditingController imageController;
   final File? _image;
-  final VoidCallback updateAddress;
   final VoidCallback _updatePatientProfile;
   final VoidCallback _handleDateSelection;
   final VoidCallback _getImage;
@@ -36,12 +35,11 @@ class SmallEditPatientProfileBody extends StatelessWidget {
     this.addressController,
     this.brgyController,
     this.cityController,
-    this.stateController,
+    this.provinceController,
     this.countryController,
     this.birthdateController,
     this.imageController,
     this._image,
-    this.updateAddress,
     this._updatePatientProfile,
     this._handleDateSelection,
     this._getImage,
@@ -52,7 +50,7 @@ class SmallEditPatientProfileBody extends StatelessWidget {
     EditPatientProfile editPatientProfile =
         Provider.of<EditPatientProfile>(context);
     String selectedCountry = editPatientProfile.selectedCountry;
-    String selectedState = editPatientProfile.selectedState;
+    String selectedProvince = editPatientProfile.selectedProvince;
     String selectedCity = editPatientProfile.selectedCity;
     String selectedBrgy = editPatientProfile.selectedBrgy;
     double width = MediaQuery.of(context).size.width;
@@ -182,30 +180,31 @@ class SmallEditPatientProfileBody extends StatelessWidget {
                           'Thailand'
                         ],
                         onChanged: (String? value) {
-                          if (patientData['country'] != null) {
-                            editPatientProfile.updateSelectedCountry(
-                                patientData['country'] ?? '');
-                          } else {
+                          if (value != null) {
+                            editPatientProfile.updateSelectedCountry(value);
+                          } else if (patientData['country'] != null) {
                             editPatientProfile
-                                .updateSelectedCountry(value ?? '');
+                                .updateSelectedCountry(patientData['country']!);
                           }
+                          print('Selected Country: $selectedCountry');
                         },
                       ),
                       const SizedBox(width: 12),
                       CustomDropDown(
                         labelText: 'State/Province',
                         hintText: '',
-                        selectedValue: selectedState,
+                        selectedValue: selectedProvince,
                         inputWidth: width * .391,
                         inputHeight: 60.0,
                         items: const ['None', 'Cebu', 'Leyte', 'Bohol'],
                         onChanged: (String? value) {
-                          if (patientData['province'] != null) {
-                            editPatientProfile.updateSelectedState(
-                                patientData['province'] ?? '');
-                          } else {
-                            editPatientProfile.updateSelectedState(value ?? '');
+                          if (value != null) {
+                            editPatientProfile.updateSelectedProvince(value);
+                          } else if (patientData['province'] != null) {
+                            editPatientProfile.updateSelectedProvince(
+                                patientData['province']!);
                           }
+                          print('Selected Country: $selectedProvince');
                         },
                       ),
                     ],
@@ -227,12 +226,13 @@ class SmallEditPatientProfileBody extends StatelessWidget {
                           'Bogo City'
                         ],
                         onChanged: (String? value) {
-                          if (patientData['city'] != null) {
+                          if (value != null) {
+                            editPatientProfile.updateSelectedCity(value);
+                          } else if (patientData['city'] != null) {
                             editPatientProfile
-                                .updateSelectedCity(patientData['city'] ?? '');
-                          } else {
-                            editPatientProfile.updateSelectedCity(value ?? '');
+                                .updateSelectedCity(patientData['city']!);
                           }
+                          print('Selected Country: $selectedCity');
                         },
                       ),
                       const SizedBox(width: 12),
@@ -249,12 +249,13 @@ class SmallEditPatientProfileBody extends StatelessWidget {
                           'Casuntingan'
                         ],
                         onChanged: (String? value) {
-                          if (patientData['barangay'] != null) {
-                            editPatientProfile.updateSelectedBrgy(
-                                patientData['barangay'] ?? '');
-                          } else {
-                            editPatientProfile.updateSelectedBrgy(value ?? '');
+                          if (value != null) {
+                            editPatientProfile.updateSelectedBrgy(value);
+                          } else if (patientData['barangay'] != null) {
+                            editPatientProfile
+                                .updateSelectedBrgy(patientData['barangay']!);
                           }
+                          print('Selected Country: $selectedBrgy');
                         },
                       ),
                     ],
@@ -273,7 +274,10 @@ class SmallEditPatientProfileBody extends StatelessWidget {
                     text: "Submit",
                     buttonColor: const Color(0xFF4454C3),
                     onPress: () {
-                      updateAddress();
+                      brgyController.text = selectedBrgy;
+                      cityController.text = selectedCity;
+                      provinceController.text = selectedProvince;
+                      countryController.text = selectedCountry;
                       _updatePatientProfile();
                     },
                   ),
