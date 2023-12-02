@@ -13,20 +13,19 @@ class Registration extends StatefulWidget {
 }
 
 class _RegistrationState extends State<Registration> {
-  final TextEditingController emailController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController birthdateController = TextEditingController();
-
   bool obscurePassword = true;
 
   _RegisterPatient() async {
     String url =
-        'http://10.0.2.2:8080/flutter-mobile-backend-ui/index.php/auth/create_user';
+        'http://10.0.2.2:8080/sugbodoc-multi-tenant/index.php/api/auth/auth/create_user';
 
     Map<String, String> data = {
-      'email': emailController.text,
       'phone': phoneController.text,
+      'email': emailController.text,
       'password': passwordController.text,
       'birthdate': birthdateController.text,
     };

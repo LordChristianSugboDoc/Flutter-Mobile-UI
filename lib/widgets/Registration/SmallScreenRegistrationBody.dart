@@ -73,8 +73,8 @@ class SmallScreenRegistrationBody extends StatelessWidget {
                     height: 20.0,
                   ),
                   CustomTextField(
-                    labelText: "Phone Number",
-                    hintText: "0987 654 321",
+                    labelText: "Mobile Number",
+                    hintText: "0987 xxx xxxx",
                     controller: phoneController,
                     textInputType: TextInputType.phone,
                   ),

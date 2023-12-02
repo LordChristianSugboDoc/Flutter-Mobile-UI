@@ -21,6 +21,7 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   late Future<void> _fetchDashboardFuture;
 
+  Map<String, dynamic> responseData = {};
   Map<String, dynamic> patientData = {};
   Map<String, dynamic> patientCareTeam = {};
   List<Map<String, dynamic>> patientPrescriptions = [];
@@ -37,13 +38,13 @@ class _DashboardState extends State<Dashboard> {
 
   Future<void> _fetchDashboard() async {
     String patientDetailsURL =
-        'http://10.0.2.2:8080/flutter-mobile-backend-ui/index.php/Patient/getPatientDetails/$globalId';
+        'http://10.0.2.2:8080/sugbodoc-multi-tenant/index.php/api/auth/auth/get_patient_details/$globalId';
     String careTeamURL =
-        'http://10.0.2.2:8080/flutter-mobile-backend-ui/index.php/Patient/getPatientCareTeam/$globalId';
+        'http://10.0.2.2:8080/sugbodoc-multi-tenant/index.php/api/auth/auth/get_patient_care_team/$globalId';
     String prescriptionsURL =
-        'http://10.0.2.2:8080/flutter-mobile-backend-ui/index.php/Patient/getPatientPrescriptions/$globalId';
+        'http://10.0.2.2:8080/sugbodoc-multi-tenant/index.php/api/auth/auth/get_patient_prescriptions/$globalId';
     String encountersURL =
-        'http://10.0.2.2:8080/flutter-mobile-backend-ui/index.php/Patient/getPatientEncounters/$globalId';
+        'http://10.0.2.2:8080/sugbodoc-multi-tenant/index.php/api/auth/auth/get_patient_encounters/$globalId';
 
     try {
       final responsePatientDetails =
@@ -72,8 +73,10 @@ class _DashboardState extends State<Dashboard> {
 
       if (responsePatientDetails.statusCode == 200) {
         setState(() {
-          patientData = json.decode(responsePatientDetails.body);
+          responseData = json.decode(responsePatientDetails.body);
           patientCareTeam = json.decode(responseCareTeam.body);
+
+          patientData = responseData['patientData'];
 
           print('Patient Care Team: $patientCareTeam');
           // Ensure the correct type for patientPrescriptions
@@ -123,7 +126,7 @@ class _DashboardState extends State<Dashboard> {
 
   Future<void> _logout() async {
     String logoutURL =
-        'http://10.0.2.2:8080/flutter-mobile-backend-ui/index.php/auth/logout';
+        'http://10.0.2.2:8080/sugbodoc-multi-tenant/index.php/api/auth/auth/logout';
     try {
       final responsePatientDetails = await http.get(Uri.parse(logoutURL));
     } catch (e) {

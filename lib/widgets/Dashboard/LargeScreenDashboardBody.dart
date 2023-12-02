@@ -13,7 +13,7 @@ class LargeScreenDashboardBody extends StatelessWidget {
   final List<Map<String, dynamic>> patientPrescriptions;
   final List<Map<String, dynamic>> patientEncounters;
   final ValueChanged<int> onDestinationSelected;
-  final Future<void> Function()  logout;
+  final Future<void> Function() logout;
 
   const LargeScreenDashboardBody(
     this.patientData,
@@ -30,6 +30,10 @@ class LargeScreenDashboardBody extends StatelessWidget {
         Provider.of<ExtendNavigationRail>(context);
     double swidth = extendNavigationRail.width;
     double width = MediaQuery.of(context).size.width;
+
+    String firstname = (patientData['firstname'] != null)
+        ? patientData['firstname']
+        : "Missing";
 
     return SafeArea(
       child: SingleChildScrollView(
@@ -90,9 +94,9 @@ class LargeScreenDashboardBody extends StatelessWidget {
                                   margin: const EdgeInsets.only(right: 17),
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(50),
-                                    child: (patientData['image'] != null)
+                                    child: (patientData['img_url'] != null)
                                         ? Image.network(
-                                            'http://10.0.2.2:8080/flutter-mobile-backend-ui/${patientData['image']}',
+                                            'http://10.0.2.2:8080/sugbodoc-multi-tenant/${patientData['img_url']}',
                                             height: 60,
                                             width: 60,
                                             fit: BoxFit.cover,
@@ -125,7 +129,7 @@ class LargeScreenDashboardBody extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Hello, " '${patientData['first_name']}',
+                            "Hello, " '$firstname',
                             style: const TextStyle(
                                 color: Color(0xFF424E79),
                                 fontSize: 45,
@@ -164,8 +168,11 @@ class LargeScreenDashboardBody extends StatelessWidget {
                       Column(
                         children: [
                           /* My Care Team - Start */
-                          (!patientCareTeam.containsKey('error'))
+                          (!patientCareTeam.containsKey('error') &&
+                                  patientCareTeam['error'] !=
+                                      'Patient Care Team not found')
                               ? Container(
+                                  height: 208,
                                   padding: const EdgeInsets.only(
                                     top: 15.0,
                                     left: 18.0,
@@ -338,6 +345,7 @@ class LargeScreenDashboardBody extends StatelessWidget {
                                   ),
                                 )
                               : Container(
+                                  height: 208,
                                   padding: const EdgeInsets.only(
                                     top: 15.0,
                                     left: 18.0,
@@ -351,7 +359,7 @@ class LargeScreenDashboardBody extends StatelessWidget {
                                   ),
                                   decoration: BoxDecoration(
                                     color: Colors.white,
-                                    borderRadius: BorderRadius.circular(8),
+                                    borderRadius: BorderRadius.circular(15),
                                     boxShadow: [
                                       BoxShadow(
                                         color: const Color(0xFF4454C3)
@@ -383,14 +391,15 @@ class LargeScreenDashboardBody extends StatelessWidget {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          const Column(
+                                          Column(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
                                                 "There's no one here",
                                                 style: TextStyle(
-                                                  color: Color(0xFF424E79),
+                                                  color: Color(0xFF424E79)
+                                                      .withOpacity(0.7),
                                                   fontSize: 30,
                                                   fontWeight: FontWeight.w800,
                                                 ),
@@ -398,7 +407,8 @@ class LargeScreenDashboardBody extends StatelessWidget {
                                               Text(
                                                 "Book a Consultation",
                                                 style: TextStyle(
-                                                  color: Color(0xFF424E79),
+                                                  color: Color(0xFF424E79)
+                                                      .withOpacity(0.5),
                                                   fontSize: 25,
                                                   fontWeight: FontWeight.w600,
                                                 ),
@@ -407,8 +417,8 @@ class LargeScreenDashboardBody extends StatelessWidget {
                                           ),
                                           Image.asset(
                                             'assets/images/PNG/info_doctor.png',
-                                            height: 150,
-                                            width: 150,
+                                            height: 140,
+                                            width: 140,
                                           )
                                         ],
                                       ),

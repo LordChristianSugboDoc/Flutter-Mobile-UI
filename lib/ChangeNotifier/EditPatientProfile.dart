@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 
 class EditPatientProfile extends ChangeNotifier {
-  String selectedCountry = 'Country';
-  String selectedProvince = 'Province';
-  String selectedCity = 'City';
-  String selectedBrgy = 'Barangay';
+  String selectedCountry = '';
+  String selectedProvince = '';
+  String selectedCity = '';
+  String selectedBrgy = '';
+  bool _hasFocus = false;
+  bool get hasFocus => _hasFocus;
+
+  void setFocus(bool focus) {
+    _hasFocus = focus;
+    notifyListeners();
+  }
 
   void updateSelectedCountry(String value) {
     selectedCountry = value ?? '';

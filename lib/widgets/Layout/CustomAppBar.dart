@@ -24,9 +24,9 @@ AppBar CustomAppBar(BuildContext context, Map<String, dynamic> patientData,
           margin: const EdgeInsets.only(right: 17),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(50),
-            child: (patientData['image'] != null)
+            child: (patientData['img_url'] != null)
                 ? Image.network(
-                    'http://10.0.2.2:8080/flutter-mobile-backend-ui/${patientData['image']}',
+                    'http://10.0.2.2:8080/sugbodoc-multi-tenant/${patientData['img_url']}',
                     height: 90, // Aspect Ratio 5:3
                     width: 54,
                     fit: BoxFit.cover,

@@ -12,6 +12,9 @@ class SmallScreenDashboardBody extends StatelessWidget {
       {super.key});
   @override
   Widget build(BuildContext context) {
+    String firstname = (patientData['firstname'] != null)
+        ? patientData['firstname']
+        : "Missing";
     return ListView(
       padding: const EdgeInsets.only(top: 20.0, left: 15.0),
       children: [
@@ -30,7 +33,7 @@ class SmallScreenDashboardBody extends StatelessWidget {
                 children: [
                   Text(
                     "Hello, "
-                    '${patientData['first_name']}', // Dynamic Variable
+                    '$firstname', // Dynamic Variable
                     style: const TextStyle(
                       color: Color(0xFF424E79),
                       fontSize: 32,
@@ -60,7 +63,8 @@ class SmallScreenDashboardBody extends StatelessWidget {
         ),
         /* Welcome - End */
         /* My Care Team Card - Start */
-        (!patientCareTeam.containsKey('error'))
+        (!patientCareTeam.containsKey('error') &&
+                patientCareTeam['error'] != 'Patient Care Team not found')
             ? Container(
                 padding: const EdgeInsets.only(
                   top: 15.0,
@@ -259,13 +263,13 @@ class SmallScreenDashboardBody extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Column(
+                        Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               "There's no one here",
                               style: TextStyle(
-                                color: Color(0xFF424E79),
+                                color: Color(0xFF424E79).withOpacity(0.7),
                                 fontSize: 22,
                                 fontWeight: FontWeight.w800,
                               ),
@@ -273,7 +277,7 @@ class SmallScreenDashboardBody extends StatelessWidget {
                             Text(
                               "Book a Consultation",
                               style: TextStyle(
-                                color: Color(0xFF424E79),
+                                color: Color(0xFF424E79).withOpacity(0.5),
                                 fontSize: 18,
                                 fontWeight: FontWeight.w600,
                               ),

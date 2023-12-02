@@ -188,7 +188,7 @@ class LargeScreenRegistrationBody extends StatelessWidget {
                               children: [
                                 CustomInputField(
                                   labelText: 'Mobile Number',
-                                  hintText: '0987 654 3210',
+                                  hintText: '0987 xxx xxxx',
                                   inputWidth: 240,
                                   inputHeight: 60,
                                   controller: phoneController,

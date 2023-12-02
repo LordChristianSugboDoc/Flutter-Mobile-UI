@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_doctor_ui/widgets/General/SearchableDropDown.dart';
 import 'dart:io';
 import 'package:provider/provider.dart';
 import 'package:flutter_doctor_ui/ChangeNotifier/EditPatientProfile.dart';
-import 'package:flutter_doctor_ui/widgets/General/CustomDropDown.dart';
 import 'package:flutter_doctor_ui/widgets/General/CustomImageUpload.dart';
 import 'package:flutter_doctor_ui/widgets/General/CustomInputField.dart';
 import 'package:flutter_doctor_ui/widgets/General/DatePickerField.dart';
@@ -10,6 +10,10 @@ import 'package:flutter_doctor_ui/widgets/General/PrimaryButton.dart';
 
 class LargeEditPatientProfileBody extends StatelessWidget {
   final Map<String, dynamic> patientData;
+  final Map<String, dynamic> patientCountry;
+  final Map<String, dynamic> patientState;
+  final Map<String, dynamic> patientCity;
+  final Map<String, dynamic> patientBrgy;
   final TextEditingController firstNameController;
   final TextEditingController lastNameController;
   final TextEditingController emailController;
@@ -28,6 +32,10 @@ class LargeEditPatientProfileBody extends StatelessWidget {
 
   LargeEditPatientProfileBody(
     this.patientData,
+    this.patientCountry,
+    this.patientState,
+    this.patientCity,
+    this.patientBrgy,
     this.firstNameController,
     this.lastNameController,
     this.emailController,
@@ -182,7 +190,7 @@ class LargeEditPatientProfileBody extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      CustomDropDown(
+                      SearchableDropDown(
                         labelText: 'Country',
                         hintText: '',
                         selectedValue: selectedCountry,
@@ -197,15 +205,15 @@ class LargeEditPatientProfileBody extends StatelessWidget {
                         onChanged: (String? value) {
                           if (value != null) {
                             editPatientProfile.updateSelectedCountry(value);
-                          } else if (patientData['country'] != null) {
+                          } else if (patientCountry['name'] != null) {
                             editPatientProfile
-                                .updateSelectedCountry(patientData['country']!);
+                                .updateSelectedCountry(patientCountry['name']!);
                           }
                           print('Selected Country: $selectedCountry');
                         },
                       ),
                       SizedBox(width: width * .014),
-                      CustomDropDown(
+                      SearchableDropDown(
                         labelText: 'State/Province',
                         hintText: '',
                         selectedValue: selectedProvince,
@@ -220,9 +228,9 @@ class LargeEditPatientProfileBody extends StatelessWidget {
                         onChanged: (String? value) {
                           if (value != null) {
                             editPatientProfile.updateSelectedProvince(value);
-                          } else if (patientData['province'] != null) {
-                            editPatientProfile.updateSelectedProvince(
-                                patientData['province']!);
+                          } else if (patientState['name'] != null) {
+                            editPatientProfile
+                                .updateSelectedProvince(patientState['name']!);
                           }
                           print('Selected Country: $selectedProvince');
                         },
@@ -233,7 +241,7 @@ class LargeEditPatientProfileBody extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      CustomDropDown(
+                      SearchableDropDown(
                         labelText: 'City',
                         hintText: '',
                         selectedValue: selectedCity,
@@ -248,15 +256,15 @@ class LargeEditPatientProfileBody extends StatelessWidget {
                         onChanged: (String? value) {
                           if (value != null) {
                             editPatientProfile.updateSelectedCity(value);
-                          } else if (patientData['city'] != null) {
+                          } else if (patientCity['name'] != null) {
                             editPatientProfile
-                                .updateSelectedCity(patientData['city']!);
+                                .updateSelectedCity(patientCity['name']!);
                           }
                           print('Selected Country: $selectedCity');
                         },
                       ),
                       SizedBox(width: width * .014),
-                      CustomDropDown(
+                      SearchableDropDown(
                         labelText: 'Barangay',
                         hintText: '',
                         selectedValue: selectedBrgy,
@@ -271,9 +279,9 @@ class LargeEditPatientProfileBody extends StatelessWidget {
                         onChanged: (String? value) {
                           if (value != null) {
                             editPatientProfile.updateSelectedBrgy(value);
-                          } else if (patientData['barangay'] != null) {
+                          } else if (patientBrgy['name'] != null) {
                             editPatientProfile
-                                .updateSelectedBrgy(patientData['barangay']!);
+                                .updateSelectedBrgy(patientBrgy['name']!);
                           }
                           print('Selected Country: $selectedBrgy');
                         },

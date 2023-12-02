@@ -20,7 +20,7 @@ class _LoginState extends State<Login> {
 
   Future<int> _LoginPatient() async {
     String url =
-        'http://10.0.2.2:8080/flutter-mobile-backend-ui/index.php/auth/login';
+        'http://10.0.2.2:8080/sugbodoc-multi-tenant/index.php/api/auth/auth/login';
 
     Map<String, String> data = {
       'identity': inputController.text,

@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
+import 'dart:convert';
+import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:http/http.dart' as http;
+import 'package:path/path.dart' as path;
 import 'package:flutter_doctor_ui/main.dart';
 import 'package:flutter_doctor_ui/screens/Profile/patient_profile.dart';
 import 'package:flutter_doctor_ui/widgets/Profile/LargeEditPatientProfileBody.dart';
 import 'package:flutter_doctor_ui/widgets/Profile/SmallEditPatientProfileBody.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'package:image_picker/image_picker.dart';
-import 'package:path/path.dart' as path;
-import 'package:intl/intl.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class PatientProfileEdit extends StatefulWidget {
   static String routeName = "/patientprofileedit";
-
   const PatientProfileEdit({super.key});
 
   @override
@@ -35,7 +34,13 @@ class _PatientProfileEditState extends State<PatientProfileEdit> {
   final TextEditingController imageController = TextEditingController();
 
   late Future<void> _fetchPatientProfileEditFuture;
+  Map<String, dynamic> responseData = {};
   Map<String, dynamic> patientData = {};
+  Map<String, dynamic> patientCountry = {};
+  Map<String, dynamic> patientState = {};
+  Map<String, dynamic> patientCity = {};
+  Map<String, dynamic> patientBrgy = {};
+
   File? _image;
 
   @override
@@ -66,7 +71,7 @@ class _PatientProfileEditState extends State<PatientProfileEdit> {
 
   Future<void> _fetchPatientProfileEdit() async {
     String patientDetailsURL =
-        'http://10.0.2.2:8080/flutter-mobile-backend-ui/index.php/Patient/getPatientDetails/$globalId';
+        'http://10.0.2.2:8080/sugbodoc-multi-tenant/index.php/api/auth/auth/get_patient_details/$globalId';
 
     try {
       final responsePatientDetails =
@@ -78,11 +83,17 @@ class _PatientProfileEditState extends State<PatientProfileEdit> {
       print('Response Patient Data Body: ${responsePatientDetails.body}');
 
       if (responsePatientDetails.statusCode == 200) {
-        setState(() {
-          patientData = json.decode(responsePatientDetails.body);
+        setState(
+          () {
+            responseData = json.decode(responsePatientDetails.body);
 
-          // Ensure the correct type for patientPrescriptions
-        });
+            patientData = responseData['patientData'];
+            patientCountry = responseData['patientCountry'];
+            patientState = responseData['patientState'];
+            patientCity = responseData['patientCity'];
+            patientBrgy = responseData['patientBrgy'];
+          },
+        );
       } else {
         throw Exception('Failed to load data');
       }
@@ -93,13 +104,13 @@ class _PatientProfileEditState extends State<PatientProfileEdit> {
 
   Future<void> _updatePatientProfile() async {
     String URL =
-        'http://10.0.2.2:8080/flutter-mobile-backend-ui/index.php/Patient/edit_patient_details/$globalId';
+        'http://10.0.2.2:8080/sugbodoc-multi-tenant/index.php/api/auth/auth/edit_patient_details/$globalId';
 
     try {
       final request = http.MultipartRequest('POST', Uri.parse(URL));
       request.fields.addAll({
-        'first_name': firstNameController.text,
-        'last_name': lastNameController.text,
+        'firstname': firstNameController.text,
+        'lastname': lastNameController.text,
         'phone': phoneController.text,
         'address': addressController.text,
         'barangay': brgyController.text,
@@ -107,6 +118,7 @@ class _PatientProfileEditState extends State<PatientProfileEdit> {
         'province': provinceController.text,
         'country': countryController.text,
         'birthdate': birthdateController.text,
+        'img_url': imageController.text,
       });
 
       if (_image != null) {
@@ -184,7 +196,7 @@ class _PatientProfileEditState extends State<PatientProfileEdit> {
         _image = newImage;
         imageController.text = relativePath;
       });
-
+      print('New Image Path: $newImagePath');
       print('Image Path: $relativePath');
     }
   }
@@ -199,7 +211,6 @@ class _PatientProfileEditState extends State<PatientProfileEdit> {
         future: _fetchPatientProfileEditFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            // Display a loading indicator while waiting for data
             return const Center(
               child: CircularProgressIndicator(
                 valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF4454C3)),
@@ -234,6 +245,10 @@ class _PatientProfileEditState extends State<PatientProfileEdit> {
                   if (constraints.maxWidth < smallWidth) {
                     return SmallEditPatientProfileBody(
                       patientData,
+                      patientCountry,
+                      patientState,
+                      patientCity,
+                      patientBrgy,
                       firstNameController,
                       lastNameController,
                       emailController,
@@ -255,6 +270,10 @@ class _PatientProfileEditState extends State<PatientProfileEdit> {
                   } else {
                     return LargeEditPatientProfileBody(
                       patientData,
+                      patientCountry,
+                      patientState,
+                      patientCity,
+                      patientBrgy,
                       firstNameController,
                       lastNameController,
                       emailController,
@@ -286,17 +305,17 @@ class _PatientProfileEditState extends State<PatientProfileEdit> {
   }
 
   void initializeControllers(Map<String, dynamic> patientData) {
-    firstNameController.text = patientData['first_name'] ?? '';
-    lastNameController.text = patientData['last_name'] ?? '';
+    firstNameController.text = patientData['firstname'] ?? '';
+    lastNameController.text = patientData['lastname'] ?? '';
     emailController.text = patientData['email'] ?? '';
     phoneController.text = patientData['phone'] ?? '';
-    brgyController.text = patientData['barangay'] ?? '';
-    cityController.text = patientData['city'] ?? '';
-    provinceController.text = patientData['province'] ?? '';
-    countryController.text = patientData['country'] ?? '';
+    brgyController.text = patientBrgy['name'] ?? '';
+    cityController.text = patientCity['name'] ?? '';
+    provinceController.text = patientState['name'] ?? '';
+    countryController.text = patientCountry['name'] ?? '';
     addressController.text = patientData['address'] ?? '';
     birthdateController.text = patientData['birthdate'] ?? '';
-    imageController.text = patientData['image'] ?? '';
+    imageController.text = patientData['img_url'] ?? '';
   }
 
   Widget _buildMediumScreenLayout() {

@@ -2,11 +2,21 @@ import 'package:flutter/material.dart';
 
 class LargeScreenPatientProfileBody extends StatelessWidget {
   final Map<String, dynamic> patientData;
+  final Map<String, dynamic> patientCountry;
+  final Map<String, dynamic> patientState;
+  final Map<String, dynamic> patientCity;
+  final Map<String, dynamic> patientBrgy;
   final Map<String, dynamic> patientCareTeam;
   final List<Map<String, dynamic>> communityPosts;
 
   LargeScreenPatientProfileBody(
-      this.patientData, this.patientCareTeam, this.communityPosts,
+      this.patientData,
+      this.patientCountry,
+      this.patientState,
+      this.patientCity,
+      this.patientBrgy,
+      this.patientCareTeam,
+      this.communityPosts,
       {super.key});
 
   @override
@@ -71,9 +81,9 @@ class LargeScreenPatientProfileBody extends StatelessWidget {
                   children: [
                     ClipRRect(
                       borderRadius: BorderRadius.circular(10),
-                      child: (patientData['image'] != null)
+                      child: (patientData['img_url'] != null)
                           ? Image.network(
-                              'http://10.0.2.2:8080/flutter-mobile-backend-ui/${patientData['image']}',
+                              'http://10.0.2.2:8080/sugbodoc-multi-tenant/${patientData['img_url']}',
                               height: 200,
                               width: 200,
                               fit: BoxFit.cover,
@@ -96,9 +106,7 @@ class LargeScreenPatientProfileBody extends StatelessWidget {
                           height: 40.0,
                         ),
                         Text(
-                          '${patientData['first_name']}'
-                          " "
-                          '${patientData['last_name']}',
+                          '${patientData['name']}',
                           style: const TextStyle(
                             color: Color(0xFF424E79),
                             fontSize: 50,
@@ -152,7 +160,7 @@ class LargeScreenPatientProfileBody extends StatelessWidget {
                                 child: (patientData['address'] != null)
                                     ? Container(
                                         child: Text(
-                                          '${patientData['address']}, ${patientData['barangay']}, ${patientData['city']}, ${patientData['province']}, ${patientData['country']}',
+                                          '${patientData['address']}, ${patientBrgy['name']}, ${patientCity['name']}, ${patientState['name']}, ${patientCountry['name']}',
                                           style: const TextStyle(
                                             color: Color(0xFF424E79),
                                             fontSize: 20,
@@ -468,109 +476,147 @@ class LargeScreenPatientProfileBody extends StatelessWidget {
                                       ),
                                     )
                                   : Container(),
-                              const Text(
-                                "Community Posts",
-                                style: TextStyle(
-                                  color: Color(0xFF424E79),
-                                  fontSize: 25,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              for (var communityPost in communityPosts)
-                                Container(
-                                  width: MediaQuery.of(context).size.width *
-                                      .644, // Adjust this width as needed
-                                  child: ListTile(
-                                    title: Padding(
-                                      padding: const EdgeInsets.only(
-                                          bottom: 10.0, left: 0.0),
+                              communityPosts.isNotEmpty
+                                  ? Container(
                                       child: Column(
-                                        // First Community Card
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
                                         children: [
-                                          Container(
-                                            decoration: BoxDecoration(
-                                              color: const Color(0xFF4454C3)
-                                                  .withOpacity(0.10),
-                                              borderRadius:
-                                                  BorderRadius.circular(5),
-                                              border: Border.all(
-                                                color: const Color(0xFF4454C3)
-                                                    .withOpacity(0.15),
-                                                width: .5,
-                                              ),
-                                            ),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Container(
-                                                  margin:
-                                                      const EdgeInsets.all(10),
-                                                  alignment:
-                                                      Alignment.centerRight,
-                                                  decoration: BoxDecoration(
-                                                    color: Colors.white,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            12),
-                                                  ),
-                                                  child: ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            12),
-                                                    child: Image.asset(
-                                                      '${communityPost['doctor_image']}', // Dynamic Variable
-                                                      height: 125,
-                                                      width: 125,
-                                                    ),
-                                                  ),
-                                                ),
-                                                const SizedBox(
-                                                  width: 30,
-                                                ),
-                                                Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    const SizedBox(
-                                                        height: 25.0),
-                                                    Text(
-                                                      '${communityPost['doctor_title']}', // Dynamic Variable
-                                                      style: const TextStyle(
-                                                        color:
-                                                            Color(0xFF424E79),
-                                                        fontSize: 20,
-                                                        fontWeight:
-                                                            FontWeight.w700,
-                                                      ),
-                                                    ),
-                                                    const SizedBox(height: 7.0),
-                                                    Text(
-                                                      '${communityPost['message']}', // Dynamic Variable
-                                                      style: const TextStyle(
-                                                        color:
-                                                            Color(0xFF424E79),
-                                                        fontSize: 16,
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                )
-                                              ],
+                                          const Text(
+                                            "Community Posts",
+                                            style: TextStyle(
+                                              color: Color(0xFF424E79),
+                                              fontSize: 25,
+                                              fontWeight: FontWeight.w500,
                                             ),
                                           ),
+                                          for (var communityPost
+                                              in communityPosts)
+                                            Container(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  .644, // Adjust this width as needed
+                                              child: ListTile(
+                                                title: Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          bottom: 10.0,
+                                                          left: 0.0),
+                                                  child: Column(
+                                                    // First Community Card
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Container(
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: const Color(
+                                                                  0xFF4454C3)
+                                                              .withOpacity(
+                                                                  0.10),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(5),
+                                                          border: Border.all(
+                                                            color: const Color(
+                                                                    0xFF4454C3)
+                                                                .withOpacity(
+                                                                    0.15),
+                                                            width: .5,
+                                                          ),
+                                                        ),
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .start,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Container(
+                                                              margin:
+                                                                  const EdgeInsets
+                                                                      .all(10),
+                                                              alignment: Alignment
+                                                                  .centerRight,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                color: Colors
+                                                                    .white,
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            12),
+                                                              ),
+                                                              child: ClipRRect(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            12),
+                                                                child:
+                                                                    Image.asset(
+                                                                  '${communityPost['doctor_image']}', // Dynamic Variable
+                                                                  height: 125,
+                                                                  width: 125,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            const SizedBox(
+                                                              width: 30,
+                                                            ),
+                                                            Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                const SizedBox(
+                                                                    height:
+                                                                        25.0),
+                                                                Text(
+                                                                  '${communityPost['doctor_title']}', // Dynamic Variable
+                                                                  style:
+                                                                      const TextStyle(
+                                                                    color: Color(
+                                                                        0xFF424E79),
+                                                                    fontSize:
+                                                                        20,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w700,
+                                                                  ),
+                                                                ),
+                                                                const SizedBox(
+                                                                    height:
+                                                                        7.0),
+                                                                Text(
+                                                                  '${communityPost['message']}', // Dynamic Variable
+                                                                  style:
+                                                                      const TextStyle(
+                                                                    color: Color(
+                                                                        0xFF424E79),
+                                                                    fontSize:
+                                                                        16,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400,
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            )
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
                                         ],
                                       ),
-                                    ),
-                                  ),
-                                ),
+                                    )
+                                  : Container(),
                             ],
                           ),
                         ),

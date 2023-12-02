@@ -18,7 +18,12 @@ class PatientProfile extends StatefulWidget {
 
 class _PatientProfileState extends State<PatientProfile> {
   late Future<void> _fetchPatientProfileFuture;
+  Map<String, dynamic> responseData = {};
   Map<String, dynamic> patientData = {};
+  Map<String, dynamic> patientCountry = {};
+  Map<String, dynamic> patientState = {};
+  Map<String, dynamic> patientCity = {};
+  Map<String, dynamic> patientBrgy = {};
   Map<String, dynamic> patientCareTeam = {};
   List<Map<String, dynamic>> communityPosts = [];
 
@@ -33,11 +38,11 @@ class _PatientProfileState extends State<PatientProfile> {
 
   Future<void> _fetchPatientProfile() async {
     String patientDetailsURL =
-        'http://10.0.2.2:8080/flutter-mobile-backend-ui/index.php/Patient/getPatientDetails/$globalId';
+        'http://10.0.2.2:8080/sugbodoc-multi-tenant/index.php/api/auth/auth/get_patient_details/$globalId';
     String careTeamURL =
-        'http://10.0.2.2:8080/flutter-mobile-backend-ui/index.php/Patient/getPatientCareTeam/$globalId';
+        'http://10.0.2.2:8080/sugbodoc-multi-tenant/index.php/api/auth/auth/get_patient_care_team/$globalId';
     String communityPostsURL =
-        'http://10.0.2.2:8080/flutter-mobile-backend-ui/index.php/Patient/get_community_posts';
+        'http://10.0.2.2:8080/sugbodoc-multi-tenant/index.php/api/patient/get_community_posts';
 
     try {
       final responsePatientDetails =
@@ -61,8 +66,14 @@ class _PatientProfileState extends State<PatientProfile> {
 
       if (responsePatientDetails.statusCode == 200) {
         setState(() {
-          patientData = json.decode(responsePatientDetails.body);
+          responseData = json.decode(responsePatientDetails.body);
           patientCareTeam = json.decode(responseCareTeam.body);
+
+          patientData = responseData['patientData'];
+          patientCountry = responseData['patientCountry'];
+          patientState = responseData['patientState'];
+          patientCity = responseData['patientCity'];
+          patientBrgy = responseData['patientBrgy'];
 
           // Ensure the correct type for patientPrescriptions
           if (responseCommunityPosts.statusCode == 200) {
@@ -131,6 +142,10 @@ class _PatientProfileState extends State<PatientProfile> {
                   if (constraints.maxWidth < smallWidth) {
                     return SmallScreenPatientProfileBody(
                       patientData,
+                      patientCountry,
+                      patientState,
+                      patientCity,
+                      patientBrgy,
                       communityPosts,
                     );
                   } else if (constraints.maxWidth < mediumWidth) {
@@ -138,6 +153,10 @@ class _PatientProfileState extends State<PatientProfile> {
                   } else {
                     return LargeScreenPatientProfileBody(
                       patientData,
+                      patientCountry,
+                      patientState,
+                      patientCity,
+                      patientBrgy,
                       patientCareTeam,
                       communityPosts,
                     );
