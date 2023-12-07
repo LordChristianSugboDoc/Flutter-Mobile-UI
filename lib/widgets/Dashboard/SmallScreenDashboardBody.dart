@@ -3,12 +3,31 @@ import 'package:flutter_doctor_ui/widgets/General/CustomButton.dart';
 
 class SmallScreenDashboardBody extends StatelessWidget {
   final Map<String, dynamic> patientData;
-  final Map<String, dynamic> patientCareTeam;
-  final List<Map<String, dynamic>> patientPrescriptions;
+  final Map<String, dynamic> careTeam;
+  final Map<String, dynamic> careTeamDoctor;
+  final Map<String, dynamic> careTeamFacility;
+  final Map<String, dynamic> appointment;
+  final Map<String, dynamic> appointmentDoctor;
+  final Map<String, dynamic> appointmentFacility;
+  final Map<String, dynamic> appointmentStatus;
+  final Map<String, dynamic> appointmentReason;
+  final Map<String, dynamic> medicationDoctor;
+  final List<Map<String, dynamic>> medicationRequests;
   final List<Map<String, dynamic>> patientEncounters;
 
-  const SmallScreenDashboardBody(this.patientData, this.patientCareTeam,
-      this.patientPrescriptions, this.patientEncounters,
+  const SmallScreenDashboardBody(
+      this.patientData,
+      this.careTeam,
+      this.careTeamDoctor,
+      this.careTeamFacility,
+      this.appointment,
+      this.appointmentDoctor,
+      this.appointmentFacility,
+      this.appointmentStatus,
+      this.appointmentReason,
+      this.medicationDoctor,
+      this.medicationRequests,
+      this.patientEncounters,
       {super.key});
   @override
   Widget build(BuildContext context) {
@@ -63,8 +82,8 @@ class SmallScreenDashboardBody extends StatelessWidget {
         ),
         /* Welcome - End */
         /* My Care Team Card - Start */
-        (!patientCareTeam.containsKey('error') &&
-                patientCareTeam['error'] != 'Patient Care Team not found')
+        (!careTeam.containsKey('error') &&
+                careTeam['error'] != 'Patient Care Team not found')
             ? Container(
                 padding: const EdgeInsets.only(
                   top: 15.0,
@@ -110,7 +129,7 @@ class SmallScreenDashboardBody extends StatelessWidget {
                           ),
                           const SizedBox(height: 15.0),
                           Text(
-                            '${patientCareTeam['doctor_title']}',
+                            '${careTeamDoctor['professional_display_name']}',
                             style: const TextStyle(
                               color: Color(0xFF424E79),
                               fontSize: 18,
@@ -121,17 +140,17 @@ class SmallScreenDashboardBody extends StatelessWidget {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Row(
+                              const Row(
                                 children: [
-                                  const Icon(
+                                  Icon(
                                     Icons.medical_services_outlined,
                                     color: Color(0xFF424E79),
                                     size: 20,
                                   ),
-                                  const SizedBox(width: 8),
+                                  SizedBox(width: 8),
                                   Text(
-                                    '${patientCareTeam['doctor_profession']}',
-                                    style: const TextStyle(
+                                    'Consultant Physician',
+                                    style: TextStyle(
                                       color: Color(0xFF424E79),
                                       fontSize: 14,
                                       fontWeight: FontWeight.normal,
@@ -149,7 +168,7 @@ class SmallScreenDashboardBody extends StatelessWidget {
                                   ),
                                   const SizedBox(width: 8),
                                   Text(
-                                    '${patientCareTeam['facility_name']}',
+                                    '${careTeamFacility['name']}',
                                     style: const TextStyle(
                                       color: Color(0xFF424E79),
                                       fontSize: 14,
@@ -191,33 +210,65 @@ class SmallScreenDashboardBody extends StatelessWidget {
                         ],
                       ),
                     ),
-                    Container(
-                      margin: const EdgeInsets.only(top: 20),
-                      alignment: Alignment.centerRight,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(50),
-                        boxShadow: [
-                          BoxShadow(
-                            color: const Color(0xFF4454C3).withOpacity(0.25),
-                            blurRadius: 4,
-                            offset: const Offset(0, 3),
+                    (careTeamDoctor['img_url'] != null)
+                        ? Container(
+                            margin: const EdgeInsets.only(top: 20),
+                            alignment: Alignment.centerRight,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(50),
+                              boxShadow: [
+                                BoxShadow(
+                                  color:
+                                      const Color(0xFF4454C3).withOpacity(0.25),
+                                  blurRadius: 4,
+                                  offset: const Offset(0, 3),
+                                ),
+                              ],
+                              border: Border.all(
+                                color:
+                                    const Color(0xFF4454C3).withOpacity(0.50),
+                                width: 0.5,
+                              ),
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(100),
+                              child: Image.asset(
+                                '${careTeamDoctor['img_url']}', // Dynamic Variable
+                                height: 100,
+                                width: 100,
+                              ),
+                            ),
+                          )
+                        : Container(
+                            margin: const EdgeInsets.only(top: 20),
+                            alignment: Alignment.centerRight,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(50),
+                              boxShadow: [
+                                BoxShadow(
+                                  color:
+                                      const Color(0xFF4454C3).withOpacity(0.25),
+                                  blurRadius: 4,
+                                  offset: const Offset(0, 3),
+                                ),
+                              ],
+                              border: Border.all(
+                                color:
+                                    const Color(0xFF4454C3).withOpacity(0.50),
+                                width: 0.5,
+                              ),
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(100),
+                              child: Image.asset(
+                                'assets/images/JPG/default_profile.jpg', // Dynamic Variable
+                                height: 100,
+                                width: 100,
+                              ),
+                            ),
                           ),
-                        ],
-                        border: Border.all(
-                          color: const Color(0xFF4454C3).withOpacity(0.50),
-                          width: 0.5,
-                        ),
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(100),
-                        child: Image.asset(
-                          '${patientCareTeam['doctor_image']}', // Dynamic Variable
-                          height: 100,
-                          width: 100,
-                        ),
-                      ),
-                    ),
                   ],
                 ),
               )
@@ -297,7 +348,7 @@ class SmallScreenDashboardBody extends StatelessWidget {
 
         /* My Care Team Card - End */
         /* My Prescriptions - Start */
-        patientPrescriptions.isNotEmpty
+        medicationRequests.isNotEmpty
             ? Container(
                 padding: const EdgeInsets.only(
                   top: 15.0,
@@ -357,7 +408,7 @@ class SmallScreenDashboardBody extends StatelessWidget {
                         ],
                       ),
                     ),
-                    for (var prescription in patientPrescriptions)
+                    for (var prescription in medicationRequests)
                       ListTile(
                         title: Padding(
                           padding: const EdgeInsets.only(bottom: 20.0),
@@ -512,7 +563,7 @@ class SmallScreenDashboardBody extends StatelessWidget {
         /* My Prescriptions - End */
         /* My Past Visits - Start */
 
-        patientPrescriptions.isNotEmpty
+        patientEncounters.isNotEmpty
             ? Container(
                 padding: const EdgeInsets.only(
                   top: 15.0,

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_doctor_ui/Modals/PatientProfileModal.dart';
-
+import 'package:flutter_doctor_ui/widgets/Dashboard/PastEncountersContainer.dart';
+import 'package:flutter_doctor_ui/widgets/Dashboard/PrescriptionContainer.dart';
+import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_doctor_ui/Modals/PatientProfileModal.dart';
 import 'package:flutter_doctor_ui/ChangeNotifier/ExtendNavigationRail.dart';
 import 'package:flutter_doctor_ui/screens/Profile/patient_profile.dart';
 import 'package:flutter_doctor_ui/widgets/General/CustomPrimaryButton.dart';
@@ -9,17 +12,41 @@ import 'package:flutter_doctor_ui/widgets/Layout/CustomNavigationRail.dart';
 
 class LargeScreenDashboardBody extends StatelessWidget {
   final Map<String, dynamic> patientData;
-  final Map<String, dynamic> patientCareTeam;
-  final List<Map<String, dynamic>> patientPrescriptions;
+  final Map<String, dynamic> careTeam;
+  final Map<String, dynamic> careTeamDoctor;
+  final Map<String, dynamic> careTeamFacility;
+  final Map<String, dynamic> appointment;
+  final Map<String, dynamic> appointmentDoctor;
+  final Map<String, dynamic> appointmentFacility;
+  final Map<String, dynamic> appointmentStatus;
+  final Map<String, dynamic> appointmentReason;
+  final Map<String, dynamic> medicationDoctor;
+  final Map<String, dynamic> medicationFacility;
+  final List<Map<String, dynamic>> medicationRequests;
+  final Map<String, dynamic> encounterDoctor;
+  final Map<String, dynamic> encounterFacility;
   final List<Map<String, dynamic>> patientEncounters;
+  final List<Map<String, dynamic>> pastVisits;
   final ValueChanged<int> onDestinationSelected;
   final Future<void> Function() logout;
 
   const LargeScreenDashboardBody(
     this.patientData,
-    this.patientCareTeam,
-    this.patientPrescriptions,
+    this.careTeam,
+    this.careTeamDoctor,
+    this.careTeamFacility,
+    this.appointment,
+    this.appointmentDoctor,
+    this.appointmentFacility,
+    this.appointmentStatus,
+    this.appointmentReason,
+    this.medicationDoctor,
+    this.medicationFacility,
+    this.medicationRequests,
+    this.encounterDoctor,
+    this.encounterFacility,
     this.patientEncounters,
+    this.pastVisits,
     this.onDestinationSelected,
     this.logout,
   );
@@ -30,10 +57,27 @@ class LargeScreenDashboardBody extends StatelessWidget {
         Provider.of<ExtendNavigationRail>(context);
     double swidth = extendNavigationRail.width;
     double width = MediaQuery.of(context).size.width;
-
     String firstname = (patientData['firstname'] != null)
         ? patientData['firstname']
         : "Missing";
+
+    final Color appointmentColor;
+
+    if (appointmentStatus['hl7_code'] == 'proposed' ||
+        appointmentStatus['hl7_code'] == 'pending') {
+      appointmentColor = Color.fromARGB(255, 226, 204, 0).withOpacity(0.9);
+    } else if (appointmentStatus['hl7_code'] == 'cancelled' ||
+        appointmentStatus['hl7_code'] == 'entered-in-error' ||
+        appointmentStatus['hl7_code'] == 'noshow') {
+      appointmentColor = Colors.red.withOpacity(0.8);
+    } else if (appointmentStatus['hl7_code'] == 'checked-in' ||
+        appointmentStatus['hl7_code'] == 'waitlist') {
+      appointmentColor = Colors.black.withOpacity(0.7);
+    } else {
+      appointmentColor = Color(0xFF4454C3).withOpacity(1.00);
+    }
+
+    final int length = patientEncounters.length;
 
     return SafeArea(
       child: SingleChildScrollView(
@@ -100,6 +144,15 @@ class LargeScreenDashboardBody extends StatelessWidget {
                                             height: 60,
                                             width: 60,
                                             fit: BoxFit.cover,
+                                            errorBuilder:
+                                                (context, error, stackTrace) {
+                                              // Use the default image if loading the image fails
+                                              return Image.asset(
+                                                'assets/images/JPG/default_profile.jpg',
+                                                height: 135,
+                                                width: 135,
+                                              );
+                                            },
                                           )
                                         : Image.asset(
                                             'assets/images/JPG/default_profile.jpg',
@@ -129,7 +182,8 @@ class LargeScreenDashboardBody extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Hello, " '$firstname',
+                            "Hello, "
+                            '$firstname',
                             style: const TextStyle(
                                 color: Color(0xFF424E79),
                                 fontSize: 45,
@@ -168,11 +222,12 @@ class LargeScreenDashboardBody extends StatelessWidget {
                       Column(
                         children: [
                           /* My Care Team - Start */
-                          (!patientCareTeam.containsKey('error') &&
-                                  patientCareTeam['error'] !=
+                          (!careTeam.containsKey('error') ||
+                                  careTeam['error'] !=
                                       'Patient Care Team not found')
                               ? Container(
-                                  height: 208,
+                                  // height: 208,
+                                  width: 430,
                                   padding: const EdgeInsets.only(
                                     top: 15.0,
                                     left: 18.0,
@@ -221,7 +276,7 @@ class LargeScreenDashboardBody extends StatelessWidget {
                                           ),
                                           const SizedBox(height: 15.0),
                                           Text(
-                                            '${patientCareTeam['doctor_title']}',
+                                            '${careTeamDoctor['professional_display_name']}',
                                             style: const TextStyle(
                                               color: Color(0xFF424E79),
                                               fontSize: 25,
@@ -233,18 +288,18 @@ class LargeScreenDashboardBody extends StatelessWidget {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              Row(
+                                              const Row(
                                                 children: [
-                                                  const Icon(
+                                                  Icon(
                                                     Icons
                                                         .medical_services_outlined,
                                                     color: Color(0xFF424E79),
                                                     size: 30,
                                                   ),
-                                                  const SizedBox(width: 8),
+                                                  SizedBox(width: 8),
                                                   Text(
-                                                    '${patientCareTeam['doctor_profession']}',
-                                                    style: const TextStyle(
+                                                    'Consultant Physician',
+                                                    style: TextStyle(
                                                       color: Color(0xFF424E79),
                                                       fontSize: 18,
                                                       fontWeight:
@@ -263,7 +318,7 @@ class LargeScreenDashboardBody extends StatelessWidget {
                                                   ),
                                                   const SizedBox(width: 8),
                                                   Text(
-                                                    '${patientCareTeam['facility_name']}',
+                                                    '${careTeamFacility['name']}',
                                                     style: const TextStyle(
                                                       color: Color(0xFF424E79),
                                                       fontSize: 18,
@@ -331,13 +386,31 @@ class LargeScreenDashboardBody extends StatelessWidget {
                                             width: 0.5,
                                           ),
                                         ),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(100),
-                                          child: Image.asset(
-                                            '${patientCareTeam['doctor_image']}', // Dynamic Variable
-                                            height: 135,
-                                            width: 135,
+                                        child: Container(
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(100),
+                                            child: (careTeamDoctor['img_url'] !=
+                                                    null)
+                                                ? Image.network(
+                                                    'http://10.0.2.2:8080/sugbodoc-multi-tenant/${careTeamDoctor['img_url']}', // Dynamic Variable
+                                                    height: 135,
+                                                    width: 135,
+                                                    errorBuilder: (context,
+                                                        error, stackTrace) {
+                                                      // Use the default image if loading the image fails
+                                                      return Image.asset(
+                                                        'assets/images/JPG/default_profile.jpg',
+                                                        height: 135,
+                                                        width: 135,
+                                                      );
+                                                    },
+                                                  )
+                                                : Image.asset(
+                                                    'assets/images/JPG/default_profile.jpg', // Dynamic Variable
+                                                    height: 135,
+                                                    width: 135,
+                                                  ),
                                           ),
                                         ),
                                       ),
@@ -427,293 +500,19 @@ class LargeScreenDashboardBody extends StatelessWidget {
                                 ),
                           /* My Care Team - Ends */
                           /* My Prescriptions - Start */
-                          patientPrescriptions.isNotEmpty
-                              ? Container(
-                                  height: 260,
-                                  width: 430,
-                                  padding: const EdgeInsets.only(
-                                    top: 15.0,
-                                    left: 18.0,
-                                    bottom: 15.0,
-                                    right: 18.0,
-                                  ),
-                                  margin: const EdgeInsets.only(
-                                    top: 15.0,
-                                    bottom: 10.0,
-                                    right: 20.0,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(15),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: const Color(0xFF4454C3)
-                                            .withOpacity(0.25),
-                                        blurRadius: 4, // Spread radius
-                                        offset: const Offset(2, 2),
-                                      ),
-                                    ],
-                                    border: Border.all(
-                                      color: const Color(0xFF4454C3)
-                                          .withOpacity(0.15),
-                                      width: .5,
-                                    ),
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(bottom: 15.0),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            const Text(
-                                              "My Prescriptions",
-                                              style: TextStyle(
-                                                color: Color(0xFF424E79),
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                            GestureDetector(
-                                              onTap: () {},
-                                              child: const Text(
-                                                "View All",
-                                                style: TextStyle(
-                                                  color: Color(0xFF4454C3),
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.w800,
-                                                ),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                      SingleChildScrollView(
-                                        scrollDirection: Axis.horizontal,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            for (var prescription
-                                                in patientPrescriptions)
-                                              Container(
-                                                width: 400,
-                                                child: ListTile(
-                                                  title: Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            right: 10.0),
-                                                    child: Row(
-                                                      // First Prescription
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Container(
-                                                          margin:
-                                                              const EdgeInsets
-                                                                  .only(
-                                                                  right: 0),
-                                                          alignment: Alignment
-                                                              .centerLeft,
-                                                          child: ClipRRect(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        100),
-                                                            child: Image.asset(
-                                                              'assets/images/JPG/RX.jpg',
-                                                              height: 75,
-                                                              width: 75,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .only(
-                                                                  left: 15),
-                                                          child: Column(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            children: [
-                                                              Text(
-                                                                '${prescription['doctor_title']}',
-                                                                style:
-                                                                    const TextStyle(
-                                                                  color: Color(
-                                                                      0xFF424E79),
-                                                                  fontSize: 20,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w800,
-                                                                ),
-                                                              ),
-                                                              Text(
-                                                                '${prescription['facility_name']}',
-                                                                style:
-                                                                    const TextStyle(
-                                                                  color: Color(
-                                                                      0xFF424E79),
-                                                                  fontSize: 18,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400,
-                                                                ),
-                                                              ),
-                                                              const SizedBox(
-                                                                  height: 8.0),
-                                                              Row(
-                                                                children: [
-                                                                  const Icon(
-                                                                    Icons
-                                                                        .medication_outlined,
-                                                                    color: Color(
-                                                                        0xFF424E79),
-                                                                    size: 20,
-                                                                  ),
-                                                                  const SizedBox(
-                                                                      width: 8),
-                                                                  Text(
-                                                                    '${prescription['medicine']}',
-                                                                    style:
-                                                                        const TextStyle(
-                                                                      color: Color(
-                                                                          0xFF424E79),
-                                                                      fontSize:
-                                                                          16,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w500,
-                                                                    ),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                              Row(
-                                                                children: [
-                                                                  const Icon(
-                                                                    Icons
-                                                                        .medical_information_outlined,
-                                                                    color: Color(
-                                                                        0xFF424E79),
-                                                                    size: 20,
-                                                                  ),
-                                                                  const SizedBox(
-                                                                      width: 8),
-                                                                  Text(
-                                                                    '${prescription['sig']}',
-                                                                    style:
-                                                                        const TextStyle(
-                                                                      color: Color(
-                                                                          0xFF424E79),
-                                                                      fontSize:
-                                                                          16,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w500,
-                                                                    ),
-                                                                    softWrap:
-                                                                        true,
-                                                                    overflow:
-                                                                        TextOverflow
-                                                                            .ellipsis,
-                                                                    maxLines: 2,
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                              const SizedBox(
-                                                                  height: 14.0),
-                                                              Row(
-                                                                children: [
-                                                                  CustomPrimaryButton(
-                                                                    text:
-                                                                        'View Details',
-                                                                    onPress:
-                                                                        () {},
-                                                                    inputHeight:
-                                                                        35,
-                                                                    inputWidth:
-                                                                        150,
-                                                                    fontSize:
-                                                                        17,
-                                                                    fontColor:
-                                                                        const Color(
-                                                                            0xFF4454C3),
-                                                                    buttonColor:
-                                                                        Colors
-                                                                            .white,
-                                                                    buttonOutline:
-                                                                        const Color(
-                                                                            0xFF4454C3),
-                                                                    outlineWidth:
-                                                                        3,
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        )
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                          medicationRequests.isNotEmpty
+                              ? PrescriptionContainer(
+                                  cardWidth: 430,
+                                  cardHeight: 260,
+                                  containerWidth: 400,
+                                  medicationDoctor: medicationDoctor,
+                                  medicationFacility: medicationFacility,
+                                  medicationRequests: medicationRequests
+                                      .map(
+                                          (item) => item.cast<String, String>())
+                                      .toList(),
                                 )
-                              : Container(
-                                  padding: const EdgeInsets.only(
-                                    top: 15.0,
-                                    left: 18.0,
-                                    bottom: 15.0,
-                                    right: 18.0,
-                                  ),
-                                  margin: const EdgeInsets.only(
-                                    top: 10.0,
-                                    bottom: 10.0,
-                                    right: 20.0,
-                                  ),
-                                  // decoration: BoxDecoration(
-                                  //   color: Colors.white,
-                                  //   borderRadius: BorderRadius.circular(8),
-                                  //   boxShadow: [
-                                  //     BoxShadow(
-                                  //       color:
-                                  //           const Color(0xFF4454C3).withOpacity(0.25),
-                                  //       blurRadius: 4, // Spread radius
-                                  //       offset: const Offset(2, 2),
-                                  //     ),
-                                  //   ],
-                                  //   border: Border.all(
-                                  //     color: const Color(0xFF4454C3).withOpacity(0.15),
-                                  //     width: .5,
-                                  //   ),
-                                  // ),
-                                  // child: Column(
-                                  //   crossAxisAlignment: CrossAxisAlignment.start,
-                                  //   children: [
-                                  //     const Text(
-                                  //       "My Prescriptions",
-                                  //       style: TextStyle(
-                                  //         color: Color(0xFF424E79),
-                                  //         fontSize: 15,
-                                  //         fontWeight: FontWeight.w500,
-                                  //       ),
-                                  //     ),
-                                  //   ],
-                                  // ),
-                                ),
+                              : Container(),
                           /* My Prescriptions - End */
                         ],
                       ),
@@ -723,91 +522,231 @@ class LargeScreenDashboardBody extends StatelessWidget {
                       Column(
                         children: [
                           /* Upcoming Appointments - Start */
-                          Container(
-                            height: 208,
-                            padding: const EdgeInsets.only(
-                              top: 15.0,
-                              left: 18.0,
-                              bottom: 15.0,
-                              right: 18.0,
-                            ),
-                            margin: const EdgeInsets.only(
-                              top: 30.0,
-                              bottom: 10.0,
-                              right: 20.0,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(15),
-                              boxShadow: [
-                                BoxShadow(
-                                  color:
-                                      const Color(0xFF4454C3).withOpacity(0.25),
-                                  blurRadius: 4, // Spread radius
-                                  offset: const Offset(2, 2),
-                                ),
-                              ],
-                              border: Border.all(
-                                color:
-                                    const Color(0xFF4454C3).withOpacity(0.15),
-                                width: .5,
-                              ),
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                // const Text(
-                                //   "Upcoming Appointments",
-                                //   style: TextStyle(
-                                //     color: Color(0xFF424E79),
-                                //     fontSize: 20,
-                                //     fontWeight: FontWeight.w500,
-                                //   ),
-                                // ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Column(
+                          (!appointment.containsKey('error') &&
+                                  appointment['error'] !=
+                                      'Patient Appointment not found' &&
+                                  appointmentStatus['hl7_code'] != "fulfilled")
+                              ? GestureDetector(
+                                  onTap: () async {
+                                    String liveMeetingLink =
+                                        (appointmentStatus['hl7_code'] ==
+                                                "booked")
+                                            ? appointment['live_meeting_link']
+                                            : null;
+
+                                    try {
+                                      await launch(
+                                        liveMeetingLink,
+                                        forceWebView: true, // Open in a WebView
+                                        enableJavaScript:
+                                            true, // Enable JavaScript in the WebView, if needed
+                                      );
+                                    } catch (e) {
+                                      print("Error launching URL: $e");
+                                    }
+                                  },
+                                  child: Container(
+                                    height: 208,
+                                    width: 505,
+                                    padding: const EdgeInsets.only(
+                                      top: 15.0,
+                                      left: 18.0,
+                                      bottom: 15.0,
+                                      right: 18.0,
+                                    ),
+                                    margin: const EdgeInsets.only(
+                                      top: 30.0,
+                                      bottom: 10.0,
+                                      right: 20.0,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(15),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: appointmentColor,
+                                          blurRadius: 4, // Spread radius
+                                          offset: const Offset(0, 0),
+                                        ),
+                                      ],
+                                      border: Border.all(
+                                        color: const Color(0xFF4454C3)
+                                            .withOpacity(0.15),
+                                        width: .5,
+                                      ),
+                                    ),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text(
-                                          "You have No Appointments",
-                                          style: TextStyle(
-                                            color: Color(0xFF424E79)
-                                                .withOpacity(0.7),
-                                            fontSize: 23,
-                                            fontWeight: FontWeight.w800,
-                                          ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            const Text(
+                                              "Upcoming Appointment",
+                                              style: TextStyle(
+                                                color: Color(0xFF424E79),
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                            Container(
+                                              child: Text(
+                                                '${appointmentStatus['patient_display_name']}',
+                                                style: TextStyle(
+                                                  color: appointmentColor,
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.w700,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                        Text(
-                                          "Try Booking a Consultation",
-                                          style: TextStyle(
-                                            color: Color(0xFF424E79)
-                                                .withOpacity(0.5),
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w600,
-                                          ),
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Container(
+                                                  margin: const EdgeInsets.only(
+                                                      top: 20, left: 0),
+                                                  alignment:
+                                                      Alignment.centerRight,
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.white,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            100),
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                        color: const Color(
+                                                                0xFF4454C3)
+                                                            .withOpacity(0.25),
+                                                        blurRadius: 4,
+                                                        offset:
+                                                            const Offset(0, 3),
+                                                      ),
+                                                    ],
+                                                    border: Border.all(
+                                                      color: const Color(
+                                                              0xFF4454C3)
+                                                          .withOpacity(0.50),
+                                                      width: 0.5,
+                                                    ),
+                                                  ),
+                                                  child: Container(
+                                                    child: ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              100),
+                                                      child: (careTeamDoctor[
+                                                                  'img_url'] !=
+                                                              null)
+                                                          ? Image.network(
+                                                              'http://10.0.2.2:8080/sugbodoc-multi-tenant/${appointmentDoctor['img_url']}', // Dynamic Variable
+                                                              height: 115,
+                                                              width: 115,
+                                                              errorBuilder:
+                                                                  (context,
+                                                                      error,
+                                                                      stackTrace) {
+                                                                // Use the default image if loading the image fails
+                                                                return Image
+                                                                    .asset(
+                                                                  'assets/images/JPG/default_profile.jpg',
+                                                                  height: 115,
+                                                                  width: 115,
+                                                                );
+                                                              },
+                                                            )
+                                                          : Image.asset(
+                                                              'assets/images/JPG/default_profile.jpg', // Dynamic Variable
+                                                              height: 115,
+                                                              width: 115,
+                                                            ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  width: 18,
+                                                ),
+                                                Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    const SizedBox(
+                                                      height: 15,
+                                                    ),
+                                                    Text(
+                                                      '${appointmentDoctor['professional_display_name']}',
+                                                      style: TextStyle(
+                                                        color: Color(0xFF424E79)
+                                                            .withOpacity(1.0),
+                                                        fontSize: 24,
+                                                        fontWeight:
+                                                            FontWeight.w800,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      '${appointmentFacility['name']}',
+                                                      style: TextStyle(
+                                                        color: Color(0xFF424E79)
+                                                            .withOpacity(0.7),
+                                                        fontSize: 18,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                      ),
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 5,
+                                                    ),
+                                                    Text(
+                                                      '"${appointmentReason['appointment_reason_text']}"',
+                                                      style: TextStyle(
+                                                        color: Color(0xFF424E79)
+                                                            .withOpacity(0.5),
+                                                        fontSize: 17,
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                      ),
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 5,
+                                                    ),
+                                                    Text(
+                                                      '${appointment['time_slot']}',
+                                                      style: TextStyle(
+                                                        color: Color(0xFF424E79)
+                                                            .withOpacity(1.0),
+                                                        fontSize: 20,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ],
                                         ),
                                       ],
                                     ),
-                                    Image.asset(
-                                      'assets/images/PNG/Doctor_Calendar.png',
-                                      height: 150,
-                                      width: 185,
-                                    )
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                          /* Upcoming Appointments - End */
-                          /* My Past Visits - Start */
-                          patientPrescriptions.isNotEmpty
-                              ? Container(
-                                  height: 290,
+                                  ),
+                                )
+                              : Container(
+                                  height: 208,
                                   width: 505,
                                   padding: const EdgeInsets.only(
                                     top: 15.0,
@@ -816,7 +755,7 @@ class LargeScreenDashboardBody extends StatelessWidget {
                                     right: 18.0,
                                   ),
                                   margin: const EdgeInsets.only(
-                                    top: 15.0,
+                                    top: 30.0,
                                     bottom: 10.0,
                                     right: 20.0,
                                   ),
@@ -838,235 +777,68 @@ class LargeScreenDashboardBody extends StatelessWidget {
                                     ),
                                   ),
                                   child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                        CrossAxisAlignment.center,
                                     children: [
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(bottom: 10.0),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            const Text(
-                                              "My Past Visits",
-                                              style: TextStyle(
-                                                color: Color(0xFF424E79),
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                            GestureDetector(
-                                              onTap: () {},
-                                              child: const Text(
-                                                "View All",
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                "You have No Appointments",
                                                 style: TextStyle(
-                                                  color: Color(0xFF4454C3),
-                                                  fontSize: 20,
+                                                  color: Color(0xFF424E79)
+                                                      .withOpacity(0.7),
+                                                  fontSize: 23,
                                                   fontWeight: FontWeight.w800,
                                                 ),
                                               ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                      SingleChildScrollView(
-                                        scrollDirection: Axis.horizontal,
-                                        child: Row(
-                                          children: [
-                                            for (var encounter
-                                                in patientEncounters)
-                                              Container(
-                                                width: 440,
-                                                child: ListTile(
-                                                  title: Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            bottom: 5.0),
-                                                    child: Row(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Container(
-                                                          alignment: Alignment
-                                                              .centerLeft,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            color: Colors.white,
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        100),
-                                                            border: Border.all(
-                                                              color: const Color(
-                                                                  0xFF4454C3),
-                                                              width: 2.5,
-                                                            ),
-                                                          ),
-                                                          child: ClipRRect(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        100),
-                                                            child: Image.asset(
-                                                              '${encounter['doctor_image']}', // Dynamic Variable
-                                                              height: 110,
-                                                              width: 110,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .only(
-                                                                  left: 20),
-                                                          child: Column(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            children: [
-                                                              Text(
-                                                                '${encounter['facility_name']}',
-                                                                style:
-                                                                    const TextStyle(
-                                                                  color: Color(
-                                                                      0xFF424E79),
-                                                                  fontSize: 22,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w800,
-                                                                ),
-                                                              ),
-                                                              Text(
-                                                                '${encounter['doctor_title']}',
-                                                                style:
-                                                                    const TextStyle(
-                                                                  color: Color(
-                                                                      0xFF424E79),
-                                                                  fontSize: 20,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400,
-                                                                ),
-                                                              ),
-                                                              const SizedBox(
-                                                                  height: 20.0),
-                                                              Text(
-                                                                '"${encounter['reason']}"',
-                                                                style:
-                                                                    const TextStyle(
-                                                                  color: Color(
-                                                                      0xFF424E79),
-                                                                  fontSize: 18,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500,
-                                                                ),
-                                                              ),
-                                                              const SizedBox(
-                                                                  height: 2.0),
-                                                              Text(
-                                                                '${encounter['time']}',
-                                                                style:
-                                                                    const TextStyle(
-                                                                  color: Color
-                                                                      .fromARGB(
-                                                                          255,
-                                                                          152,
-                                                                          152,
-                                                                          152),
-                                                                  fontSize: 18,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500,
-                                                                ),
-                                                              ),
-                                                              const SizedBox(
-                                                                  height: 20.0),
-                                                              Row(
-                                                                children: [
-                                                                  CustomPrimaryButton(
-                                                                    text:
-                                                                        'View Details',
-                                                                    onPress:
-                                                                        () {},
-                                                                    inputHeight:
-                                                                        40,
-                                                                    inputWidth:
-                                                                        200,
-                                                                    fontSize:
-                                                                        20,
-                                                                    fontColor:
-                                                                        const Color(
-                                                                            0xFF4454C3),
-                                                                    buttonColor:
-                                                                        Colors
-                                                                            .white,
-                                                                    buttonOutline:
-                                                                        const Color(
-                                                                            0xFF4454C3),
-                                                                    outlineWidth:
-                                                                        3,
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        )
-                                                      ],
-                                                    ),
-                                                  ),
+                                              Text(
+                                                "Try Booking a Consultation",
+                                                style: TextStyle(
+                                                  color: Color(0xFF424E79)
+                                                      .withOpacity(0.5),
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.w600,
                                                 ),
                                               ),
-                                          ],
-                                        ),
+                                            ],
+                                          ),
+                                          Image.asset(
+                                            'assets/images/PNG/Doctor_Calendar.png',
+                                            height: 150,
+                                            width: 175,
+                                          )
+                                        ],
                                       ),
                                     ],
                                   ),
-                                )
-                              : Container(
-                                  padding: const EdgeInsets.only(
-                                    top: 15.0,
-                                    left: 18.0,
-                                    bottom: 15.0,
-                                    right: 18.0,
-                                  ),
-                                  margin: const EdgeInsets.only(
-                                    top: 10.0,
-                                    bottom: 10.0,
-                                    right: 20.0,
-                                  ),
-                                  // decoration: BoxDecoration(
-                                  //   color: Colors.white,
-                                  //   borderRadius: BorderRadius.circular(8),
-                                  //   boxShadow: [
-                                  //     BoxShadow(
-                                  //       color:
-                                  //           const Color(0xFF4454C3).withOpacity(0.25),
-                                  //       blurRadius: 4, // Spread radius
-                                  //       offset: const Offset(2, 2),
-                                  //     ),
-                                  //   ],
-                                  //   border: Border.all(
-                                  //     color: const Color(0xFF4454C3).withOpacity(0.15),
-                                  //     width: .5,
-                                  //   ),
-                                  // ),
-                                  // child: Column(
-                                  //   crossAxisAlignment: CrossAxisAlignment.start,
-                                  //   children: [
-                                  //     const Text(
-                                  //       "My Prescriptions",
-                                  //       style: TextStyle(
-                                  //         color: Color(0xFF424E79),
-                                  //         fontSize: 15,
-                                  //         fontWeight: FontWeight.w500,
-                                  //       ),
-                                  //     ),
-                                  //   ],
-                                  // ),
                                 ),
+
+                          /* Upcoming Appointments - End */
+                          /* My Past Visits - Start */
+                          pastVisits.isNotEmpty
+                              ? PastEncountersContainer(
+                                  cardWidth: 505,
+                                  cardHeight: 290,
+                                  containerWidth: 440,
+                                  encounterDoctor: encounterDoctor,
+                                  encounterFacility: encounterFacility,
+                                  patientEncounters: patientEncounters
+                                      .map(
+                                          (item) => item.cast<String, String>())
+                                      .toList(),
+                                  pastVisits: pastVisits
+                                      .map(
+                                          (item) => item.cast<String, String>())
+                                      .toList(),
+                                )
+                              : Container(),
                         ],
                       ),
                     ],
@@ -1089,5 +861,32 @@ class LargeScreenDashboardBody extends StatelessWidget {
         );
       },
     );
+  }
+
+  String calculateTimeAgo(String dateTimeString) {
+    DateTime encounterDate = DateTime.parse(dateTimeString);
+    DateTime now = DateTime.now();
+    Duration difference = now.difference(encounterDate);
+
+    if (difference.inDays > 0) {
+      return DateFormat.yMMMMd().format(encounterDate);
+    } else if (difference.inHours > 0) {
+      int hours = difference.inHours;
+      int minutes = difference.inMinutes % 60;
+      String hoursString =
+          hours > 0 ? '$hours ${hours == 1 ? 'hour' : 'hours'}' : '';
+      String minutesString =
+          minutes > 0 ? '$minutes ${minutes == 1 ? 'minute' : 'minutes'}' : '';
+
+      if (hours > 0 && minutes > 0) {
+        return '$hoursString and $minutesString ago';
+      } else {
+        return '$hoursString$minutesString ago';
+      }
+    } else if (difference.inMinutes > 0) {
+      return '${difference.inMinutes} ${difference.inMinutes == 1 ? 'minute' : 'minutes'} ago';
+    } else {
+      return 'Just now';
+    }
   }
 }

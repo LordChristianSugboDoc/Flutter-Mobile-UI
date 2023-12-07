@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:flutter_doctor_ui/ChangeNotifier/EditPatientProfile.dart';
-import 'package:flutter_doctor_ui/widgets/General/CustomDropDown.dart';
 import 'package:flutter_doctor_ui/widgets/General/CustomImageUpload.dart';
 import 'package:flutter_doctor_ui/widgets/General/CustomInputField.dart';
 import 'package:flutter_doctor_ui/widgets/General/DatePickerField.dart';

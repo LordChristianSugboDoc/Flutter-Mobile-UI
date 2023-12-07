@@ -21,12 +21,36 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   late Future<void> _fetchDashboardFuture;
 
+  /* Patient Details */
   Map<String, dynamic> responseData = {};
   Map<String, dynamic> patientData = {};
-  Map<String, dynamic> patientCareTeam = {};
-  List<Map<String, dynamic>> patientPrescriptions = [];
-  List<Map<String, dynamic>> patientEncounters = [];
 
+  /* Patient Care Team */
+  Map<String, dynamic> responsePatientCareTeam = {};
+  Map<String, dynamic> careTeam = {};
+  Map<String, dynamic> careTeamDoctor = {};
+  Map<String, dynamic> careTeamFacility = {};
+
+  /* Patient Appointment */
+  Map<String, dynamic> responsePatientAppointment = {};
+  Map<String, dynamic> appointment = {};
+  Map<String, dynamic> appointmentDoctor = {};
+  Map<String, dynamic> appointmentFacility = {};
+  Map<String, dynamic> appointmentStatus = {};
+  Map<String, dynamic> appointmentReason = {};
+
+  /* Patient Prescriptions */
+  Map<String, dynamic> medicationDoctor = {};
+  Map<String, dynamic> medicationFacility = {};
+  List<Map<String, dynamic>> medicationRequests = [];
+
+  /* Patient Encounters */
+  Map<String, dynamic> encounterDoctor = {};
+  Map<String, dynamic> encounterFacility = {};
+  List<Map<String, dynamic>> patientEncounters = [];
+  List<Map<String, dynamic>> pastVisits = [];
+
+  /*Layout Builder Parameters */
   double smallWidth = 600;
   double mediumWidth = 1000;
 
@@ -41,6 +65,8 @@ class _DashboardState extends State<Dashboard> {
         'http://10.0.2.2:8080/sugbodoc-multi-tenant/index.php/api/auth/auth/get_patient_details/$globalId';
     String careTeamURL =
         'http://10.0.2.2:8080/sugbodoc-multi-tenant/index.php/api/auth/auth/get_patient_care_team/$globalId';
+    String appointmentURL =
+        'http://10.0.2.2:8080/sugbodoc-multi-tenant/index.php/api/auth/auth/get_patient_appointment/$globalId';
     String prescriptionsURL =
         'http://10.0.2.2:8080/sugbodoc-multi-tenant/index.php/api/auth/auth/get_patient_prescriptions/$globalId';
     String encountersURL =
@@ -50,6 +76,7 @@ class _DashboardState extends State<Dashboard> {
       final responsePatientDetails =
           await http.get(Uri.parse(patientDetailsURL));
       final responseCareTeam = await http.get(Uri.parse(careTeamURL));
+      final responseAppointment = await http.get(Uri.parse(appointmentURL));
       final responsePrescriptions = await http.get(Uri.parse(prescriptionsURL));
       final responseEncounters = await http.get(Uri.parse(encountersURL));
 
@@ -63,6 +90,10 @@ class _DashboardState extends State<Dashboard> {
       print('Response Patient Care Team Body: ${responseCareTeam.body}');
 
       print(
+          'Response Status Patient Appointment Code: ${responseAppointment.statusCode}');
+      print('Response Patient Appointment Body: ${responseAppointment.body}');
+
+      print(
           'Response Status Patient Prescriptions Code: ${responsePrescriptions.statusCode}');
       print(
           'Response Patient Prescriptions Body: ${responsePrescriptions.body}');
@@ -73,25 +104,54 @@ class _DashboardState extends State<Dashboard> {
 
       if (responsePatientDetails.statusCode == 200) {
         setState(() {
+          /* Patient Details */
           responseData = json.decode(responsePatientDetails.body);
-          patientCareTeam = json.decode(responseCareTeam.body);
-
           patientData = responseData['patientData'];
 
-          print('Patient Care Team: $patientCareTeam');
-          // Ensure the correct type for patientPrescriptions
+          /* Patient CareTeam */
+          responsePatientCareTeam = json.decode(responseCareTeam.body);
+          careTeam = responsePatientCareTeam['careTeam'];
+          careTeamDoctor = responsePatientCareTeam['careTeamDoctor'];
+          careTeamFacility = responsePatientCareTeam['careTeamFacility'];
+
+          /* Patient Appointment */
+          responsePatientAppointment = json.decode(responseAppointment.body);
+          appointment = responsePatientAppointment['appointment'];
+          appointmentDoctor = responsePatientAppointment['appointmentDoctor'];
+          appointmentFacility =
+              responsePatientAppointment['appointmentFacility'];
+          appointmentStatus = responsePatientAppointment['appointmentStatus'];
+          appointmentReason = responsePatientAppointment['appointmentReason'];
+
+          /* Patient Prescriptions */
           if (responsePrescriptions.statusCode == 200) {
             final decodedData = json.decode(responsePrescriptions.body);
 
-            if (decodedData is List) {
-              // Explicitly cast each item to Map<String, dynamic>
-              patientPrescriptions = List<Map<String, dynamic>>.from(
-                decodedData.map<Map<String, dynamic>>(
+            medicationDoctor = decodedData['medicationDoctor'];
+            medicationFacility = decodedData['medicationFacility'];
+
+            if (decodedData['medicationRequests'] is List) {
+              // Ensure that medicationRequests is a List<Map<String, dynamic>>
+              medicationRequests = List<Map<String, dynamic>>.from(
+                decodedData['medicationRequests'].map(
                   (item) => item is Map<String, dynamic> ? item : {},
                 ),
               );
 
-              print(patientPrescriptions);
+              print('MedicationRequest: ${medicationRequests}');
+            } else {
+              throw Exception('Invalid data format for prescriptions');
+            }
+
+            if (decodedData['medicationRequests'] is List) {
+              // Ensure that medicationRequests is a List<Map<String, dynamic>>
+              medicationRequests = List<Map<String, dynamic>>.from(
+                decodedData['medicationRequests'].map(
+                  (item) => item is Map<String, dynamic> ? item : {},
+                ),
+              );
+
+              print('MedicationRequest: ${medicationRequests}');
             } else {
               throw Exception('Invalid data format for prescriptions');
             }
@@ -99,18 +159,33 @@ class _DashboardState extends State<Dashboard> {
             throw Exception('Failed to load patient prescriptions');
           }
 
+          /* Patient Past Visits */
           if (responseEncounters.statusCode == 200) {
             final decodedData = json.decode(responseEncounters.body);
 
-            if (decodedData is List) {
-              // Explicitly cast each item to Map<String, dynamic>
+            encounterDoctor = decodedData['encounterDoctor'];
+            encounterFacility = decodedData['encounterFacility'];
+
+            if (decodedData['patientEncounters'] is List) {
+              // Ensure that pastVisits is a List<Map<String, dynamic>>
               patientEncounters = List<Map<String, dynamic>>.from(
-                decodedData.map<Map<String, dynamic>>(
+                decodedData['patientEncounters'].map(
                   (item) => item is Map<String, dynamic> ? item : {},
                 ),
               );
             } else {
-              throw Exception('Invalid data format for Encounters');
+              throw Exception('Invalid data format for past visits');
+            }
+
+            if (decodedData['pastVisits'] is List) {
+              // Ensure that pastVisits is a List<Map<String, dynamic>>
+              pastVisits = List<Map<String, dynamic>>.from(
+                decodedData['pastVisits'].map(
+                  (item) => item is Map<String, dynamic> ? item : {},
+                ),
+              );
+            } else {
+              throw Exception('Invalid data format for past visits');
             }
           } else {
             throw Exception('Failed to load patient encounters');
@@ -212,18 +287,38 @@ class _DashboardState extends State<Dashboard> {
                     // Small screen layout
                     return SmallScreenDashboardBody(
                       patientData,
-                      patientCareTeam,
-                      patientPrescriptions,
-                      patientEncounters,
+                      careTeam,
+                      careTeamDoctor,
+                      careTeamFacility,
+                      appointment,
+                      appointmentDoctor,
+                      appointmentFacility,
+                      appointmentStatus,
+                      appointmentReason,
+                      medicationDoctor,
+                      medicationRequests,
+                      pastVisits,
                     );
                   } else if (constraints.maxWidth < mediumWidth) {
                     return _buildMediumScreenLayout();
                   } else {
                     return LargeScreenDashboardBody(
                       patientData,
-                      patientCareTeam,
-                      patientPrescriptions,
+                      careTeam,
+                      careTeamDoctor,
+                      careTeamFacility,
+                      appointment,
+                      appointmentDoctor,
+                      appointmentFacility,
+                      appointmentStatus,
+                      appointmentReason,
+                      medicationDoctor,
+                      medicationFacility,
+                      medicationRequests,
+                      encounterDoctor,
+                      encounterFacility,
                       patientEncounters,
+                      pastVisits,
                       onDestinationSelected,
                       _logout,
                     );

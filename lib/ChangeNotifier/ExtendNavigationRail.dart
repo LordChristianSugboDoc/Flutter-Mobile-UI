@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ExtendNavigationRail extends ChangeNotifier {
-  int _index = 0; // Use a private variable for index
+  int _index = 0;
   double width = .771;
   int get index => _index;
   bool isLeading = true;
@@ -10,6 +10,12 @@ class ExtendNavigationRail extends ChangeNotifier {
   bool isImageVisible = true;
   bool isTextVisible = true;
   bool changeIcon = true;
+
+  int _prescriptionPage = 0;
+  int get prescriptionPage => _prescriptionPage;
+
+  int _pastVisitPage = 0;
+  int get pastVisitPage => _pastVisitPage;
 
   void isCondition() {
     isExtended = !isExtended;
@@ -27,6 +33,16 @@ class ExtendNavigationRail extends ChangeNotifier {
 
   void changeWidth() {
     this.width = (this.width == 0.771) ? 0.910 : 0.771;
+    notifyListeners();
+  }
+
+  void updatePrescriptionPage(int newIndex) {
+    this._prescriptionPage = newIndex;
+    notifyListeners();
+  }
+
+  void updatePastVisitsPage(int newIndex) {
+    this._pastVisitPage = newIndex;
     notifyListeners();
   }
 }
