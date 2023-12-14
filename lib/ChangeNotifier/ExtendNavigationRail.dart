@@ -11,6 +11,9 @@ class ExtendNavigationRail extends ChangeNotifier {
   bool isTextVisible = true;
   bool changeIcon = true;
 
+  int _careTeamPage = 0;
+  int get careTeamPage => _careTeamPage;
+
   int _prescriptionPage = 0;
   int get prescriptionPage => _prescriptionPage;
 
@@ -33,6 +36,11 @@ class ExtendNavigationRail extends ChangeNotifier {
 
   void changeWidth() {
     this.width = (this.width == 0.771) ? 0.910 : 0.771;
+    notifyListeners();
+  }
+
+  void updateCareTeamPage(int newIndex) {
+    this._careTeamPage = newIndex;
     notifyListeners();
   }
 

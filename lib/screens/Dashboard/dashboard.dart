@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:flutter_doctor_ui/widgets/Dashboard/LargeScreenDashboardBody.dart';
+import 'package:flutter_doctor_ui/widgets/Dashboard/LargeScreen/LargeScreenDashboardBody.dart';
 import 'package:flutter_doctor_ui/main.dart';
-import 'package:flutter_doctor_ui/widgets/Dashboard/SmallScreenDashboardBody.dart';
+import 'package:flutter_doctor_ui/widgets/Dashboard/SmallScreen/SmallScreenDashboardBody.dart';
 import 'package:flutter_doctor_ui/widgets/Layout/CustomAppBar.dart';
 import 'package:flutter_doctor_ui/widgets/Layout/CustomBottomNav.dart';
 import 'package:flutter_doctor_ui/widgets/Layout/NavBar.dart';
@@ -24,12 +24,17 @@ class _DashboardState extends State<Dashboard> {
   /* Patient Details */
   Map<String, dynamic> responseData = {};
   Map<String, dynamic> patientData = {};
+  Map<String, dynamic> patientCountry = {};
+  Map<String, dynamic> patientState = {};
+  Map<String, dynamic> patientCity = {};
+  Map<String, dynamic> patientBrgy = {};
+  List<Map<String, dynamic>> patientAllergy = [];
 
   /* Patient Care Team */
-  Map<String, dynamic> responsePatientCareTeam = {};
-  Map<String, dynamic> careTeam = {};
-  Map<String, dynamic> careTeamDoctor = {};
-  Map<String, dynamic> careTeamFacility = {};
+  List<Map<String, dynamic>> careTeam = [];
+  List<Map<String, dynamic>> careTeamDoctor = [];
+  List<Map<String, dynamic>> careTeamSpecialty = [];
+  List<Map<String, dynamic>> careTeamFacility = [];
 
   /* Patient Appointment */
   Map<String, dynamic> responsePatientAppointment = {};
@@ -105,16 +110,80 @@ class _DashboardState extends State<Dashboard> {
       if (responsePatientDetails.statusCode == 200) {
         setState(() {
           /* Patient Details */
-          responseData = json.decode(responsePatientDetails.body);
-          patientData = responseData['patientData'];
+          if (responsePatientDetails.statusCode == 200) {
+            final decodedData = json.decode(responsePatientDetails.body);
+
+            patientData = decodedData['patientData'];
+            patientCountry = decodedData['patientCountry'];
+            patientState = decodedData['patientState'];
+            patientCity = decodedData['patientCity'];
+            patientBrgy = decodedData['patientBrgy'];
+
+            if (decodedData['patientAllergy'] is List) {
+              // Ensure that pastVisits is a List<Map<String, dynamic>>
+              patientAllergy = List<Map<String, dynamic>>.from(
+                decodedData['patientAllergy'].map(
+                  (item) => item is Map<String, dynamic> ? item : {},
+                ),
+              );
+            } else {
+              throw Exception('Invalid data format for care team');
+            }
+          }
 
           /* Patient CareTeam */
-          responsePatientCareTeam = json.decode(responseCareTeam.body);
-          careTeam = responsePatientCareTeam['careTeam'];
-          careTeamDoctor = responsePatientCareTeam['careTeamDoctor'];
-          careTeamFacility = responsePatientCareTeam['careTeamFacility'];
+          if (responseCareTeam.statusCode == 200) {
+            final decodedData = json.decode(responseCareTeam.body);
+
+            if (decodedData['careTeam'] is List) {
+              // Ensure that pastVisits is a List<Map<String, dynamic>>
+              careTeam = List<Map<String, dynamic>>.from(
+                decodedData['careTeam'].map(
+                  (item) => item is Map<String, dynamic> ? item : {},
+                ),
+              );
+            } else {
+              throw Exception('Invalid data format for care team');
+            }
+
+            if (decodedData['careTeamDoctor'] is List) {
+              // Ensure that pastVisits is a List<Map<String, dynamic>>
+              careTeamDoctor = List<Map<String, dynamic>>.from(
+                decodedData['careTeamDoctor'].map(
+                  (item) => item is Map<String, dynamic> ? item : {},
+                ),
+              );
+            } else {
+              throw Exception('Invalid data format for care team doctor');
+            }
+
+            if (decodedData['careTeamSpecialty'] is List) {
+              // Ensure that pastVisits is a List<Map<String, dynamic>>
+              careTeamSpecialty = List<Map<String, dynamic>>.from(
+                decodedData['careTeamSpecialty'].map(
+                  (item) => item is Map<String, dynamic> ? item : {},
+                ),
+              );
+            } else {
+              throw Exception('Invalid data format for care team doctor');
+            }
+
+            if (decodedData['careTeamFacility'] is List) {
+              // Ensure that pastVisits is a List<Map<String, dynamic>>
+              careTeamFacility = List<Map<String, dynamic>>.from(
+                decodedData['careTeamFacility'].map(
+                  (item) => item is Map<String, dynamic> ? item : {},
+                ),
+              );
+            } else {
+              throw Exception('Invalid data format for care team facility');
+            }
+          } else {
+            throw Exception('Failed to load patient care team');
+          }
 
           /* Patient Appointment */
+
           responsePatientAppointment = json.decode(responseAppointment.body);
           appointment = responsePatientAppointment['appointment'];
           appointmentDoctor = responsePatientAppointment['appointmentDoctor'];
@@ -289,6 +358,7 @@ class _DashboardState extends State<Dashboard> {
                       patientData,
                       careTeam,
                       careTeamDoctor,
+                      careTeamSpecialty,
                       careTeamFacility,
                       appointment,
                       appointmentDoctor,
@@ -296,7 +366,11 @@ class _DashboardState extends State<Dashboard> {
                       appointmentStatus,
                       appointmentReason,
                       medicationDoctor,
+                      medicationFacility,
                       medicationRequests,
+                      encounterDoctor,
+                      encounterFacility,
+                      patientEncounters,
                       pastVisits,
                     );
                   } else if (constraints.maxWidth < mediumWidth) {
@@ -304,8 +378,14 @@ class _DashboardState extends State<Dashboard> {
                   } else {
                     return LargeScreenDashboardBody(
                       patientData,
+                      patientCountry,
+                      patientState,
+                      patientCity,
+                      patientBrgy,
+                      patientAllergy,
                       careTeam,
                       careTeamDoctor,
+                      careTeamSpecialty,
                       careTeamFacility,
                       appointment,
                       appointmentDoctor,

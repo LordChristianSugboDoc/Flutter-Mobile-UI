@@ -57,10 +57,12 @@ class LargeEditPatientProfileBody extends StatelessWidget {
   Widget build(BuildContext context) {
     EditPatientProfile editPatientProfile =
         Provider.of<EditPatientProfile>(context);
+
     String selectedCountry = editPatientProfile.selectedCountry;
     String selectedProvince = editPatientProfile.selectedProvince;
     String selectedCity = editPatientProfile.selectedCity;
     String selectedBrgy = editPatientProfile.selectedBrgy;
+
     double width = MediaQuery.of(context).size.width;
     return ListView(
       padding: const EdgeInsets.only(top: 10.0),

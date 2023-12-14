@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_doctor_ui/ChangeNotifier/ExtendNavigationRail.dart';
 
-class PrescriptionContainer extends StatelessWidget {
+class MyPrescriptionsCard extends StatelessWidget {
   final double cardWidth;
   final double cardHeight;
   final double containerWidth;
@@ -10,7 +10,7 @@ class PrescriptionContainer extends StatelessWidget {
   final Map<String, dynamic> medicationFacility;
   final List<Map<String, String>> medicationRequests;
 
-  PrescriptionContainer({
+  MyPrescriptionsCard({
     required this.cardWidth,
     required this.cardHeight,
     required this.containerWidth,
@@ -36,7 +36,7 @@ class PrescriptionContainer extends StatelessWidget {
         right: 18.0,
       ),
       margin: const EdgeInsets.only(
-        top: 15.0,
+        top: 10.0,
         bottom: 10.0,
         right: 20.0,
       ),
@@ -67,7 +67,7 @@ class PrescriptionContainer extends StatelessWidget {
                   "My Prescriptions",
                   style: TextStyle(
                     color: Color(0xFF424E79),
-                    fontSize: 20,
+                    fontSize: 15,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -77,7 +77,7 @@ class PrescriptionContainer extends StatelessWidget {
                     "View All",
                     style: TextStyle(
                       color: Color(0xFF4454C3),
-                      fontSize: 20,
+                      fontSize: 15,
                       fontWeight: FontWeight.w800,
                     ),
                   ),
@@ -86,7 +86,7 @@ class PrescriptionContainer extends StatelessWidget {
             ),
           ),
           SizedBox(
-            height: 175,
+            height: 155,
             child: PageView.builder(
               controller: _pageController,
               itemCount: medicationRequests.length,
@@ -117,20 +117,20 @@ class PrescriptionContainer extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
+                height: 75,
                 margin: const EdgeInsets.only(right: 0),
-                padding: const EdgeInsets.only(bottom: 100),
                 alignment: Alignment.centerLeft,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(100),
                   child: Image.asset(
                     'assets/images/JPG/RX.jpg',
-                    height: 75,
-                    width: 75,
+                    height: 50,
+                    width: 50,
                   ),
                 ),
               ),
               const SizedBox(
-                width: 18,
+                width: 20,
               ),
               Expanded(
                 flex: 5,
@@ -142,7 +142,7 @@ class PrescriptionContainer extends StatelessWidget {
                       '${medicationDoctor['professional_display_name']}',
                       style: const TextStyle(
                         color: Color(0xFF424E79),
-                        fontSize: 20,
+                        fontSize: 15,
                         fontWeight: FontWeight.w800,
                       ),
                     ),
@@ -150,7 +150,7 @@ class PrescriptionContainer extends StatelessWidget {
                       '${medicationFacility['name']}',
                       style: const TextStyle(
                         color: Color(0xFF424E79),
-                        fontSize: 18,
+                        fontSize: 14,
                         fontWeight: FontWeight.w400,
                       ),
                     ),
@@ -170,7 +170,7 @@ class PrescriptionContainer extends StatelessWidget {
                             '${(prescription['name'] ?? '').substring(0, 36)}...', // Display the first 20 characters
                             style: const TextStyle(
                               color: Color(0xFF424E79),
-                              fontSize: 16,
+                              fontSize: 13,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
@@ -192,7 +192,7 @@ class PrescriptionContainer extends StatelessWidget {
                             prescription['sig'] ?? '',
                             style: const TextStyle(
                               color: Color(0xFF424E79),
-                              fontSize: 16,
+                              fontSize: 13,
                               fontWeight: FontWeight.w500,
                             ),
                             softWrap: true,
@@ -229,7 +229,7 @@ class PrescriptionContainer extends StatelessWidget {
               );
             },
             child: CircleAvatar(
-              radius: 6,
+              radius: 4,
               backgroundColor: extendNavigationRail.prescriptionPage == index
                   ? const Color(0xFF4454C3)
                   : Color.fromARGB(255, 184, 194, 255),

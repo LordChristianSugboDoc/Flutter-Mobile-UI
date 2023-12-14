@@ -24,7 +24,10 @@ class _PatientProfileState extends State<PatientProfile> {
   Map<String, dynamic> patientState = {};
   Map<String, dynamic> patientCity = {};
   Map<String, dynamic> patientBrgy = {};
-  Map<String, dynamic> patientCareTeam = {};
+  Map<String, dynamic> responsePatientCareTeam = {};
+  Map<String, dynamic> careTeam = {};
+  Map<String, dynamic> careTeamDoctor = {};
+  Map<String, dynamic> careTeamFacility = {};
   List<Map<String, dynamic>> communityPosts = [];
 
   double smallWidth = 600;
@@ -66,14 +69,20 @@ class _PatientProfileState extends State<PatientProfile> {
 
       if (responsePatientDetails.statusCode == 200) {
         setState(() {
+          /* Patient Details */
           responseData = json.decode(responsePatientDetails.body);
-          patientCareTeam = json.decode(responseCareTeam.body);
 
           patientData = responseData['patientData'];
           patientCountry = responseData['patientCountry'];
           patientState = responseData['patientState'];
           patientCity = responseData['patientCity'];
           patientBrgy = responseData['patientBrgy'];
+
+          /* Patient CareTeam */
+          responsePatientCareTeam = json.decode(responseCareTeam.body);
+          careTeam = responsePatientCareTeam['careTeam'];
+          careTeamDoctor = responsePatientCareTeam['careTeamDoctor'];
+          careTeamFacility = responsePatientCareTeam['careTeamFacility'];
 
           // Ensure the correct type for patientPrescriptions
           if (responseCommunityPosts.statusCode == 200) {
@@ -157,7 +166,9 @@ class _PatientProfileState extends State<PatientProfile> {
                       patientState,
                       patientCity,
                       patientBrgy,
-                      patientCareTeam,
+                      careTeam,
+                      careTeamDoctor,
+                      careTeamFacility,
                       communityPosts,
                     );
                   }

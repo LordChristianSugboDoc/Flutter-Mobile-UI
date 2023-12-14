@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:autocomplete_textfield/autocomplete_textfield.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 class SearchableDropDown extends StatelessWidget {
   final String labelText;
@@ -32,44 +32,32 @@ class SearchableDropDown extends StatelessWidget {
         ),
         borderRadius: const BorderRadius.all(Radius.circular(5.0)),
       ),
-      child: Focus(
-        onFocusChange: (hasFocus) {
-          // Handle focus change to move labelText to border
-          onChanged?.call(null); // Clear the text when focus changes
-        },
-        child: Padding(
-          padding: const EdgeInsets.only(
-            left: 10.0,
-            right: 10.0,
+      child: Padding(
+        padding: const EdgeInsets.only(
+            left: 10.0, right: 10.0), // Adjust the padding as needed
+        child: TypeAheadField<String>(
+          textFieldConfiguration: TextFieldConfiguration(
+            decoration: InputDecoration(
+              hintText: hintText,
+              labelText: labelText,
+              border: InputBorder.none,
+            ),
+            controller: TextEditingController(text: selectedValue),
           ),
-          child: Row(
-            children: [
-              Expanded(
-                child: Align(
-                  alignment: Alignment.topLeft,
-                  child: SimpleAutoCompleteTextField(
-                    key: GlobalKey<AutoCompleteTextFieldState<String>>(),
-                    decoration: InputDecoration(
-                      hintText: hintText,
-                      labelText: labelText,
-                      border: InputBorder.none,
-                    ),
-                    controller: TextEditingController(text: selectedValue),
-                    suggestions: items,
-                    textChanged: (value) {},
-                    clearOnSubmit: false,
-                    textSubmitted: (value) {
-                      onChanged?.call(value);
-                    },
-                  ),
-                ),
-              ),
-              Icon(
-                Icons.arrow_drop_down,
-                color: Color(0xFF424E79),
-              ),
-            ],
-          ),
+          suggestionsCallback: (pattern) async {
+            return items
+                .where((item) =>
+                    item.toLowerCase().contains(pattern.toLowerCase()))
+                .toList();
+          },
+          itemBuilder: (context, suggestion) {
+            return ListTile(
+              title: Text(suggestion),
+            );
+          },
+          onSuggestionSelected: (suggestion) {
+            onChanged?.call(suggestion);
+          },
         ),
       ),
     );

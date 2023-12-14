@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_doctor_ui/screens/Dashboard/dashboard.dart';
 import 'dart:io';
 import 'dart:convert';
 import 'package:intl/intl.dart';
@@ -224,20 +225,52 @@ class _PatientProfileEditState extends State<PatientProfileEdit> {
           } else {
             return Scaffold(
               backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-              appBar: AppBar(
-                elevation: 0.0,
-                backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-                iconTheme: const IconThemeData(
-                  color: Color(0xFF4454C3),
-                ),
-                leading: IconButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, PatientProfile.routeName);
+              appBar: PreferredSize(
+                preferredSize: const Size.fromHeight(kToolbarHeight),
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    if (constraints.maxWidth < smallWidth) {
+                      // Small screen layout
+                      return AppBar(
+                        elevation: 0.0,
+                        backgroundColor:
+                            const Color.fromARGB(255, 255, 255, 255),
+                        iconTheme: const IconThemeData(
+                          color: Color(0xFF4454C3),
+                        ),
+                        leading: IconButton(
+                          onPressed: () {
+                            Navigator.pushNamed(
+                                context, PatientProfile.routeName);
+                          },
+                          icon: const Icon(
+                            Icons.arrow_back_ios_new_rounded,
+                            size: 26,
+                          ),
+                        ),
+                      );
+                    } else if (constraints.maxWidth < mediumWidth) {
+                      return const SizedBox();
+                    } else {
+                      return AppBar(
+                        elevation: 0.0,
+                        backgroundColor:
+                            const Color.fromARGB(255, 255, 255, 255),
+                        iconTheme: const IconThemeData(
+                          color: Color(0xFF4454C3),
+                        ),
+                        leading: IconButton(
+                          onPressed: () {
+                            Navigator.pushNamed(context, Dashboard.routeName);
+                          },
+                          icon: const Icon(
+                            Icons.arrow_back_ios_new_rounded,
+                            size: 26,
+                          ),
+                        ),
+                      );
+                    }
                   },
-                  icon: const Icon(
-                    Icons.arrow_back_ios_new_rounded,
-                    size: 26,
-                  ),
                 ),
               ),
               body: LayoutBuilder(

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_doctor_ui/ChangeNotifier/ExtendNavigationRail.dart';
 
-class PastEncountersContainer extends StatelessWidget {
+class MyPastEncountersCard extends StatelessWidget {
   final double cardWidth;
   final double cardHeight;
   final double containerWidth;
@@ -11,7 +11,7 @@ class PastEncountersContainer extends StatelessWidget {
   final List<Map<String, String>> patientEncounters;
   final List<Map<String, String>> pastVisits;
 
-  PastEncountersContainer({
+  MyPastEncountersCard({
     required this.cardWidth,
     required this.cardHeight,
     required this.containerWidth,
@@ -37,7 +37,7 @@ class PastEncountersContainer extends StatelessWidget {
         right: 18.0,
       ),
       margin: const EdgeInsets.only(
-        top: 15.0,
+        top: 10.0,
         bottom: 10.0,
         right: 20.0,
       ),
@@ -65,10 +65,10 @@ class PastEncountersContainer extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text(
-                  "My Prescriptions",
+                  "My Past Visits",
                   style: TextStyle(
                     color: Color(0xFF424E79),
-                    fontSize: 20,
+                    fontSize: 15,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -78,7 +78,7 @@ class PastEncountersContainer extends StatelessWidget {
                     "View All",
                     style: TextStyle(
                       color: Color(0xFF4454C3),
-                      fontSize: 20,
+                      fontSize: 15,
                       fontWeight: FontWeight.w800,
                     ),
                   ),
@@ -87,7 +87,7 @@ class PastEncountersContainer extends StatelessWidget {
             ),
           ),
           SizedBox(
-            height: 165,
+            height: 145,
             child: PageView.builder(
               controller: _pageController,
               itemCount: pastVisits.length,
@@ -99,9 +99,6 @@ class PastEncountersContainer extends StatelessWidget {
                 extendNavigationRail.updatePastVisitsPage(index);
               },
             ),
-          ),
-          const SizedBox(
-            height: 20,
           ),
           buildPageIndicator(pastVisits.length, extendNavigationRail),
         ],
@@ -122,6 +119,8 @@ class PastEncountersContainer extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
+                height: 80,
+                width: 80,
                 margin: EdgeInsets.only(bottom: 10),
                 alignment: Alignment.centerLeft,
                 decoration: BoxDecoration(
@@ -129,7 +128,7 @@ class PastEncountersContainer extends StatelessWidget {
                   borderRadius: BorderRadius.circular(100),
                   border: Border.all(
                     color: const Color(0xFF4454C3),
-                    width: 4.5,
+                    width: 3.0,
                   ),
                 ),
                 child: Container(
@@ -138,21 +137,21 @@ class PastEncountersContainer extends StatelessWidget {
                     child: (encounterDoctor['img_url'] != null)
                         ? Image.network(
                             'http://10.0.2.2:8080/sugbodoc-multi-tenant/${encounterDoctor['img_url']}', // Dynamic Variable
-                            height: 145,
-                            width: 145,
+                            height: 80,
+                            width: 80,
                             errorBuilder: (context, error, stackTrace) {
                               // Use the default image if loading the image fails
                               return Image.asset(
                                 'assets/images/JPG/default_profile.jpg',
-                                height: 145,
-                                width: 145,
+                                height: 80,
+                                width: 80,
                               );
                             },
                           )
                         : Image.asset(
                             'assets/images/JPG/default_profile.jpg', // Dynamic Variable
-                            height: 145,
-                            width: 145,
+                            height: 80,
+                            width: 80,
                           ),
                   ),
                 ),
@@ -166,7 +165,7 @@ class PastEncountersContainer extends StatelessWidget {
                       '${encounterFacility['name']}',
                       style: const TextStyle(
                         color: Color(0xFF424E79),
-                        fontSize: 22,
+                        fontSize: 15,
                         fontWeight: FontWeight.w800,
                       ),
                     ),
@@ -174,7 +173,7 @@ class PastEncountersContainer extends StatelessWidget {
                       '${encounterDoctor['professional_display_name']}',
                       style: const TextStyle(
                         color: Color(0xFF424E79),
-                        fontSize: 20,
+                        fontSize: 14,
                         fontWeight: FontWeight.w400,
                       ),
                     ),
@@ -183,7 +182,7 @@ class PastEncountersContainer extends StatelessWidget {
                       '"${pastVisit['appointment_reason_text']}"',
                       style: const TextStyle(
                         color: Color(0xFF424E79),
-                        fontSize: 18,
+                        fontSize: 14,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -192,7 +191,7 @@ class PastEncountersContainer extends StatelessWidget {
                       '${calculateTimeAgo(patientEncounter['ended_at'] ?? '')}',
                       style: const TextStyle(
                         color: Color.fromARGB(255, 152, 152, 152),
-                        fontSize: 16,
+                        fontSize: 14,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -226,7 +225,7 @@ class PastEncountersContainer extends StatelessWidget {
               );
             },
             child: CircleAvatar(
-              radius: 6,
+              radius: 4,
               backgroundColor: extendNavigationRail.pastVisitPage == index
                   ? const Color(0xFF4454C3)
                   : Color.fromARGB(255, 184, 194, 255),
@@ -247,9 +246,11 @@ class PastEncountersContainer extends StatelessWidget {
       int remainingDays = difference.inDays % 7;
 
       if (difference.inHours > 0) {
-        return '$weeks ${weeks == 1 ? 'week' : 'weeks'} and $remainingDays ${remainingDays == 1 ? 'day' : 'days'} ago';
-      } else {
-        return '$weeks ${weeks == 1 ? 'week' : 'weeks'} ago';
+        if (remainingDays > 0) {
+          return '$weeks ${weeks == 1 ? 'week' : 'weeks'} and $remainingDays ${remainingDays == 1 ? 'day' : 'days'} ago';
+        } else {
+          return '$weeks ${weeks == 1 ? 'week' : 'weeks'} ago';
+        }
       }
     } else if (difference.inDays > 0) {
       if (difference.inDays == 1) {
@@ -272,5 +273,7 @@ class PastEncountersContainer extends StatelessWidget {
     } else {
       return 'Just now';
     }
+    // Add a default return statement to handle all cases
+    return 'Just now';
   }
 }

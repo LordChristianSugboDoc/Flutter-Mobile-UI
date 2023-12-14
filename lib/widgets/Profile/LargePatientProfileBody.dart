@@ -6,18 +6,23 @@ class LargeScreenPatientProfileBody extends StatelessWidget {
   final Map<String, dynamic> patientState;
   final Map<String, dynamic> patientCity;
   final Map<String, dynamic> patientBrgy;
-  final Map<String, dynamic> patientCareTeam;
+  final Map<String, dynamic> careTeam;
+  final Map<String, dynamic> careTeamDoctor;
+  final Map<String, dynamic> careTeamFacility;
   final List<Map<String, dynamic>> communityPosts;
 
   LargeScreenPatientProfileBody(
-      this.patientData,
-      this.patientCountry,
-      this.patientState,
-      this.patientCity,
-      this.patientBrgy,
-      this.patientCareTeam,
-      this.communityPosts,
-      {super.key});
+    this.patientData,
+    this.patientCountry,
+    this.patientState,
+    this.patientCity,
+    this.patientBrgy,
+    this.careTeam,
+    this.careTeamDoctor,
+    this.careTeamFacility,
+    this.communityPosts, {
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -87,6 +92,14 @@ class LargeScreenPatientProfileBody extends StatelessWidget {
                               height: 200,
                               width: 200,
                               fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                // Use the default image if loading the image fails
+                                return Image.asset(
+                                  'assets/images/JPG/default_profile.jpg',
+                                  height: 200,
+                                  width: 200,
+                                );
+                              },
                             )
                           : Image.asset(
                               'assets/images/JPG/default_profile.jpg',
@@ -109,7 +122,7 @@ class LargeScreenPatientProfileBody extends StatelessWidget {
                           '${patientData['name']}',
                           style: const TextStyle(
                             color: Color(0xFF424E79),
-                            fontSize: 50,
+                            fontSize: 38,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
@@ -377,7 +390,9 @@ class LargeScreenPatientProfileBody extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              (!patientCareTeam.containsKey('error'))
+                              (careTeam.containsKey('error') ||
+                                      careTeam['error'] !=
+                                          'Patient Care Team not found')
                                   ? Container(
                                       margin: EdgeInsets.only(bottom: 40),
                                       child: Column(
@@ -431,11 +446,29 @@ class LargeScreenPatientProfileBody extends StatelessWidget {
                                                   borderRadius:
                                                       BorderRadius.circular(
                                                           100),
-                                                  child: Image.asset(
-                                                    '${patientCareTeam['doctor_image']}', // Dynamic Variable
-                                                    height: 90,
-                                                    width: 90,
-                                                  ),
+                                                  child: (careTeamDoctor[
+                                                              'img_url'] !=
+                                                          null)
+                                                      ? Image.network(
+                                                          'http://10.0.2.2:8080/sugbodoc-multi-tenant/${careTeamDoctor['img_url']}', // Dynamic Variable
+                                                          height: 90,
+                                                          width: 90,
+                                                          errorBuilder:
+                                                              (context, error,
+                                                                  stackTrace) {
+                                                            // Use the default image if loading the image fails
+                                                            return Image.asset(
+                                                              'assets/images/JPG/default_profile.jpg',
+                                                              height: 90,
+                                                              width: 90,
+                                                            );
+                                                          },
+                                                        )
+                                                      : Image.asset(
+                                                          'assets/images/JPG/default_profile.jpg', // Dynamic Variable
+                                                          height: 90,
+                                                          width: 90,
+                                                        ),
                                                 ),
                                               ),
                                               const SizedBox(
@@ -451,7 +484,7 @@ class LargeScreenPatientProfileBody extends StatelessWidget {
                                                     height: 20,
                                                   ),
                                                   Text(
-                                                    '${patientCareTeam['doctor_title']}',
+                                                    '${careTeamDoctor['professional_display_name']}',
                                                     style: const TextStyle(
                                                       color: Color(0xFF424E79),
                                                       fontSize: 20,
@@ -459,9 +492,9 @@ class LargeScreenPatientProfileBody extends StatelessWidget {
                                                           FontWeight.w700,
                                                     ),
                                                   ),
-                                                  Text(
-                                                    '${patientCareTeam['doctor_profession']}',
-                                                    style: const TextStyle(
+                                                  const Text(
+                                                    'Consultant Physician',
+                                                    style: TextStyle(
                                                       color: Color(0xFF424E79),
                                                       fontSize: 20,
                                                       fontWeight:
